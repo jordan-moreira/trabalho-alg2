@@ -12,8 +12,8 @@
 - [ ] criar arquivos de dados para configuracoes(onde serao armazenados os dados do hotel, acomodacoes e suas categorias, fonecedores e operadores do sistema), produtos, hospedes e reservas(onde sera armazenados tudo relacionado sobre os quartos reservados como horarios e o codigo dos quartos)
 
 - [ ] criar uma funcao responsavel por fazer a estrutura basica dos registro que sera executada na inicializacao do sistema como mostrado abaixo:
-<pre>
-```
+
+```c
 Hotel[
 
 ],
@@ -29,23 +29,20 @@ Fornecedor[
 Operador[
 
 ]
-``` 
-</pre>
-
--[ ] criar uma logica para captura dos dados de cada estrutura no arquivo main onde essas estruturas serao passadas por pontero para as devidas funcoes de registro
+```
+- [ ] criar uma logica para captura dos dados de cada estrutura no arquivo main onde essas estruturas serao passadas por pontero para as devidas funcoes de registro
 
 - [ ] para criacao das funcoes de registros: criar um menu para captura de dados de cada estrutura onde tera uma funcao de busca responsavel por procurar um padrao de registro:
-<pre>
-```
+
+```c
 tipoDaEstrutura[
 
 ]
 ```
-</pre>
 
 para armazenar os dados coletados:
-<pre>
-```
+
+```c
 tipoDaEstrutura[
     codigo{
         tipoDoDado:valor,
@@ -53,5 +50,4 @@ tipoDaEstrutura[
     },
 ]
 ```
-</pre>
 
