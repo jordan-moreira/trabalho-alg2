@@ -40,12 +40,13 @@ typedef struct
 typedef struct
 {
     int codigo,
-        categoria;
+        categoria,
+        ocupada;
 
     char descricao,
         facilidades;
 
-} Quarto;
+} Acomodacao;
 
 // estrutura que inclui os dados de categorizacao dos quartos
 typedef struct
@@ -99,6 +100,6 @@ typedef struct
 } Operador;
 
 // funcao que executa a gestao de dados
-void gerirCadastros();
+void gerirCadastros(char tipo, char valor);
 
 #endif
