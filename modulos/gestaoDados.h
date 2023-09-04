@@ -47,10 +47,11 @@ typedef struct
     float valor;
 } Categoria;
 
+// estrutura que inclui os dados das datas inicias e finais de uma reserva no formato int data[3]={dia,mes,ano}
 typedef struct
 {
-    char dataInicial[10],
-         dataFinal[10];
+    int dataInicial[3],
+         dataFinal[3];
          
 }Reserva;
 
@@ -58,7 +59,7 @@ typedef struct
 typedef struct
 {
     int codigo,
-        categoria, //pre cadastrada
+        categoria, //armazena o codigo da categoria pre cadastrada
         ocupada;
 
     Reserva reserva;
