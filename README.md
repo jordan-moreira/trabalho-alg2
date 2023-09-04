@@ -3,7 +3,7 @@
  
 - [x] Adicionar um campo nas acomodacoes indicando se elas estao ocupadas ou n 
 
-- [ ] criar uma estrutura de calendario ou adicionar mais um campo nas acomodacoes indicando a data inicial e final que o quarto esta ocupado se caso o quarto estiver ocupado 
+- [x] criar uma estrutura de calendario ou adicionar mais um campo nas acomodacoes indicando a data inicial e final que o quarto esta ocupado se caso o quarto estiver ocupado 
 
 - [ ] criar um menu para selecionar o tipo de arquivo a ser trabalhado
 

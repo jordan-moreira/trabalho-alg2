@@ -36,18 +36,6 @@ typedef struct
         dataNasc[8];
 } Hospede;
 
-// estrutura que inclui os dados dos quartos
-typedef struct
-{
-    int codigo,
-        categoria,
-        ocupada;
-
-    char descricao,
-        facilidades;
-
-} Acomodacao;
-
 // estrutura que inclui os dados de categorizacao dos quartos
 typedef struct
 {
@@ -58,6 +46,27 @@ typedef struct
 
     float valor;
 } Categoria;
+
+typedef struct
+{
+    char dataInicial[10],
+         dataFinal[10];
+         
+}Reserva;
+
+// estrutura que inclui os dados dos quartos
+typedef struct
+{
+    int codigo,
+        categoria, //pre cadastrada
+        ocupada;
+
+    Reserva reserva;
+
+    char descricao,
+        facilidades;
+
+} Acomodacao;
 
 // estrutura que inclui os dados dos produtos consumiveis pelos hospedes
 typedef struct
