@@ -10,7 +10,7 @@ int main()
     while (codigoMenu != 6)
     {
 
-        printf("---MENU---\n 1- Cadastrar e gerir dados armazenados.\n 2- Gerenciar reservas de quartos.\n 3- Gerir dados adimistrativos.\n 4- Relatorios de sistema.\n 5- Importar/Exportar dados.\n 6- Encerrar programa.\n\n Digite um codigo referente a operacao que voce deseja fazer: ");
+        printf("---MENU---\n 1- Cadastrar e gerir dados armazenados.\n 2- Gerenciar reservas de quartos.\n 3- Gerir dados adimistrativos.\n 4- Relatorios de sistema.\n 5- Importar/Exportar dados.\n 6- Alterar configuracao de armazanamento.\n 7- Encerrar programa.\n\n Digite um codigo referente a operacao que voce deseja fazer: ");
         scanf("%d%*c", &codigoMenu);
 
         switch (codigoMenu)
@@ -35,7 +35,11 @@ int main()
             // gerirDados();
             // break;
 
-        case 6:
+            // case 6:
+            // alterarArquivo();
+            // break;
+
+        case 7:
             printf("\nEncerrando programa...");
             break;
 

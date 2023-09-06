@@ -44,9 +44,9 @@ para armazenar os dados coletados:
 
 ```c
 tipoDaEstrutura[
-    codigo{
-        tipoDoDado:valor,
-        tipoDoDado:valor;
+    123{
+        quant:3423,
+        descric:ola;
     },
 ]
 ```
