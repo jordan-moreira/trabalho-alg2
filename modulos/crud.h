@@ -4,7 +4,8 @@
  void registrarCategoria(Categoria estrutura);
  
  //Função criada para ler registros de categoria;
- void readCategoria (Categoria estrutura);
+ Categoria lerCategoria (Categoria estrutura);
+
  
  
 
