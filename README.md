@@ -1,53 +1,22 @@
  # implementacoes a serem feitas
 
  
-- [x] Adicionar um campo nas acomodacoes indicando se elas estao ocupadas ou n 
+- [x] criar um menu de selecao de operacao primaria q sera executado na inicializacao do sistema.
 
-- [x] criar uma estrutura de calendario ou adicionar mais um campo nas acomodacoes indicando a data inicial e final que o quarto esta ocupado se caso o quarto estiver ocupado 
+- [ ]  criar um menu para selecionar qual tipo de dado sera cadastrado quando essa opcao for selecionada no menu principal
 
-- [x] criar um menu para selecionar o tipo de arquivo a ser trabalhado
+- [ ] criar as funcoes de gerenciamento de dados uma pra cada tipo de dado(hotel, hospede, categoria, ...)
 
-- [ ] iniciar a implementacao do modulo de manuseio de arquivos (funcoes CRUD) tanto para arquivos .bin, e .txt
+- [ ] criar uma funcao responsavel por coletar o tipo de operacao que o usuario pretende fazer com aquele tipo de dado
 
-- [ ] criar arquivos de dados para configuracoes(onde serao armazenados os dados do hotel, acomodacoes e suas categorias, fonecedores e operadores do sistema), produtos, hospedes e reservas(onde sera armazenados tudo relacionado sobre os quartos reservados como horarios e o codigo dos quartos)
+- [ ] criar a funcao de coleta e armazenamento de informacao para cada tipo de dado(hotel, hospede, categoria, ...) Create(Crud)
 
-- [ ] criar uma funcao responsavel por fazer a estrutura basica dos registro que sera executada na inicializacao do sistema como mostrado abaixo:
+- [ ] criar a funcao de leitura de documento completo ou de item especifico de todos os tipods de dados Read(cRud)
 
-```c
-Hotel[
+- [ ] criar a funcao de pesquisa de item especifico para cada dado para o mesmo poder ser alterado Update(crUd)
 
-],
-Acomodacao[
-
-],
-Categoria[
-
-],
-Fornecedor[
-
-],
-Operador[
-
-]
-```
-- [ ] criar uma logica para captura dos dados de cada estrutura no arquivo main onde essas estruturas serao passadas por pontero para as devidas funcoes de registro
-
-- [ ] para criacao das funcoes de registros: criar um menu para captura de dados de cada estrutura onde tera uma funcao de busca responsavel por procurar um padrao de registro:
-
-```c
-tipoDaEstrutura[
-
-]
-```
-
-para armazenar os dados coletados:
-
-```c
-tipoDaEstrutura[
-    123{
-        quant:3423,
-        descric:ola;
-    },
-]
-```
+- [ ] criar uma funcao responsavel por gerir as reservas das acomodacoes
+- [ ] 
+- [ ] 
+- [ ] 
 
