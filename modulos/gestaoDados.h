@@ -4,8 +4,8 @@
 // estrutura que inclui os dados referentes ao hotel
 typedef struct
 {
-    char nome,
-        razaoSocial,
+    char nome[100],
+        razaoSocial[100],
         inscricaoEstadual,
         cnpj[19],
         endereco,
@@ -51,15 +51,15 @@ typedef struct
 typedef struct
 {
     int dataInicial[3],
-         dataFinal[3];
-         
-}Reserva;
+        dataFinal[3];
+
+} Reserva;
 
 // estrutura que inclui os dados dos quartos
 typedef struct
 {
     int codigo,
-        categoria, //armazena o codigo da categoria pre cadastrada
+        categoria, // armazena o codigo da categoria pre cadastrada
         ocupada;
 
     Reserva reserva;
@@ -109,7 +109,31 @@ typedef struct
         permissao;
 } Operador;
 
-// funcao que executa a gestao de dados
-void gerirCadastros(char tipo, char valor);
+// funcao responsavel por gerenciar dados do hotel
+void gerenciarHotel();
+
+// funcao responsavel por gerenciar dados dos hospedes
+void gerenciarHospedes();
+
+// funcao responsavel por gerenciar dados dos quartos
+void gerenciarQuartos();
+
+// funcao responsavel por gerenciar dados das categorias dos quartos
+void gerenciarCategorias();
+
+// funcao responsavel por gerenciar dados dos consumiveis
+void gerenciarConsumiveis();
+
+// funcao responsavel por gerenciar dados dos fornecedores
+void gerenciarFornecedores();
+
+// funcao responsavel por gerenciar dados dos operadores
+void gerenciarOperadores();
+
+// funcao responsavel por coletar o tipo de operacao CRUD a ser realizada retornando-a
+int selecionarOperacao(char *);
+
+// funcao responsvel por coletar e armazenar os dados do hotel e retornar o ponteiro da memoria onde foi alocado a estrutura com os dados
+Hotel *coletarDadosHotel();
 
 #endif
