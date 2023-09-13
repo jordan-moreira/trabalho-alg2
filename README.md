@@ -10,7 +10,7 @@
 
 - [x] criar uma funcao responsavel por coletar o tipo de operacao que o usuario pretende fazer com aquele tipo de dado
 
-- [ ] criar a funcao de coleta e armazenamento de informacao para cada tipo de dado(hotel, hospede, categoria, ...) Create(Crud)
+- [x] criar a funcao de coleta e armazenamento de informacao para cada tipo de dado(hotel, hospede, categoria, ...) Create(Crud)
 
 - [ ] criar a funcao de leitura de documento completo ou de item especifico de todos os tipods de dados Read(cRud)
 
