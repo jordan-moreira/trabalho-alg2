@@ -4,6 +4,6 @@
 // void registrarCategoria(Categoria);
 
 // Função criada para ler registros de categoria;
-void lerCategoria(int);
+void lerCategoria(int codigo);
 
 #endif

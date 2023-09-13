@@ -4,23 +4,21 @@
 
 int selecionarOperacao(char *tipoDoDado)
 {
-
     int codigoMenu = 0;
-    printf("Digite o codigo referente a operacao a ser feita:\n");
+    printf("Digite o código referente à operação a ser realizada:\n");
 
     while (codigoMenu < 1 || codigoMenu > 4)
     {
-
-        printf("1- adicionar %s.\n 2- atualizar informacoes de %s.\n 3- ler informacoes de %s.\n 4- deletar %s.\n", tipoDoDado, tipoDoDado, tipoDoDado, tipoDoDado, tipoDoDado);
+        printf("1 - Adicionar %s.\n 2 - Atualizar informações de %s.\n 3 - Ler informações de %s.\n 4 - Deletar %s.\n", tipoDoDado, tipoDoDado, tipoDoDado, tipoDoDado);
         scanf("%d%*c", &codigoMenu);
 
-        if (codigoMenu >= 1 || codigoMenu <= 4)
+        if (codigoMenu >= 1 && codigoMenu <= 4)
         {
             return codigoMenu;
         }
         else
         {
-            printf("opcao invalida");
+            printf("Opção inválida.\n");
         }
     }
 }
@@ -32,7 +30,6 @@ void gerenciarHotel()
 
     switch (operacao)
     {
-
     case 1:
         coletarDadosHotel();
         // criarHotel();
@@ -51,7 +48,7 @@ void gerenciarHotel()
         // break;
 
     default:
-        printf("erro desconhecido");
+        printf("Erro desconhecido.\n");
         break;
     }
 }
@@ -69,10 +66,10 @@ Hotel *coletarDadosHotel()
     printf("Digite o nome do hotel: ");
     scanf("%s", ptrHotel->nome);
 
-    printf("\nDigite a razao social do hotel: ");
+    printf("\nDigite a razão social do hotel: ");
     scanf("%s", ptrHotel->razaoSocial);
 
-    printf("\nDigite a inscricao estadual do hotel: ");
+    printf("\nDigite a inscrição estadual do hotel: ");
     scanf("%s", ptrHotel->inscricaoEstadual);
 
     printf("\nDigite o CNPJ do hotel: ");
@@ -84,7 +81,7 @@ Hotel *coletarDadosHotel()
     printf("\nDigite o número de celular do hotel: ");
     scanf("%s", ptrHotel->celular);
 
-    printf("\nDigite o e-Mail do hotel: ");
+    printf("\nDigite o e-mail do hotel: ");
     scanf("%s", ptrHotel->eMail);
 
     printf("\nDigite o nome do responsável (ou gerente) pelo hotel: ");

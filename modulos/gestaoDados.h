@@ -6,16 +6,16 @@ typedef struct
 {
     char nome[100],
         razaoSocial[100],
-        inscricaoEstadual,
-        cnpj[19],
-        endereco,
-        celular[11],
-        eMail,
+        inscricaoEstadual[15],
+        cnpj[20],
+        endereco[100],
+        celular[12],
+        eMail[100],
         // dono ou gerente
-        responsavel,
-        celularResponsavel,
-        horarioCheckIn,
-        horarioCheckOut;
+        responsavel[100],
+        celularResponsavel[12],
+        horarioCheckIn[6],  // Horário de check-in do hotel (formato HH:MM)
+        horarioCheckOut[6]; // Horário de check-out do hotel (formato HH:MM)
 
     float margemLucro;
 
@@ -26,14 +26,14 @@ typedef struct
 {
     int codigo;
 
-    char nome,
-        endereco,
+    char nome[100],
+        endereco[100],
         cpf[15],
-        celular[11],
-        eMail,
-        sexo[1],
-        estadoCivil[11],
-        dataNasc[8];
+        celular[12],
+        eMail[100],
+        sexo[2], // Sexo do hóspede (M ou F)
+        estadoCivil[20],
+        dataNasc[11]; // Data de nascimento do hóspede (formato dd/mm/aaaa)
 } Hospede;
 
 // estrutura que inclui os dados de categorizacao dos quartos
@@ -42,7 +42,7 @@ typedef struct
     int codigo,
         quantPessoas;
 
-    char descricao;
+    char descricao[100];
 
     float valor;
 } Categoria;
@@ -62,10 +62,10 @@ typedef struct
         categoria, // armazena o codigo da categoria pre cadastrada
         ocupada;
 
-    Reserva reserva;
+    Reserva data;
 
-    char descricao,
-        facilidades;
+    char descricao[100],
+        facilidades[100];
 
 } Acomodacao;
 
@@ -76,7 +76,7 @@ typedef struct
         estoque,
         estoqueMin;
 
-    char descricao;
+    char descricao[100];
 
     float precoCusto,
         precoVenda;
@@ -88,13 +88,13 @@ typedef struct
 {
     int codigo;
 
-    char nome,
-        razaoSocial,
-        inscrisaoSocial,
-        cnpj[19],
-        endereco,
-        celular[11],
-        eMail;
+    char nome[100],
+        razaoSocial[100],
+        inscrisaoSocial[20],
+        cnpj[20],
+        endereco[100],
+        celular[12],
+        eMail[100];
 
 } Fornecedor;
 
@@ -103,10 +103,10 @@ typedef struct
 {
     int codigo;
 
-    char nome,
-        usuario,
-        senha,
-        permissao;
+    char nome[100],
+        usuario[100],
+        senha[100],
+        permissao[100];
 } Operador;
 
 // funcao responsavel por gerenciar dados do hotel
@@ -131,7 +131,7 @@ void gerenciarFornecedores();
 void gerenciarOperadores();
 
 // funcao responsavel por coletar o tipo de operacao CRUD a ser realizada retornando-a
-int selecionarOperacao(char *);
+int selecionarOperacao(char *tipoDoDado);
 
 // funcao responsvel por coletar e armazenar os dados do hotel e retornar o ponteiro da memoria onde foi alocado a estrutura com os dados
 Hotel *coletarDadosHotel();
