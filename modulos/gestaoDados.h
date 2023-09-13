@@ -109,8 +109,10 @@ typedef struct
         permissao[100];
 } Operador;
 
-
 // -------------------FUNÇÕES-------------
+
+// funcao responsavel por coletar o tipo de operacao CRUD a ser realizada retornando-a
+int selecionarOperacao(char *tipoDoDado);
 
 // funcao responsavel por gerenciar dados do hotel
 void gerenciarHotel();
@@ -133,28 +135,25 @@ void gerenciarFornecedor();
 // funcao responsavel por gerenciar dados dos operadores
 void gerenciarOperador();
 
-// funcao responsavel por coletar o tipo de operacao CRUD a ser realizada retornando-a
-int selecionarOperacao(char *tipoDoDado);
-
 // funcao responsvel por coletar e armazenar em uma struct os dados do hotel e retornar o ponteiro da memoria onde a struct esta alocada
 Hotel *coletarDadosHotel();
 
 // funcao responsvel por coletar e armazenar em uma struct os dados de um hospede e retornar o ponteiro da memoria onde a struct esta alocada
-Hotel *coletarDadosHoespede();
+Hospede *coletarDadosHospede();
 
 // funcao responsvel por coletar e armazenar em uma struct os dados de uma categoria de acomodacao e retornar o ponteiro da memoria onde a struct esta alocada
-Hotel *coletarDadosCategoria();
+Categoria *coletarDadosCategoria();
 
 // funcao responsvel por coletar e armazenar em uma struct os dados de uma acomodacao e retornar o ponteiro da memoria onde a struct esta alocada
-Hotel *coletarDadosAcomodacao();
+Acomodacao *coletarDadosAcomodacao();
 
 // funcao responsvel por coletar e armazenar em uma struct os dados de um consumivel e retornar o ponteiro da memoria onde a struct esta alocada
-Hotel *coletarDadosConsumivel();
+Consumivel *coletarDadosConsumivel();
 
 // funcao responsvel por coletar e armazenar em uma struct os dados de um fornecedor e retornar o ponteiro da memoria onde a struct esta alocada
-Hotel *coletarDadosFornecedor();
+Fornecedor *coletarDadosFornecedor();
 
 // funcao responsvel por coletar e armazenar em uma struct os dados de um operador e retornar o ponteiro da memoria onde a struct esta alocada
-Hotel *coletarDadosOperador();
+Operador *coletarDadosOperador();
 
 #endif

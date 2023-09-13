@@ -32,7 +32,7 @@ void gerenciarHotel()
     switch (operacao)
     {
     case 1:
-        Hotel *ptr=coletarDadosHotel();
+        Hotel *ptr = coletarDadosHotel();
         criarHotel(ptr);
         break;
 
@@ -62,8 +62,8 @@ void gerenciarHospede()
     switch (operacao)
     {
     case 1:
-        coletarDadosHospede();
-        // criarHospede();
+        Hospede *ptr = coletarDadosHospede();
+        adicionarHospede(ptr);
         break;
 
     case 2:
@@ -92,8 +92,8 @@ void gerenciarCategoria()
     switch (operacao)
     {
     case 1:
-        coletarDadosCategoria();
-        // criarCategoria();
+        Categoria *ptr = coletarDadosCategoria();
+        adicionarCategoria(ptr);
         break;
 
     case 2:
@@ -122,8 +122,8 @@ void gerenciarAcomodacao()
     switch (operacao)
     {
     case 1:
-        coletarDadosAcomodacao();
-        // criarAcomodacao();
+        Acomodacao *ptr = coletarDadosAcomodacao();
+        adicionarAcomodacao(ptr);
         break;
 
     case 2:
@@ -152,8 +152,8 @@ void gerenciarConsumivel()
     switch (operacao)
     {
     case 1:
-        coletarDadosConsumivel();
-        // criarConsumivel();
+        Consumivel *ptr = coletarDadosConsumivel();
+        adicionarConsumivel(ptr);
         break;
 
     case 2:
@@ -182,8 +182,8 @@ void gerenciarFornecedor()
     switch (operacao)
     {
     case 1:
-        coletarDadosFornecedor();
-        // criarFornecedor();
+        Fornecedor *ptr = coletarDadosFornecedor();
+        adicionarFornecedor(ptr);
         break;
 
     case 2:
@@ -212,8 +212,8 @@ void gerenciarOperador()
     switch (operacao)
     {
     case 1:
-        coletarDadosOperador();
-        // criarOperador();
+        Operador *ptr = coletarDadosOperador();
+        adicionarOperador(ptr);
         break;
 
     case 2:
@@ -233,7 +233,6 @@ void gerenciarOperador()
         break;
     }
 }
-
 
 Hotel *coletarDadosHotel()
 {
@@ -475,4 +474,3 @@ Operador *coletarDadosOperador()
 
     return ptrOperador;
 }
-
