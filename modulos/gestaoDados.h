@@ -109,31 +109,52 @@ typedef struct
         permissao[100];
 } Operador;
 
+
+// -------------------FUNÇÕES-------------
+
 // funcao responsavel por gerenciar dados do hotel
 void gerenciarHotel();
 
 // funcao responsavel por gerenciar dados dos hospedes
-void gerenciarHospedes();
-
-// funcao responsavel por gerenciar dados dos quartos
-void gerenciarQuartos();
+void gerenciarHospede();
 
 // funcao responsavel por gerenciar dados das categorias dos quartos
-void gerenciarCategorias();
+void gerenciarCategoria();
+
+// funcao responsavel por gerenciar dados dos quartos
+void gerenciarAcomodacao();
 
 // funcao responsavel por gerenciar dados dos consumiveis
-void gerenciarConsumiveis();
+void gerenciarConsumivel();
 
 // funcao responsavel por gerenciar dados dos fornecedores
-void gerenciarFornecedores();
+void gerenciarFornecedor();
 
 // funcao responsavel por gerenciar dados dos operadores
-void gerenciarOperadores();
+void gerenciarOperador();
 
 // funcao responsavel por coletar o tipo de operacao CRUD a ser realizada retornando-a
 int selecionarOperacao(char *tipoDoDado);
 
-// funcao responsvel por coletar e armazenar os dados do hotel e retornar o ponteiro da memoria onde foi alocado a estrutura com os dados
+// funcao responsvel por coletar e armazenar em uma struct os dados do hotel e retornar o ponteiro da memoria onde a struct esta alocada
 Hotel *coletarDadosHotel();
+
+// funcao responsvel por coletar e armazenar em uma struct os dados de um hospede e retornar o ponteiro da memoria onde a struct esta alocada
+Hotel *coletarDadosHoespede();
+
+// funcao responsvel por coletar e armazenar em uma struct os dados de uma categoria de acomodacao e retornar o ponteiro da memoria onde a struct esta alocada
+Hotel *coletarDadosCategoria();
+
+// funcao responsvel por coletar e armazenar em uma struct os dados de uma acomodacao e retornar o ponteiro da memoria onde a struct esta alocada
+Hotel *coletarDadosAcomodacao();
+
+// funcao responsvel por coletar e armazenar em uma struct os dados de um consumivel e retornar o ponteiro da memoria onde a struct esta alocada
+Hotel *coletarDadosConsumivel();
+
+// funcao responsvel por coletar e armazenar em uma struct os dados de um fornecedor e retornar o ponteiro da memoria onde a struct esta alocada
+Hotel *coletarDadosFornecedor();
+
+// funcao responsvel por coletar e armazenar em uma struct os dados de um operador e retornar o ponteiro da memoria onde a struct esta alocada
+Hotel *coletarDadosOperador();
 
 #endif
