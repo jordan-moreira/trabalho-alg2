@@ -1,7 +1,5 @@
 # implementacoes a serem feitas
 
-corrigir o erro de acesso a memoria nas funcoes de leitura
-
 ## implementacoes de cadastro e gerenciamento de dados
 
 - [X] criar um menu de selecao de operacao primaria q sera executado na inicializacao do sistema.
