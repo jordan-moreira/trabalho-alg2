@@ -232,3 +232,75 @@ int lerOperador(int codigo, FILE *arquivo, Operador *ptrOperador)
     }
     return 0;
 }
+
+// ------------------ UPDATE ------------------
+
+// Função genérica para pesquisar e atualizar registros em um arquivo
+int pesquisarEAtualizar(int codigo, const char *nomeArquivo, int tamanhoRegistro, void *novoDados, int (*lerRegistro)(int, FILE *, void *))
+{
+    FILE *arquivo = fopen(nomeArquivo, "r+");
+    FILE *tempFile = fopen("temp.txt", "w");
+
+    if (arquivo == NULL || tempFile == NULL)
+    {
+        printf("Erro ao abrir arquivos!\n");
+        return 0; // Indica que a operação falhou
+    }
+
+    int encontrado = 0; // Indica se o código foi encontrado
+
+    while (1)
+    {
+        int resultadoLeitura = lerRegistro(0, arquivo, novoDados);
+        if (resultadoLeitura == 0)
+        {
+            // Fim do arquivo
+            break;
+        }
+
+        if (resultadoLeitura == 1)
+        {
+            if (*(int *)novoDados == codigo)
+            {
+                // Se o código foi encontrado, atualize os dados com os novos dados
+                fwrite(novoDados, tamanhoRegistro, 1, tempFile);
+                encontrado = 1;
+            }
+            else
+            {
+                // Se não for o código que estamos procurando, escreva o registro original de volta no arquivo temporário
+                fwrite(novoDados, tamanhoRegistro, 1, tempFile);
+            }
+        }
+    }
+
+    fclose(arquivo);
+    fclose(tempFile);
+
+    // Substitua o arquivo original pelo arquivo temporário
+    remove(nomeArquivo);
+    rename("temp.txt", nomeArquivo);
+
+    if (encontrado)
+    {
+        printf("Registro com código %d atualizado com sucesso!\n", codigo);
+        return 1; // Indica que a operação foi bem-sucedida
+    }
+    else
+    {
+        printf("Registro com código %d não encontrado!\n", codigo);
+        return 0; // Indica que o código não foi encontrado
+    }
+}
+
+// Exemplo de como usar a função genérica para atualizar um Hospede
+int pesquisarEAtualizarHospede(int codigo, Hospede *novoDados)
+{
+    return pesquisarEAtualizar(codigo, "arquivo/hospede.txt", sizeof(Hospede), novoDados, lerHospede);
+}
+
+// Exemplo de como usar a função genérica para atualizar uma Categoria
+int pesquisarEAtualizarCategoria(int codigo, Categoria *novoDados)
+{
+    return pesquisarEAtualizar(codigo, "arquivo/categoria.txt", sizeof(Categoria), novoDados, lerCategoria);
+}
