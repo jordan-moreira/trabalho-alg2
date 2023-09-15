@@ -90,7 +90,7 @@ typedef struct
 
     char nome[100],
         razaoSocial[100],
-        inscrisaoSocial[20],
+        inscricaoSocial[20],
         cnpj[20],
         endereco[100],
         celular[12],

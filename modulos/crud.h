@@ -26,7 +26,21 @@ void adicionarOperador(Operador *estrutura);
 
 // ------------Read-----------
 
-// Função criada para ler registros de categoria;
-void lerCategoria(int codigo);
+// Função responsavel por ler os registros do hotel;
+int lerHotel(FILE *arquivo, Hotel *ptrHotel);
+
+// Função responsavel por ler os registros de hóspede;
+int lerHospede(int codigo, FILE *arquivo, Hospede *ptrHospede);
+// Função responsavel por ler os registros de categoria;
+int lerCategoria(int codigo, FILE *arquivo, Categoria *ptrCategoria);
+
+// Função responsavel por ler os registros de acomodação;
+int lerAcomodacao(int codigo, FILE *arquivo, Acomodacao *ptrAcomodacao);
+// Função responsavel por ler os registros de consumível;
+int lerConsumivel(int codigo, FILE *arquivo, Consumivel *ptrConsumivel);
+// Função responsavel por ler os registros de fornecedor;
+int lerFornecedor(int codigo, FILE *arquivo, Fornecedor *ptrFornecedor);
+// Função responsavel por ler os registros de operador;
+int lerOperador(int codigo, FILE *arquivo, Operador *ptrOperador);
 
 #endif

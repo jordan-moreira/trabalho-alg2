@@ -1,0 +1,3 @@
+1{nome:luiz ,endereco:nao-sei ,cpf:34343444 ,celular:343324 ,eMail:luiz@email.com ,sexo:m ,estadoCivil:solteiro ,dataNasc:23/08/2000 ;}
+2{nome:ana ,endereco:nao-sei ,cpf:3243343434 ,celular:32434345 ,eMail:ana@email.com ,sexo:m ,estadoCivil:casada ,dataNasc:26/01/1987 ;}
+3{nome:dsfad ,endereco:fdsf ,cpf:asdsfasdf ,celular:sdafd ,eMail:dfsdf ,sexo:f ,estadoCivil:dfds ,dataNasc:ddsfsdsd ;}

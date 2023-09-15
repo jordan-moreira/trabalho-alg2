@@ -1,0 +1,2 @@
+4{categoria:3, ocupada:0, dataInicial:43/54/7655, dataFinal:65/56/4, descricao:gfg ,facilidades:gsgf ;}
+7{categoria:3, ocupada:0, dataInicial:43/54/7655, dataFinal:65/56/4, descricao:gfg ,facilidades:gsgf ;}

@@ -7,7 +7,7 @@ void menuCadastro()
 
     while (codigoMenu != 8)
     {
-        printf("--- MENU ---\n 1 - Informações do hotel.\n 2 - Informações dos hóspedes.\n 3 - Informações das acomodações.\n 4 - Lista de categorias das acomodações.\n 5 - Tabela de consumíveis.\n 6 - Lista de fornecedores.\n 7 - Lista de operadores do sistema.\n 8 - Voltar à tela principal.\n\nDigite um código referente ao item que você deseja gerenciar: ");
+        printf("--- MENU ---\n 1 - Informações do hotel.\n 2 - Informações dos hóspedes.\n 3 - Lista de categorias das acomodações.\n 4 - Informações das acomodações.\n 5 - Tabela de consumíveis.\n 6 - Lista de fornecedores.\n 7 - Lista de operadores do sistema.\n 8 - Voltar à tela principal.\n\nDigite um código referente ao item que você deseja gerenciar: ");
         scanf("%d%*c", &codigoMenu);
 
         switch (codigoMenu)
@@ -15,27 +15,27 @@ void menuCadastro()
         case 1:
             gerenciarHotel();
             break;
-        
+
         case 2:
             gerenciarHospede();
             break;
-        
+
         case 3:
             gerenciarCategoria();
             break;
-        
+
         case 4:
             gerenciarAcomodacao();
             break;
-        
+
         case 5:
             gerenciarConsumivel();
             break;
-        
+
         case 6:
             gerenciarFornecedor();
             break;
-        
+
         case 7:
             gerenciarOperador();
             break;
@@ -60,7 +60,7 @@ int main()
     while (codigoMenu != 7)
     {
         printf("--- MENU ---\n 1 - Cadastrar e gerir dados armazenados.\n 2 - Gerenciar reservas de quartos.\n 3 - Gerir dados administrativos.\n 4 - Relatórios do sistema.\n 5 - Importar/Exportar dados.\n 6 - Alterar configuração de armazenamento.\n 7 - Encerrar o programa.\n\nDigite um código referente à operação que você deseja fazer: ");
-        scanf("%d%*c", &codigoMenu);
+        scanf(" %d%*c", &codigoMenu);
 
         switch (codigoMenu)
         {
@@ -77,12 +77,12 @@ int main()
             scanf("%d", &escolhaArmazenamento);
 
             if (escolhaArmazenamento == 1)
-            {                        // Seleciona o tipo de armazenamento para texto (txt)
+            { // Seleciona o tipo de armazenamento para texto (txt)
                 printf("\nArmazenamento configurado para texto (txt).\n");
             }
             else if (escolhaArmazenamento == 2)
             {
-                                   // Seleciona o tipo de armazenamento para binário (bin)
+                // Seleciona o tipo de armazenamento para binário (bin)
                 printf("\nArmazenamento configurado para binário (bin).\n");
             }
             else
