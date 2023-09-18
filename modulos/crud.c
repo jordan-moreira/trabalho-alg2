@@ -232,3 +232,171 @@ int lerOperador(int codigo, FILE *arquivo, Operador *ptrOperador)
     }
     return 0;
 }
+
+// ------------------ UPDATE ------------------
+
+// Função genérica para pesquisar e atualizar registros em um arquivo
+int pesquisarEAtualizar(int codigo, const char *nomeArquivo, int tamanhoRegistro, void *novoDados, int (*lerRegistro)(int, FILE *, void *))
+{
+    FILE *arquivo = fopen(nomeArquivo, "r+");
+    FILE *tempFile = fopen("temp.txt", "w");
+
+    if (arquivo == NULL || tempFile == NULL)
+    {
+        printf("Erro ao abrir arquivos!\n");
+        return 0; // Indica que a operação falhou
+    }
+
+    int encontrado = 0; // Indica se o código foi encontrado
+
+    while (1)
+    {
+        int resultadoLeitura = lerRegistro(0, arquivo, novoDados);
+        if (resultadoLeitura == 0)
+        {
+            // Fim do arquivo
+            break;
+        }
+
+        if (resultadoLeitura == 1)
+        {
+            if (*(int *)novoDados == codigo)
+            {
+                // Se o código foi encontrado, atualize os dados com os novos dados
+                fwrite(novoDados, tamanhoRegistro, 1, tempFile);
+                encontrado = 1;
+            }
+            else
+            {
+                // Se não for o código que estamos procurando, escreva o registro original de volta no arquivo temporário
+                fwrite(novoDados, tamanhoRegistro, 1, tempFile);
+            }
+        }
+    }
+
+    fclose(arquivo);
+    fclose(tempFile);
+
+    // Substitua o arquivo original pelo arquivo temporário
+    remove(nomeArquivo);
+    rename("temp.txt", nomeArquivo);
+
+    if (encontrado)
+    {
+        printf("Registro com código %d atualizado com sucesso!\n", codigo);
+        return 1; // Indica que a operação foi bem-sucedida
+    }
+    else
+    {
+        printf("Registro com código %d não encontrado!\n", codigo);
+        return 0; // Indica que o código não foi encontrado
+    }
+}
+
+// Exemplo de como usar a função genérica para atualizar um Hospede
+int pesquisarEAtualizarHospede(int codigo, Hospede *novoDados)
+{
+    return pesquisarEAtualizar(codigo, "arquivo/hospede.txt", sizeof(Hospede), novoDados, lerHospede);
+}
+
+// Exemplo de como usar a função genérica para atualizar uma Categoria
+int pesquisarEAtualizarCategoria(int codigo, Categoria *novoDados)
+{
+    return pesquisarEAtualizar(codigo, "arquivo/categoria.txt", sizeof(Categoria), novoDados, lerCategoria);
+}
+
+// Função genérica para excluir um registro em um arquivo
+int excluirRegistro(const char *nomeArquivo, int tamanhoRegistro, int codigoExcluir, int (*compararRegistro)(void *, int)) {
+    FILE *arquivo = fopen(nomeArquivo, "r");
+    FILE *tempFile = fopen("temp.txt", "w");
+
+    if (arquivo == NULL || tempFile == NULL) {
+        printf("Erro ao abrir arquivos!\n");
+        return 0; // Indica que a operação falhou
+    }
+
+    int encontrado = 0; // Indica se o código foi encontrado
+
+    void *registro = malloc(tamanhoRegistro);
+
+    while (1) {
+        int resultadoLeitura = fread(registro, tamanhoRegistro, 1, arquivo);
+        if (resultadoLeitura != 1) {
+            // Fim do arquivo
+            break;
+        }
+
+        if (compararRegistro(registro, codigoExcluir)) {
+            // Registro encontrado e não será escrito no arquivo temporário (excluído)
+            encontrado = 1;
+        } else {
+            // Registro não é o que estamos excluindo, então escreva no arquivo temporário
+            fwrite(registro, tamanhoRegistro, 1, tempFile);
+        }
+    }
+
+    fclose(arquivo);
+    fclose(tempFile);
+
+    // Substitua o arquivo original pelo arquivo temporário
+    remove(nomeArquivo);
+    rename("temp.txt", nomeArquivo);
+
+    free(registro);
+
+    if (encontrado) {
+        printf("Registro com código %d excluído com sucesso!\n", codigoExcluir);
+        return 1; // Indica que a operação foi bem-sucedida
+    } else {
+        printf("Registro com código %d não encontrado!\n", codigoExcluir);
+        return 0; // Indica que o código não foi encontrado
+    }
+}
+
+// Função de comparação para Acomodacao
+int compararAcomodacao(void *registroArquivo, int codigoExcluir) {
+    Acomodacao *acomodacao = (Acomodacao *)registroArquivo;
+    // Compare o código da Acomodacao com o código a ser excluído
+    return acomodacao->codigo == codigoExcluir;
+}
+
+// Função de exclusão para Acomodacao
+int excluirAcomodacao(int codigo, const char *nomeArquivo) {
+    return excluirRegistro(nomeArquivo, sizeof(Acomodacao), codigo, compararAcomodacao);
+}
+
+// Função de comparação para Consumivel
+int compararConsumivel(void *registroArquivo, int codigoExcluir) {
+    Consumivel *consumivel = (Consumivel *)registroArquivo;
+    // Compare o código do Consumivel com o código a ser excluído
+    return consumivel->codigo == codigoExcluir;
+}
+
+// Função de exclusão para Consumivel
+int excluirConsumivel(int codigo, const char *nomeArquivo) {
+    return excluirRegistro(nomeArquivo, sizeof(Consumivel), codigo, compararConsumivel);
+}
+
+// Função de comparação para Fornecedor
+int compararFornecedor(void *registroArquivo, int codigoExcluir) {
+    Fornecedor *fornecedor = (Fornecedor *)registroArquivo;
+    // Compare o código do Fornecedor com o código a ser excluído
+    return fornecedor->codigo == codigoExcluir;
+}
+
+// Função de exclusão para Fornecedor
+int excluirFornecedor(int codigo, const char *nomeArquivo) {
+    return excluirRegistro(nomeArquivo, sizeof(Fornecedor), codigo, compararFornecedor);
+}
+
+// Função de comparação para Operador
+int compararOperador(void *registroArquivo, int codigoExcluir) {
+    Operador *operador = (Operador *)registroArquivo;
+    // Compare o código do Operador com o código a ser excluído
+    return operador->codigo == codigoExcluir;
+}
+
+// Função de exclusão para Operador
+int excluirOperador(int codigo, const char *nomeArquivo) {
+    return excluirRegistro(nomeArquivo, sizeof(Operador), codigo, compararOperador);
+}
