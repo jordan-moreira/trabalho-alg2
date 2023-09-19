@@ -8,8 +8,8 @@
 - [X] criar uma funcao responsavel por coletar o tipo de operacao que o usuario pretende fazer com aquele tipo de dado
 - [X] criar a funcao de coleta e armazenamento de informacao para cada tipo de dado(hotel, hospede, categoria, ...) Create(Crud)
 - [X] criar a funcao de leitura de documento completo ou de item especifico de todos os tipos de dados Read(cRud)
-- [ ] criar a funcao de pesquisa de item especifico para cada dado para o mesmo poder ser alterado Update(crUd)
-- [ ] criar a funcao de delecao de item especifico para cada dado Delete(cruD)
+- [X] criar a funcao de pesquisa de item especifico para cada dado para o mesmo poder ser alterado Update(crUd)
+- [X] criar a funcao de delecao de item especifico para cada dado Delete(cruD)
 - [ ] criar uma logica de niveis de acesso para diferentes tipos de operadores de sistema
 
 ## implementacoes de cancelamento e reserva de acomodacoes
