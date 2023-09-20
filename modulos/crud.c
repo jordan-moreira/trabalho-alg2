@@ -9,132 +9,55 @@
 
 // ------------Create---------
 
-void criarHotel(Hotel *estrutura)
+void criarHotel(Hotel *estrutura, FILE *arquivo)
 {
-
-    FILE *arquivo = fopen("arquivo/hotel.txt", "a");
-
-    if (arquivo == NULL)
-    {
-        printf("Arquivo não existe ou não pode ser aberto!\n");
-    }
 
     fprintf(arquivo, "Nome:%s ;Razão Social:%s ;Inscrição Estadual:%s ;CNPJ:%s ;Endereço:%s ;Número de Celular:%s ;E-mail:%s ;Responsável:%s ;Número de Celular do Responsável:%s ;Horário de Check-In:%s ;Horário de Check-Out:%s ;", estrutura->nome, estrutura->razaoSocial, estrutura->inscricaoEstadual, estrutura->cnpj, estrutura->endereco, estrutura->celular, estrutura->eMail, estrutura->responsavel, estrutura->celularResponsavel, estrutura->horarioCheckIn, estrutura->horarioCheckOut);
-
-    fclose(arquivo);
-
-    printf("Registrado com sucesso!\n");
 }
 
-void adicionarHospede(Hospede *estrutura)
+void adicionarHospede(Hospede *estrutura, FILE *arquivo)
 {
 
-    FILE *arquivo = fopen("arquivo/hospede.txt", "a");
-
-    if (arquivo == NULL)
-    {
-        printf("Arquivo não existe ou não pode ser aberto!\n");
-    }
-
-    fprintf(arquivo, "%d{nome:%s ,endereco:%s ,cpf:%s ,celular:%s ,eMail:%s ,sexo:%s ,estadoCivil:%s ,dataNasc:%s ;}\n", estrutura->codigo, estrutura->nome, estrutura->endereco, estrutura->cpf, estrutura->celular, estrutura->eMail, estrutura->sexo, estrutura->estadoCivil, estrutura->dataNasc);
-
-    fclose(arquivo);
-
-    printf("Registrado com sucesso!\n");
+    fprintf(arquivo, "%d{nome:%s ,endereco:%s ,cpf:%s ,celular:%s ,eMail:%s ,sexo:%s ,estadoCivil:%s ,dataNasc:%s ;}\n\n", estrutura->codigo, estrutura->nome, estrutura->endereco, estrutura->cpf, estrutura->celular, estrutura->eMail, estrutura->sexo, estrutura->estadoCivil, estrutura->dataNasc);
 }
 
-void adicionarCategoria(Categoria *estrutura)
+void adicionarCategoria(Categoria *estrutura, FILE *arquivo)
 {
-    FILE *arquivo = fopen("arquivo/categoria.txt", "a");
 
-    if (arquivo == NULL)
-    {
-        printf("Arquivo não existe ou não pode ser aberto!\n");
-        return;
-    }
-
-    fprintf(arquivo, "%d{quantPessoas:%d, valor:%f, descricao:%s ;}\n", estrutura->codigo, estrutura->quantPessoas, estrutura->valor, estrutura->descricao);
-
-    fclose(arquivo);
-
-    printf("Registrado com sucesso!\n");
+    fprintf(arquivo, "%d{quantPessoas:%d, valor:%f, descricao:%s ;}\n\n", estrutura->codigo, estrutura->quantPessoas, estrutura->valor, estrutura->descricao);
 }
 
-void adicionarAcomodacao(Acomodacao *estrutura)
+void adicionarAcomodacao(Acomodacao *estrutura, FILE *arquivo)
 {
-    FILE *arquivo = fopen("arquivo/acomodacao.txt", "a");
 
-    if (arquivo == NULL)
-    {
-        printf("Arquivo não existe ou não pode ser aberto!\n");
-        return;
-    }
-
-    fprintf(arquivo, "%d{categoria:%d, ocupada:%d, dataInicial:%d/%d/%d, dataFinal:%d/%d/%d, descricao:%s ,facilidades:%s ;}\n",
+    fprintf(arquivo, "%d{categoria:%d, ocupada:%d, dataInicial:%d/%d/%d, dataFinal:%d/%d/%d, descricao:%s ,facilidades:%s ;}\n\n",
             estrutura->codigo, estrutura->categoria, estrutura->ocupada,
             estrutura->data.dataInicial[0], estrutura->data.dataInicial[1], estrutura->data.dataInicial[2],
             estrutura->data.dataFinal[0], estrutura->data.dataFinal[1], estrutura->data.dataFinal[2],
             estrutura->descricao, estrutura->facilidades);
-
-    fclose(arquivo);
-
-    printf("Registrado com sucesso!\n");
 }
 
-void adicionarConsumivel(Consumivel *estrutura)
+void adicionarConsumivel(Consumivel *estrutura, FILE *arquivo)
 {
-    FILE *arquivo = fopen("arquivo/consumivel.txt", "a");
 
-    if (arquivo == NULL)
-    {
-        printf("Arquivo não existe ou não pode ser aberto!\n");
-        return;
-    }
-
-    fprintf(arquivo, "%d{estoque:%d, estoqueMin:%d, descricao:%s , precoCusto:%f, precoVenda:%f ;}\n",
+    fprintf(arquivo, "%d{estoque:%d, estoqueMin:%d, descricao:%s , precoCusto:%f, precoVenda:%f ;}\n\n",
             estrutura->codigo, estrutura->estoque, estrutura->estoqueMin,
             estrutura->descricao, estrutura->precoCusto, estrutura->precoVenda);
-
-    fclose(arquivo);
-
-    printf("Registrado com sucesso!\n");
 }
 
-void adicionarFornecedor(Fornecedor *estrutura)
+void adicionarFornecedor(Fornecedor *estrutura, FILE *arquivo)
 {
-    FILE *arquivo = fopen("arquivo/fornecedor.txt", "a");
 
-    if (arquivo == NULL)
-    {
-        printf("Arquivo não existe ou não pode ser aberto!\n");
-        return;
-    }
-
-    fprintf(arquivo, "%d{nome:%s , razaoSocial:%s , inscricaoSocial:%s , cnpj:%s , endereco:%s , celular:%s , eMail:%s ;}\n",
+    fprintf(arquivo, "%d{nome:%s , razaoSocial:%s , inscricaoSocial:%s , cnpj:%s , endereco:%s , celular:%s , eMail:%s ;}\n\n",
             estrutura->codigo, estrutura->nome, estrutura->razaoSocial, estrutura->inscricaoSocial,
             estrutura->cnpj, estrutura->endereco, estrutura->celular, estrutura->eMail);
-
-    fclose(arquivo);
-
-    printf("Registrado com sucesso!\n");
 }
 
-void adicionarOperador(Operador *estrutura)
+void adicionarOperador(Operador *estrutura, FILE *arquivo)
 {
-    FILE *arquivo = fopen("arquivo/operador.txt", "a");
 
-    if (arquivo == NULL)
-    {
-        printf("Arquivo não existe ou não pode ser aberto!\n");
-        return;
-    }
-
-    fprintf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%s ;}\n",
+    fprintf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%s ;}\n\n",
             estrutura->codigo, estrutura->nome, estrutura->usuario, estrutura->senha, estrutura->permissao);
-
-    fclose(arquivo);
-
-    printf("Registrado com sucesso!\n");
 }
 
 // ------------Read-----------
@@ -339,7 +262,7 @@ int atualizarCategoria(int codigo, Categoria *novoDados)
     }
 }
 
-//Função para atualizar um registro de Acomodação
+// Função para atualizar um registro de Acomodação
 int atualizarAcomodacao(int codigo, Acomodacao *novoDados)
 {
     FILE *arquivo = fopen("arquivo/acomodacao.txt", "r+");
@@ -390,7 +313,7 @@ int atualizarAcomodacao(int codigo, Acomodacao *novoDados)
     }
 }
 
-//Função para atualizar um registro de Hotel
+// Função para atualizar um registro de Hotel
 int atualizarHotel(Hotel *novosDados)
 {
     FILE *arquivo = fopen("arquivo/hotel.txt", "r+");
@@ -418,7 +341,7 @@ int atualizarHotel(Hotel *novosDados)
     return 1; // Indica que a operação foi bem-sucedida
 }
 
-//Função para atualizar um registro de consumível
+// Função para atualizar um registro de consumível
 int atualizarConsumivel(int codigo, Consumivel *novosDados)
 {
     FILE *arquivo = fopen("arquivo/consumivel.txt", "r+");
@@ -469,7 +392,7 @@ int atualizarConsumivel(int codigo, Consumivel *novosDados)
     }
 }
 
-//Função para atualizar um registro de fornecedor
+// Função para atualizar um registro de fornecedor
 int atualizarFornecedor(int codigo, Fornecedor *novoDados)
 {
     FILE *arquivo = fopen("arquivo/fornecedor.txt", "r+");
@@ -480,8 +403,8 @@ int atualizarFornecedor(int codigo, Fornecedor *novoDados)
         printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
-    
-     int encontrado = 0; // Indica se o código foi encontrado
+
+    int encontrado = 0; // Indica se o código foi encontrado
 
     Fornecedor fornecedorTemp; // Estrutura temporária para armazenar os dados lidos
 
@@ -520,7 +443,7 @@ int atualizarFornecedor(int codigo, Fornecedor *novoDados)
     }
 }
 
-//Função para atualizar um registro de operador
+// Função para atualizar um registro de operador
 int atualizarOperador(int codigo, Operador *novoDados)
 {
     FILE *arquivo = fopen("arquivo/operador.txt", "r+");
@@ -531,8 +454,8 @@ int atualizarOperador(int codigo, Operador *novoDados)
         printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
-    
-     int encontrado = 0; // Indica se o código foi encontrado
+
+    int encontrado = 0; // Indica se o código foi encontrado
 
     Operador operadorTemp; // Estrutura temporária para armazenar os dados lidos
 
@@ -573,11 +496,13 @@ int atualizarOperador(int codigo, Operador *novoDados)
 
 //------------Delete---------
 
-//Função para deletar todos os registros de Hotel
-int deletarHotel() {
+// Função para deletar todos os registros de Hotel
+int deletarHotel()
+{
     FILE *arquivo = fopen("arquivo/hotel.txt", "w");
 
-    if (arquivo == NULL) {
+    if (arquivo == NULL)
+    {
         printf("Erro ao abrir o arquivo!\n");
         return 0; // Indica que a operação falhou
     }
@@ -589,24 +514,30 @@ int deletarHotel() {
     return 1; // Indica que a operação foi bem-sucedida
 }
 
-//Função para deletar um hóspede por código
-int deletarHospede(int codigo) {
+// Função para deletar um hóspede por código
+int deletarHospede(int codigo)
+{
     FILE *arquivo = fopen("arquivo/hospede.txt", "r+");
     FILE *tempFile = fopen("arquivo/temp.txt", "w");
 
-    if (arquivo == NULL || tempFile == NULL) {
+    if (arquivo == NULL || tempFile == NULL)
+    {
         printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
-    int encontrado = 0; //Indica se o código foi encontrado
+    int encontrado = 0; // Indica se o código foi encontrado
 
-    Hospede hospedeTemp; //Estrutura temporária para armazenar os dados lidos
+    Hospede hospedeTemp; // Estrutura temporária para armazenar os dados lidos
 
-    while (fread(&hospedeTemp, sizeof(Hospede), 1, arquivo) == 1) {
-        if (hospedeTemp.codigo == codigo) {
+    while (fread(&hospedeTemp, sizeof(Hospede), 1, arquivo) == 1)
+    {
+        if (hospedeTemp.codigo == codigo)
+        {
             encontrado = 1;
-        } else {
+        }
+        else
+        {
             fwrite(&hospedeTemp, sizeof(Hospede), 1, tempFile);
         }
     }
@@ -614,25 +545,30 @@ int deletarHospede(int codigo) {
     fclose(arquivo);
     fclose(tempFile);
 
-    //Substitui o arquivo original pelo arquivo temporário
+    // Substitui o arquivo original pelo arquivo temporário
     remove("arquivo/hospede.txt");
     rename("arquivo/temp.txt", "arquivo/hospede.txt");
 
-    if (encontrado) {
+    if (encontrado)
+    {
         printf("Hóspede com código %d excluída com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
-    } else {
+    }
+    else
+    {
         printf("Hóspede com código %d não encontrada!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
 
-//Função para deletar uma categoria por código
-int deletarCategoria(int codigo) {
+// Função para deletar uma categoria por código
+int deletarCategoria(int codigo)
+{
     FILE *arquivo = fopen("arquivo/categoria.txt", "r+");
     FILE *tempFile = fopen("arquivo/temp.txt", "w");
 
-    if (arquivo == NULL || tempFile == NULL) {
+    if (arquivo == NULL || tempFile == NULL)
+    {
         printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
@@ -641,10 +577,14 @@ int deletarCategoria(int codigo) {
 
     Categoria categoriaTemp; // Estrutura temporária para armazenar os dados lidos
 
-    while (fread(&categoriaTemp, sizeof(Categoria), 1, arquivo) == 1) {
-        if (categoriaTemp.codigo == codigo) {
+    while (fread(&categoriaTemp, sizeof(Categoria), 1, arquivo) == 1)
+    {
+        if (categoriaTemp.codigo == codigo)
+        {
             encontrado = 1;
-        } else {
+        }
+        else
+        {
             fwrite(&categoriaTemp, sizeof(Categoria), 1, tempFile);
         }
     }
@@ -656,21 +596,26 @@ int deletarCategoria(int codigo) {
     remove("arquivo/categoria.txt");
     rename("arquivo/temp.txt", "arquivo/categoria.txt");
 
-    if (encontrado) {
+    if (encontrado)
+    {
         printf("Categoria com código %d excluída com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
-    } else {
+    }
+    else
+    {
         printf("Categoria com código %d não encontrada!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
 
-//Função para deletar uma acomodação por código
-int deletarAcomodacao(int codigo) {
+// Função para deletar uma acomodação por código
+int deletarAcomodacao(int codigo)
+{
     FILE *arquivo = fopen("arquivo/acomodacao.txt", "r+");
     FILE *tempFile = fopen("arquivo/temp.txt", "w");
 
-    if (arquivo == NULL || tempFile == NULL) {
+    if (arquivo == NULL || tempFile == NULL)
+    {
         printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
@@ -679,10 +624,14 @@ int deletarAcomodacao(int codigo) {
 
     Acomodacao acomodacaoTemp; // Estrutura temporária para armazenar os dados lidos
 
-    while (fread(&acomodacaoTemp, sizeof(Acomodacao), 1, arquivo) == 1) {
-        if (acomodacaoTemp.codigo == codigo) {
+    while (fread(&acomodacaoTemp, sizeof(Acomodacao), 1, arquivo) == 1)
+    {
+        if (acomodacaoTemp.codigo == codigo)
+        {
             encontrado = 1;
-        } else {
+        }
+        else
+        {
             fwrite(&acomodacaoTemp, sizeof(Acomodacao), 1, tempFile);
         }
     }
@@ -694,21 +643,26 @@ int deletarAcomodacao(int codigo) {
     remove("arquivo/acomodacao.txt");
     rename("arquivo/temp.txt", "arquivo/acomodacao.txt");
 
-    if (encontrado) {
+    if (encontrado)
+    {
         printf("Acomodação com código %d excluída com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
-    } else {
+    }
+    else
+    {
         printf("Acomodação com código %d não encontrada!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
 
-//Função para deletar um consumível por código
-int deletarConsumivel(int codigo) {
+// Função para deletar um consumível por código
+int deletarConsumivel(int codigo)
+{
     FILE *arquivo = fopen("arquivo/consumivel.txt", "r+");
     FILE *tempFile = fopen("arquivo/temp.txt", "w");
 
-    if (arquivo == NULL || tempFile == NULL) {
+    if (arquivo == NULL || tempFile == NULL)
+    {
         printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
@@ -717,10 +671,14 @@ int deletarConsumivel(int codigo) {
 
     Consumivel consumivelTemp; // Estrutura temporária para armazenar os dados lidos
 
-    while (fread(&consumivelTemp, sizeof(Consumivel), 1, arquivo) == 1) {
-        if (consumivelTemp.codigo == codigo) {
+    while (fread(&consumivelTemp, sizeof(Consumivel), 1, arquivo) == 1)
+    {
+        if (consumivelTemp.codigo == codigo)
+        {
             encontrado = 1;
-        } else {
+        }
+        else
+        {
             fwrite(&consumivelTemp, sizeof(Consumivel), 1, tempFile);
         }
     }
@@ -732,21 +690,26 @@ int deletarConsumivel(int codigo) {
     remove("arquivo/consumivel.txt");
     rename("arquivo/temp.txt", "arquivo/consumivel.txt");
 
-    if (encontrado) {
+    if (encontrado)
+    {
         printf("Consumível com código %d excluído com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
-    } else {
+    }
+    else
+    {
         printf("Consumível com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
 
-//Função para deletar um fornecedor por código
-int deletarFornecedor(int codigo) {
+// Função para deletar um fornecedor por código
+int deletarFornecedor(int codigo)
+{
     FILE *arquivo = fopen("arquivo/fornecedor.txt", "r+");
     FILE *tempFile = fopen("arquivo/temp.txt", "w");
 
-    if (arquivo == NULL || tempFile == NULL) {
+    if (arquivo == NULL || tempFile == NULL)
+    {
         printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
@@ -755,10 +718,14 @@ int deletarFornecedor(int codigo) {
 
     Fornecedor fornecedorTemp; // Estrutura temporária para armazenar os dados lidos
 
-    while (fread(&fornecedorTemp, sizeof(Fornecedor), 1, arquivo) == 1) {
-        if (fornecedorTemp.codigo == codigo) {
+    while (fread(&fornecedorTemp, sizeof(Fornecedor), 1, arquivo) == 1)
+    {
+        if (fornecedorTemp.codigo == codigo)
+        {
             encontrado = 1;
-        } else {
+        }
+        else
+        {
             fwrite(&fornecedorTemp, sizeof(Fornecedor), 1, tempFile);
         }
     }
@@ -770,21 +737,26 @@ int deletarFornecedor(int codigo) {
     remove("arquivo/fornecedor.txt");
     rename("arquivo/temp.txt", "arquivo/fornecedor.txt");
 
-    if (encontrado) {
+    if (encontrado)
+    {
         printf("Fornecedor com código %d excluído com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
-    } else {
+    }
+    else
+    {
         printf("Fornecedor com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
 
-//Função para deletar um operador por código
-int deletarOperador(int codigo) {
+// Função para deletar um operador por código
+int deletarOperador(int codigo)
+{
     FILE *arquivo = fopen("arquivo/operador.txt", "r+");
     FILE *tempFile = fopen("arquivo/temp.txt", "w");
 
-    if (arquivo == NULL || tempFile == NULL) {
+    if (arquivo == NULL || tempFile == NULL)
+    {
         printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
@@ -793,10 +765,14 @@ int deletarOperador(int codigo) {
 
     Operador operadorTemp; // Estrutura temporária para armazenar os dados lidos
 
-    while (fread(&operadorTemp, sizeof(Operador), 1, arquivo) == 1) {
-        if (operadorTemp.codigo == codigo) {
+    while (fread(&operadorTemp, sizeof(Operador), 1, arquivo) == 1)
+    {
+        if (operadorTemp.codigo == codigo)
+        {
             encontrado = 1;
-        } else {
+        }
+        else
+        {
             fwrite(&operadorTemp, sizeof(Operador), 1, tempFile);
         }
     }
@@ -808,10 +784,13 @@ int deletarOperador(int codigo) {
     remove("arquivo/operador.txt");
     rename("arquivo/temp.txt", "arquivo/operador.txt");
 
-    if (encontrado) {
+    if (encontrado)
+    {
         printf("Operador com código %d excluído com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
-    } else {
+    }
+    else
+    {
         printf("Operador com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }

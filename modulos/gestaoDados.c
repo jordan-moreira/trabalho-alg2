@@ -24,677 +24,6 @@ int selecionarOperacao(char *tipoDoDado)
     }
 }
 
-void gerenciarHotel()
-{
-    char item[] = "hotel";
-    int operacao = selecionarOperacao(item);
-
-    switch (operacao)
-    {
-    case 1:
-        Hotel *ptr = coletarDadosHotel();
-        criarHotel(ptr);
-        free(ptr);
-        break;
-
-        // case 2:
-        // atualizarHotel();
-        // break;
-
-    case 3:
-        FILE *arquivo = fopen("arquivo/hotel.txt", "rt");
-
-        if (arquivo == NULL)
-        {
-            printf("Arquivo não existe ou não pode ser lido.\n");
-            break;
-        }
-
-        Hotel *ptrHotel = malloc(sizeof(Hotel));
-        int status = lerHotel(arquivo, ptrHotel);
-
-        if (status == 1)
-        {
-            printf("\n Nome do Hotel: %s,\n Razão Social: %s,\n Inscrição Estadual: %s,\n CNPJ: %s,\n Endereço: %s,\n Número de Celular: %s,\n E-mail: %s,\n Nome do Responsável: %s,\n Número de Celular do Responsável: %s,\n Horário de Check-in: %s,\n Horário de Check-out: %s;\n}\n",
-                   ptrHotel->nome, ptrHotel->razaoSocial, ptrHotel->inscricaoEstadual, ptrHotel->cnpj, ptrHotel->endereco, ptrHotel->celular, ptrHotel->eMail, ptrHotel->responsavel, ptrHotel->celularResponsavel, ptrHotel->horarioCheckIn, ptrHotel->horarioCheckOut);
-        }
-        else if (status == 0)
-        {
-            printf("Hotel não encontrado ou erro de leitura.\n");
-        }
-
-        free(ptrHotel);
-        fclose(arquivo);
-
-        break;
-
-        // case 4:
-        // deletarHotel();
-        // break;
-
-    default:
-        printf("Erro desconhecido.\n");
-        break;
-    }
-}
-
-void gerenciarHospede()
-{
-    char item[] = "hospede";
-    int operacao = selecionarOperacao(item);
-
-    switch (operacao)
-    {
-    case 1:
-        Hospede *ptr = coletarDadosHospede();
-        adicionarHospede(ptr);
-        free(ptr);
-        break;
-
-    case 2:
-        // atualizarHospede();
-        break;
-
-    case 3:
-
-        FILE *arquivo = fopen("arquivo/hospede.txt", "rt");
-
-        if (arquivo == NULL)
-        {
-            printf("Arquivo não existe ou não pode ser lido.\n");
-            break;
-        }
-        Hospede *ptrHospede = malloc(sizeof(Hospede));
-
-        int codigoMenu = 0;
-
-        printf("Se você deseja fazer uma leitura de todos os hóspedes, digite 1. Se você deseja fazer uma leitura de um hóspede específico, digite 2: ");
-        scanf("%d%*c", &codigoMenu);
-
-        if (codigoMenu == 1)
-        {
-            while (1)
-            {
-                int status = lerHospede(0, arquivo, ptrHospede);
-
-                if (status == 1)
-                {
-                    printf("%d {\n Nome: %s,\n Endereço: %s,\n CPF: %s,\n Celular: %s,\n E-mail: %s,\n Sexo: %s,\n Estado Civil: %s,\n Data de Nascimento: %s;\n}\n",
-                           ptrHospede->codigo, ptrHospede->nome, ptrHospede->endereco, ptrHospede->cpf, ptrHospede->celular, ptrHospede->eMail, ptrHospede->sexo, ptrHospede->estadoCivil, ptrHospede->dataNasc);
-                    continue;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-                    printf("a");
-
-                    continue;
-                }
-                else
-                {
-                    printf("Fim do arquivo alcançado.\n");
-                    break;
-                }
-            }
-        }
-        else if (codigoMenu == 2)
-        {
-            int codigoHospede = 0;
-            printf("Digite o código único do hóspede que você deseja ler: ");
-            scanf("%d%*c", &codigoHospede);
-
-            while (1)
-            {
-                int status = lerHospede(codigoHospede, arquivo, ptrHospede);
-
-                if (status == 1)
-                {
-                    printf("%d {\n Nome: %s,\n Endereço: %s,\n CPF: %s,\n Celular: %s,\n E-mail: %s,\n Sexo: %s,\n Estado Civil: %s,\n Data de Nascimento: %s;\n}\n",
-                           ptrHospede->codigo, ptrHospede->nome, ptrHospede->endereco, ptrHospede->cpf, ptrHospede->celular, ptrHospede->eMail, ptrHospede->sexo, ptrHospede->estadoCivil, ptrHospede->dataNasc);
-                    break;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Hospede não encontrado ou código incorreto.\n");
-                    break;
-                }
-            }
-        }
-        else
-        {
-            printf("Opção inválida.\n");
-        }
-
-        free(ptrHospede); // Libere a memória alocada para ptrHospede
-        fclose(arquivo);
-        break;
-
-    case 4:
-        // deletarHospede();
-        break;
-
-    default:
-        printf("Erro desconhecido.\n");
-        break;
-    }
-}
-
-void gerenciarCategoria()
-{
-    char item[] = "categoria";
-    int operacao = selecionarOperacao(item);
-
-    switch (operacao)
-    {
-    case 1:
-        Categoria *ptr = coletarDadosCategoria();
-        adicionarCategoria(ptr);
-        free(ptr);
-        break;
-
-    case 2:
-        // atualizarCategoria();
-        break;
-
-    case 3:
-
-        FILE *arquivo = fopen("arquivo/categoria.txt", "rt");
-
-        if (arquivo == NULL)
-        {
-            printf("Arquivo não existe ou não pode ser lido.\n");
-            break;
-        }
-        Categoria *ptrCategoria = malloc(sizeof(Categoria));
-
-        int codigoMenu = 0;
-
-        printf("Se você deseja fazer uma leitura de todas as categorias, digite 1. Se você deseja fazer uma leitura de uma categoria específica, digite 2: ");
-        scanf("%d%*c", &codigoMenu);
-
-        if (codigoMenu == 1)
-        {
-
-            while (1)
-            {
-                int status = lerCategoria(0, arquivo, ptrCategoria);
-
-                if (status == 1)
-                {
-
-                    printf("%d {\n Quantidade de Pessoas: %d,\n Descrição: %s,\n Valor: %.2f;\n}\n", ptrCategoria->codigo, ptrCategoria->quantPessoas, ptrCategoria->descricao, ptrCategoria->valor);
-
-                    continue;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Fim do arquivo alcançado.\n");
-                    break;
-                }
-            }
-        }
-        else if (codigoMenu == 2)
-        {
-            int codigoCategoria = 0;
-            printf("Digite o código único da categoria que você deseja ler: ");
-            scanf("%d%*c", &codigoCategoria);
-
-            while (1)
-            {
-                int status = lerCategoria(codigoCategoria, arquivo, ptrCategoria);
-
-                if (status == 1)
-                {
-
-                    printf("%d {\n Quantidade de Pessoas: %d,\n Descrição: %s,\n Valor: %.2f;\n}\n", ptrCategoria->codigo, ptrCategoria->quantPessoas, ptrCategoria->descricao, ptrCategoria->valor);
-
-                    break;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Categoria não encontrada ou código incorreto.\n");
-                    break;
-                }
-            }
-        }
-        else
-        {
-            printf("Opção inválida.\n");
-        }
-
-        free(ptrCategoria);
-        fclose(arquivo);
-        break;
-
-    case 4:
-        // deletarCategoria();
-        break;
-
-    default:
-        printf("Erro desconhecido.\n");
-        break;
-    }
-}
-
-void gerenciarAcomodacao()
-{
-    char item[] = "acomodacao";
-    int operacao = selecionarOperacao(item);
-
-    switch (operacao)
-    {
-    case 1:
-        Acomodacao *ptr = coletarDadosAcomodacao();
-        adicionarAcomodacao(ptr);
-        free(ptr);
-        break;
-
-    case 2:
-        // atualizarAcomodacao();
-        break;
-
-    case 3:
-        FILE *arquivo = fopen("arquivo/acomodacao.txt", "rt");
-
-        if (arquivo == NULL)
-        {
-            printf("Arquivo não existe ou não pode ser lido.\n");
-            break;
-        }
-        Acomodacao *ptrAcomodacao = malloc(sizeof(Acomodacao));
-
-        int codigoMenu = 0;
-
-        printf("Se você deseja fazer uma leitura de todas as acomodações, digite 1. Se você deseja fazer uma leitura de uma acomodação específica, digite 2: ");
-        scanf("%d%*c", &codigoMenu);
-
-        if (codigoMenu == 1)
-        {
-
-            while (1)
-            {
-                int status = lerAcomodacao(0, arquivo, ptrAcomodacao);
-                if (status == 1)
-                {
-                    printf("%d {\n Categoria: %d,\n Ocupada: %d,\n Data Inicial: %d/%d/%d,\n Data Final: %d/%d/%d,\n Descrição: %s,\n Facilidades: %s;}\n",
-                           ptrAcomodacao->codigo, ptrAcomodacao->categoria, ptrAcomodacao->ocupada, ptrAcomodacao->data.dataInicial[0], ptrAcomodacao->data.dataInicial[1], ptrAcomodacao->data.dataInicial[2], ptrAcomodacao->data.dataFinal[0], ptrAcomodacao->data.dataFinal[1], ptrAcomodacao->data.dataFinal[2], ptrAcomodacao->descricao, ptrAcomodacao->facilidades);
-                    continue;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Fim do arquivo alcançado.\n");
-                    break;
-                }
-            }
-        }
-        else if (codigoMenu == 2)
-        {
-            int codigoAcomodacao = 0;
-            printf("Digite o código único da acomodação que você deseja ler: ");
-            scanf("%d%*c", &codigoAcomodacao);
-
-            while (1)
-            {
-                int status = lerAcomodacao(codigoAcomodacao, arquivo, ptrAcomodacao);
-                if (status == 1)
-                {
-                    printf("%d {\n Categoria: %d,\n Ocupada: %d,\n Data Inicial: %d/%d/%d,\n Data Final: %d/%d/%d,\n Descrição: %s,\n Facilidades: %s;}\n",
-                           ptrAcomodacao->codigo, ptrAcomodacao->categoria, ptrAcomodacao->ocupada, ptrAcomodacao->data.dataInicial[0], ptrAcomodacao->data.dataInicial[1], ptrAcomodacao->data.dataInicial[2], ptrAcomodacao->data.dataFinal[0], ptrAcomodacao->data.dataFinal[1], ptrAcomodacao->data.dataFinal[2], ptrAcomodacao->descricao, ptrAcomodacao->facilidades);
-                    continue;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Acomodação não encontrada ou código incorreto.\n");
-                    break;
-                }
-            }
-        }
-        else
-        {
-            printf("Opção inválida.\n");
-        }
-
-        free(ptrAcomodacao);
-        fclose(arquivo);
-        break;
-
-    case 4:
-        // deletarAcomodacao();
-        break;
-
-    default:
-        printf("Erro desconhecido.\n");
-        break;
-    }
-}
-
-void gerenciarConsumivel()
-{
-    char item[] = "consumivel";
-    int operacao = selecionarOperacao(item);
-
-    switch (operacao)
-    {
-    case 1:
-        Consumivel *ptr = coletarDadosConsumivel();
-        adicionarConsumivel(ptr);
-        free(ptr);
-        break;
-
-    case 2:
-        // atualizarConsumivel();
-        break;
-
-    case 3:
-        FILE *arquivo = fopen("arquivo/consumivel.txt", "rt");
-
-        if (arquivo == NULL)
-        {
-            printf("Arquivo não existe ou não pode ser lido.\n");
-            break;
-        }
-        Consumivel *ptrConsumivel = malloc(sizeof(Consumivel));
-
-        int codigoMenu = 0;
-
-        printf("Se você deseja fazer uma leitura de todos os produtos, digite 1. Se você deseja fazer uma leitura de um produto específico, digite 2: ");
-        scanf("%d%*c", &codigoMenu);
-
-        if (codigoMenu == 1)
-        {
-            while (1)
-            {
-                int status = lerConsumivel(0, arquivo, ptrConsumivel);
-                if (status == 1)
-                {
-                    printf("%d {\n Estoque: %d,\n Estoque Mínimo: %d,\n Descrição: %s,\n Preço de Custo: %.2f,\n Preço de Venda: %.2f;}\n",
-                           ptrConsumivel->codigo, ptrConsumivel->estoque, ptrConsumivel->estoqueMin, ptrConsumivel->descricao, ptrConsumivel->precoCusto, ptrConsumivel->precoVenda);
-                    continue;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Fim do arquivo alcançado.\n");
-                    break;
-                }
-            }
-        }
-        else if (codigoMenu == 2)
-        {
-            int codigoConsumivel = 0;
-            printf("Digite o código único do produto consumível que você deseja ler: ");
-            scanf("%d%*c", &codigoConsumivel);
-
-            while (1)
-            {
-                int status = lerConsumivel(codigoConsumivel, arquivo, ptrConsumivel);
-                if (status == 1)
-                {
-                    printf("%d {\n Estoque: %d,\n Estoque Mínimo: %d,\n Descrição: %s,\n Preço de Custo: %.2f,\n Preço de Venda: %.2f;}\n",
-                           ptrConsumivel->codigo, ptrConsumivel->estoque, ptrConsumivel->estoqueMin, ptrConsumivel->descricao, ptrConsumivel->precoCusto, ptrConsumivel->precoVenda);
-                    continue;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Produto consumível não encontrado ou código incorreto.\n");
-                    break;
-                }
-            }
-        }
-        else
-        {
-            printf("Opção inválida.\n");
-        }
-        free(ptrConsumivel);
-        fclose(arquivo);
-        break;
-
-    case 4:
-        // deletarConsumivel();
-        break;
-
-    default:
-        printf("Erro desconhecido.\n");
-        break;
-    }
-}
-
-void gerenciarFornecedor()
-{
-    char item[] = "fornecedor";
-    int operacao = selecionarOperacao(item);
-
-    switch (operacao)
-    {
-    case 1:
-        Fornecedor *ptr = coletarDadosFornecedor();
-        adicionarFornecedor(ptr);
-        free(ptr);
-        break;
-
-    case 2:
-        // atualizarFornecedor();
-        break;
-
-    case 3:
-        FILE *arquivo = fopen("arquivo/fornecedor.txt", "rt");
-
-        if (arquivo == NULL)
-        {
-            printf("Arquivo não existe ou não pode ser lido.\n");
-            break;
-        }
-        Fornecedor *ptrFornecedor = malloc(sizeof(Fornecedor));
-
-        int codigoMenu = 0;
-
-        printf("Se você deseja fazer uma leitura de todos os fornecedores, digite 1. Se você deseja fazer uma leitura de um fornecedor específico, digite 2: ");
-        scanf("%d%*c", &codigoMenu);
-
-        if (codigoMenu == 1)
-        {
-            while (1)
-            {
-                int status = lerFornecedor(0, arquivo, ptrFornecedor);
-                if (status == 1)
-                {
-                    printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
-                           ptrFornecedor->codigo, ptrFornecedor->nome, ptrFornecedor->razaoSocial, ptrFornecedor->inscricaoSocial, ptrFornecedor->cnpj, ptrFornecedor->endereco, ptrFornecedor->celular, ptrFornecedor->eMail);
-
-                    continue;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Fim do arquivo alcançado.\n");
-                    break;
-                }
-            }
-        }
-        else if (codigoMenu == 2)
-        {
-            int codigoFornecedor = 0;
-            printf("Digite o código único do fornecedor que você deseja ler: ");
-            scanf("%d%*c", &codigoFornecedor);
-
-            while (1)
-            {
-                int status = lerFornecedor(codigoFornecedor, arquivo, ptrFornecedor);
-                if (status == 1)
-                {
-                    printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
-                           ptrFornecedor->codigo, ptrFornecedor->nome, ptrFornecedor->razaoSocial, ptrFornecedor->inscricaoSocial, ptrFornecedor->cnpj, ptrFornecedor->endereco, ptrFornecedor->celular, ptrFornecedor->eMail);
-
-                    continue;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Fornecedor não encontrado ou código incorreto.\n");
-                    break;
-                }
-            }
-        }
-        else
-        {
-            printf("Opção inválida.\n");
-        }
-        free(ptrFornecedor); // Libere a memória alocada para ptrFornecedor
-        fclose(arquivo);
-
-        break;
-
-    case 4:
-        // deletarFornecedor();
-        break;
-
-    default:
-        printf("Erro desconhecido.\n");
-        break;
-    }
-}
-
-void gerenciarOperador()
-{
-    char item[] = "operador";
-    int operacao = selecionarOperacao(item);
-
-    switch (operacao)
-    {
-    case 1:
-        Operador *ptr = coletarDadosOperador();
-        adicionarOperador(ptr);
-        free(ptr);
-        break;
-
-    case 2:
-        // atualizarOperador();
-        break;
-
-    case 3:
-        FILE *arquivo = fopen("arquivo/operador.txt", "rt");
-
-        if (arquivo == NULL)
-        {
-            printf("Arquivo não existe ou não pode ser lido.\n");
-            break;
-        }
-        Operador *ptrOperador = malloc(sizeof(Operador));
-
-        int codigoMenu = 0;
-
-        printf("Se você deseja fazer uma leitura de todos os operadores, digite 1. Se você deseja fazer uma leitura de um operador específico, digite 2: ");
-        scanf("%d%*c", &codigoMenu);
-
-        if (codigoMenu == 1)
-        {
-            while (1)
-            {
-                int status = lerOperador(0, arquivo, ptrOperador);
-                if (status)
-                {
-                    printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %s;}\n",
-                           ptrOperador->codigo, ptrOperador->nome, ptrOperador->usuario, ptrOperador->senha, ptrOperador->permissao);
-                    continue;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Fim do arquivo alcançado.\n");
-                    break;
-                }
-            }
-        }
-        else if (codigoMenu == 2)
-        {
-            int codigoOperador = 0;
-            printf("Digite o código único do operador que você deseja ler: ");
-            scanf("%d%*c", &codigoOperador);
-
-            while (1)
-            {
-                int status = lerOperador(0, arquivo, ptrOperador);
-                if (status)
-                {
-                    printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %s;}\n",
-                           ptrOperador->codigo, ptrOperador->nome, ptrOperador->usuario, ptrOperador->senha, ptrOperador->permissao);
-                    continue;
-                }
-                else if (status == 0 && !feof(arquivo))
-                {
-
-                    continue;
-                }
-                else
-                {
-                    printf("Operador não encontrado ou código incorreto.\n");
-                    break;
-                }
-            }
-        }
-        else
-        {
-            printf("Opção inválida.\n");
-        }
-        free(ptrOperador);
-        fclose(arquivo);
-        break;
-
-    case 4:
-        // deletarOperador();
-        break;
-
-    default:
-        printf("Erro desconhecido.\n");
-        break;
-    }
-}
-
 Hotel *coletarDadosHotel()
 {
     Hotel *ptrHotel = malloc(sizeof(Hotel));
@@ -934,4 +263,750 @@ Operador *coletarDadosOperador()
     scanf("%s", ptrOperador->permissao);
 
     return ptrOperador;
+}
+
+void gerenciarHotel()
+{
+    char item[] = "hotel";
+    int operacao = selecionarOperacao(item);
+
+    switch (operacao)
+    {
+    case 1:
+        FILE *arquivo = fopen("arquivo/hotel.txt", "a");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser aberto!\n");
+            break;
+        }
+        Hotel *ptr = coletarDadosHotel();
+        criarHotel(ptr, arquivo);
+        free(ptr);
+        fclose(arquivo);
+        printf("Registrado com sucesso!\n");
+        break;
+
+        // case 2:
+        // atualizarHotel();
+        // break;
+
+    case 3:
+        FILE *arquivo = fopen("arquivo/hotel.txt", "rt");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser lido.\n");
+            break;
+        }
+
+        Hotel *ptrHotel = malloc(sizeof(Hotel));
+        int status = lerHotel(arquivo, ptrHotel);
+
+        if (status == 1)
+        {
+            printf("\n Nome do Hotel: %s,\n Razão Social: %s,\n Inscrição Estadual: %s,\n CNPJ: %s,\n Endereço: %s,\n Número de Celular: %s,\n E-mail: %s,\n Nome do Responsável: %s,\n Número de Celular do Responsável: %s,\n Horário de Check-in: %s,\n Horário de Check-out: %s;\n}\n",
+                   ptrHotel->nome, ptrHotel->razaoSocial, ptrHotel->inscricaoEstadual, ptrHotel->cnpj, ptrHotel->endereco, ptrHotel->celular, ptrHotel->eMail, ptrHotel->responsavel, ptrHotel->celularResponsavel, ptrHotel->horarioCheckIn, ptrHotel->horarioCheckOut);
+        }
+        else if (status == 0)
+        {
+            printf("Hotel não encontrado ou erro de leitura.\n");
+        }
+
+        free(ptrHotel);
+        fclose(arquivo);
+
+        break;
+
+        // case 4:
+        // deletarHotel();
+        // break;
+
+    default:
+        printf("Erro desconhecido.\n");
+        break;
+    }
+}
+
+void gerenciarHospede()
+{
+    char item[] = "hospede";
+    int operacao = selecionarOperacao(item);
+
+    switch (operacao)
+    {
+    case 1:
+        FILE *arquivo = fopen("arquivo/hospede.txt", "a");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser aberto!\n");
+            break;
+        }
+
+        Hospede *ptr = coletarDadosHospede();
+        adicionarHospede(ptr, arquivo);
+        free(ptr);
+        fclose(arquivo);
+
+        printf("Registrado com sucesso!\n");
+        break;
+
+    case 2:
+        // atualizarHospede();
+        break;
+
+    case 3:
+
+        FILE *arquivo = fopen("arquivo/hospede.txt", "rt");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser lido.\n");
+            break;
+        }
+        Hospede *ptrHospede = malloc(sizeof(Hospede));
+
+        int codigoMenu = 0;
+
+        printf("Se você deseja fazer uma leitura de todos os hóspedes, digite 1. Se você deseja fazer uma leitura de um hóspede específico, digite 2: ");
+        scanf("%d%*c", &codigoMenu);
+
+        if (codigoMenu == 1)
+        {
+            while (1)
+            {
+                int status = lerHospede(0, arquivo, ptrHospede);
+
+                if (status == 1)
+                {
+                    printf("%d {\n Nome: %s,\n Endereço: %s,\n CPF: %s,\n Celular: %s,\n E-mail: %s,\n Sexo: %s,\n Estado Civil: %s,\n Data de Nascimento: %s;\n}\n",
+                           ptrHospede->codigo, ptrHospede->nome, ptrHospede->endereco, ptrHospede->cpf, ptrHospede->celular, ptrHospede->eMail, ptrHospede->sexo, ptrHospede->estadoCivil, ptrHospede->dataNasc);
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+                    printf("a");
+
+                    continue;
+                }
+                else
+                {
+                    printf("Fim do arquivo alcançado.\n");
+                    break;
+                }
+            }
+        }
+        else if (codigoMenu == 2)
+        {
+            int codigoHospede = 0;
+            printf("Digite o código único do hóspede que você deseja ler: ");
+            scanf("%d%*c", &codigoHospede);
+
+            while (1)
+            {
+                int status = lerHospede(codigoHospede, arquivo, ptrHospede);
+
+                if (status == 1)
+                {
+                    printf("%d {\n Nome: %s,\n Endereço: %s,\n CPF: %s,\n Celular: %s,\n E-mail: %s,\n Sexo: %s,\n Estado Civil: %s,\n Data de Nascimento: %s;\n}\n",
+                           ptrHospede->codigo, ptrHospede->nome, ptrHospede->endereco, ptrHospede->cpf, ptrHospede->celular, ptrHospede->eMail, ptrHospede->sexo, ptrHospede->estadoCivil, ptrHospede->dataNasc);
+                    break;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Hospede não encontrado ou código incorreto.\n");
+                    break;
+                }
+            }
+        }
+        else
+        {
+            printf("Opção inválida.\n");
+        }
+
+        free(ptrHospede); // Libere a memória alocada para ptrHospede
+        fclose(arquivo);
+        break;
+
+    case 4:
+        // deletarHospede();
+        break;
+
+    default:
+        printf("Erro desconhecido.\n");
+        break;
+    }
+}
+
+void gerenciarCategoria()
+{
+    char item[] = "categoria";
+    int operacao = selecionarOperacao(item);
+
+    switch (operacao)
+    {
+    case 1:
+        FILE *arquivo = fopen("arquivo/categoria.txt", "a");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser aberto!\n");
+            break;
+        }
+
+        Categoria *ptr = coletarDadosCategoria();
+        adicionarCategoria(ptr, arquivo);
+        free(ptr);
+        fclose(arquivo);
+
+        printf("Registrado com sucesso!\n");
+        break;
+
+    case 2:
+        // atualizarCategoria();
+        break;
+
+    case 3:
+
+        FILE *arquivo = fopen("arquivo/categoria.txt", "rt");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser lido.\n");
+            break;
+        }
+        Categoria *ptrCategoria = malloc(sizeof(Categoria));
+
+        int codigoMenu = 0;
+
+        printf("Se você deseja fazer uma leitura de todas as categorias, digite 1. Se você deseja fazer uma leitura de uma categoria específica, digite 2: ");
+        scanf("%d%*c", &codigoMenu);
+
+        if (codigoMenu == 1)
+        {
+
+            while (1)
+            {
+                int status = lerCategoria(0, arquivo, ptrCategoria);
+
+                if (status == 1)
+                {
+
+                    printf("%d {\n Quantidade de Pessoas: %d,\n Descrição: %s,\n Valor: %.2f;\n}\n", ptrCategoria->codigo, ptrCategoria->quantPessoas, ptrCategoria->descricao, ptrCategoria->valor);
+
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Fim do arquivo alcançado.\n");
+                    break;
+                }
+            }
+        }
+        else if (codigoMenu == 2)
+        {
+            int codigoCategoria = 0;
+            printf("Digite o código único da categoria que você deseja ler: ");
+            scanf("%d%*c", &codigoCategoria);
+
+            while (1)
+            {
+                int status = lerCategoria(codigoCategoria, arquivo, ptrCategoria);
+
+                if (status == 1)
+                {
+
+                    printf("%d {\n Quantidade de Pessoas: %d,\n Descrição: %s,\n Valor: %.2f;\n}\n", ptrCategoria->codigo, ptrCategoria->quantPessoas, ptrCategoria->descricao, ptrCategoria->valor);
+
+                    break;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Categoria não encontrada ou código incorreto.\n");
+                    break;
+                }
+            }
+        }
+        else
+        {
+            printf("Opção inválida.\n");
+        }
+
+        free(ptrCategoria);
+        fclose(arquivo);
+        break;
+
+    case 4:
+        // deletarCategoria();
+        break;
+
+    default:
+        printf("Erro desconhecido.\n");
+        break;
+    }
+}
+
+void gerenciarAcomodacao()
+{
+    char item[] = "acomodacao";
+    int operacao = selecionarOperacao(item);
+
+    switch (operacao)
+    {
+    case 1:
+        FILE *arquivo = fopen("arquivo/acomodacao.txt", "a");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser aberto!\n");
+            break;
+        }
+
+        Acomodacao *ptr = coletarDadosAcomodacao();
+        adicionarAcomodacao(ptr, arquivo);
+        free(ptr);
+
+        fclose(arquivo);
+
+        printf("Registrado com sucesso!\n");
+        break;
+
+    case 2:
+        // atualizarAcomodacao();
+        break;
+
+    case 3:
+        FILE *arquivo = fopen("arquivo/acomodacao.txt", "rt");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser lido.\n");
+            break;
+        }
+        Acomodacao *ptrAcomodacao = malloc(sizeof(Acomodacao));
+
+        int codigoMenu = 0;
+
+        printf("Se você deseja fazer uma leitura de todas as acomodações, digite 1. Se você deseja fazer uma leitura de uma acomodação específica, digite 2: ");
+        scanf("%d%*c", &codigoMenu);
+
+        if (codigoMenu == 1)
+        {
+
+            while (1)
+            {
+                int status = lerAcomodacao(0, arquivo, ptrAcomodacao);
+                if (status == 1)
+                {
+                    printf("%d {\n Categoria: %d,\n Ocupada: %d,\n Data Inicial: %d/%d/%d,\n Data Final: %d/%d/%d,\n Descrição: %s,\n Facilidades: %s;}\n",
+                           ptrAcomodacao->codigo, ptrAcomodacao->categoria, ptrAcomodacao->ocupada, ptrAcomodacao->data.dataInicial[0], ptrAcomodacao->data.dataInicial[1], ptrAcomodacao->data.dataInicial[2], ptrAcomodacao->data.dataFinal[0], ptrAcomodacao->data.dataFinal[1], ptrAcomodacao->data.dataFinal[2], ptrAcomodacao->descricao, ptrAcomodacao->facilidades);
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Fim do arquivo alcançado.\n");
+                    break;
+                }
+            }
+        }
+        else if (codigoMenu == 2)
+        {
+            int codigoAcomodacao = 0;
+            printf("Digite o código único da acomodação que você deseja ler: ");
+            scanf("%d%*c", &codigoAcomodacao);
+
+            while (1)
+            {
+                int status = lerAcomodacao(codigoAcomodacao, arquivo, ptrAcomodacao);
+                if (status == 1)
+                {
+                    printf("%d {\n Categoria: %d,\n Ocupada: %d,\n Data Inicial: %d/%d/%d,\n Data Final: %d/%d/%d,\n Descrição: %s,\n Facilidades: %s;}\n",
+                           ptrAcomodacao->codigo, ptrAcomodacao->categoria, ptrAcomodacao->ocupada, ptrAcomodacao->data.dataInicial[0], ptrAcomodacao->data.dataInicial[1], ptrAcomodacao->data.dataInicial[2], ptrAcomodacao->data.dataFinal[0], ptrAcomodacao->data.dataFinal[1], ptrAcomodacao->data.dataFinal[2], ptrAcomodacao->descricao, ptrAcomodacao->facilidades);
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Acomodação não encontrada ou código incorreto.\n");
+                    break;
+                }
+            }
+        }
+        else
+        {
+            printf("Opção inválida.\n");
+        }
+
+        free(ptrAcomodacao);
+        fclose(arquivo);
+        break;
+
+    case 4:
+        // deletarAcomodacao();
+        break;
+
+    default:
+        printf("Erro desconhecido.\n");
+        break;
+    }
+}
+
+void gerenciarConsumivel()
+{
+    char item[] = "consumivel";
+    int operacao = selecionarOperacao(item);
+
+    switch (operacao)
+    {
+    case 1:
+        FILE *arquivo = fopen("arquivo/consumivel.txt", "a");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser aberto!\n");
+            break;
+        }
+        Consumivel *ptr = coletarDadosConsumivel();
+        adicionarConsumivel(ptr, arquivo);
+        free(ptr);
+        fclose(arquivo);
+
+        printf("Registrado com sucesso!\n");
+        break;
+
+    case 2:
+        // atualizarConsumivel();
+        break;
+
+    case 3:
+        FILE *arquivo = fopen("arquivo/consumivel.txt", "rt");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser lido.\n");
+            break;
+        }
+        Consumivel *ptrConsumivel = malloc(sizeof(Consumivel));
+
+        int codigoMenu = 0;
+
+        printf("Se você deseja fazer uma leitura de todos os produtos, digite 1. Se você deseja fazer uma leitura de um produto específico, digite 2: ");
+        scanf("%d%*c", &codigoMenu);
+
+        if (codigoMenu == 1)
+        {
+            while (1)
+            {
+                int status = lerConsumivel(0, arquivo, ptrConsumivel);
+                if (status == 1)
+                {
+                    printf("%d {\n Estoque: %d,\n Estoque Mínimo: %d,\n Descrição: %s,\n Preço de Custo: %.2f,\n Preço de Venda: %.2f;}\n",
+                           ptrConsumivel->codigo, ptrConsumivel->estoque, ptrConsumivel->estoqueMin, ptrConsumivel->descricao, ptrConsumivel->precoCusto, ptrConsumivel->precoVenda);
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Fim do arquivo alcançado.\n");
+                    break;
+                }
+            }
+        }
+        else if (codigoMenu == 2)
+        {
+            int codigoConsumivel = 0;
+            printf("Digite o código único do produto consumível que você deseja ler: ");
+            scanf("%d%*c", &codigoConsumivel);
+
+            while (1)
+            {
+                int status = lerConsumivel(codigoConsumivel, arquivo, ptrConsumivel);
+                if (status == 1)
+                {
+                    printf("%d {\n Estoque: %d,\n Estoque Mínimo: %d,\n Descrição: %s,\n Preço de Custo: %.2f,\n Preço de Venda: %.2f;}\n",
+                           ptrConsumivel->codigo, ptrConsumivel->estoque, ptrConsumivel->estoqueMin, ptrConsumivel->descricao, ptrConsumivel->precoCusto, ptrConsumivel->precoVenda);
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Produto consumível não encontrado ou código incorreto.\n");
+                    break;
+                }
+            }
+        }
+        else
+        {
+            printf("Opção inválida.\n");
+        }
+        free(ptrConsumivel);
+        fclose(arquivo);
+        break;
+
+    case 4:
+        // deletarConsumivel();
+        break;
+
+    default:
+        printf("Erro desconhecido.\n");
+        break;
+    }
+}
+
+void gerenciarFornecedor()
+{
+    char item[] = "fornecedor";
+    int operacao = selecionarOperacao(item);
+
+    switch (operacao)
+    {
+    case 1:
+        FILE *arquivo = fopen("arquivo/fornecedor.txt", "a");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser aberto!\n");
+            break;
+        }
+
+        Fornecedor *ptr = coletarDadosFornecedor();
+        adicionarFornecedor(ptr, arquivo);
+        free(ptr);
+        fclose(arquivo);
+
+        printf("Registrado com sucesso!\n");
+        break;
+
+    case 2:
+        // atualizarFornecedor();
+        break;
+
+    case 3:
+        FILE *arquivo = fopen("arquivo/fornecedor.txt", "rt");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser lido.\n");
+            break;
+        }
+        Fornecedor *ptrFornecedor = malloc(sizeof(Fornecedor));
+
+        int codigoMenu = 0;
+
+        printf("Se você deseja fazer uma leitura de todos os fornecedores, digite 1. Se você deseja fazer uma leitura de um fornecedor específico, digite 2: ");
+        scanf("%d%*c", &codigoMenu);
+
+        if (codigoMenu == 1)
+        {
+            while (1)
+            {
+                int status = lerFornecedor(0, arquivo, ptrFornecedor);
+                if (status == 1)
+                {
+                    printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
+                           ptrFornecedor->codigo, ptrFornecedor->nome, ptrFornecedor->razaoSocial, ptrFornecedor->inscricaoSocial, ptrFornecedor->cnpj, ptrFornecedor->endereco, ptrFornecedor->celular, ptrFornecedor->eMail);
+
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Fim do arquivo alcançado.\n");
+                    break;
+                }
+            }
+        }
+        else if (codigoMenu == 2)
+        {
+            int codigoFornecedor = 0;
+            printf("Digite o código único do fornecedor que você deseja ler: ");
+            scanf("%d%*c", &codigoFornecedor);
+
+            while (1)
+            {
+                int status = lerFornecedor(codigoFornecedor, arquivo, ptrFornecedor);
+                if (status == 1)
+                {
+                    printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
+                           ptrFornecedor->codigo, ptrFornecedor->nome, ptrFornecedor->razaoSocial, ptrFornecedor->inscricaoSocial, ptrFornecedor->cnpj, ptrFornecedor->endereco, ptrFornecedor->celular, ptrFornecedor->eMail);
+
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Fornecedor não encontrado ou código incorreto.\n");
+                    break;
+                }
+            }
+        }
+        else
+        {
+            printf("Opção inválida.\n");
+        }
+        free(ptrFornecedor); // Libere a memória alocada para ptrFornecedor
+        fclose(arquivo);
+
+        break;
+
+    case 4:
+        // deletarFornecedor();
+        break;
+
+    default:
+        printf("Erro desconhecido.\n");
+        break;
+    }
+}
+
+void gerenciarOperador()
+{
+    char item[] = "operador";
+    int operacao = selecionarOperacao(item);
+
+    switch (operacao)
+    {
+    case 1:
+        FILE *arquivo = fopen("arquivo/operador.txt", "a");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser aberto!\n");
+            return;
+        }
+
+        Operador *ptr = coletarDadosOperador();
+        adicionarOperador(ptr, arquivo);
+        free(ptr);
+        fclose(arquivo);
+
+        printf("Registrado com sucesso!\n");
+        break;
+
+    case 2:
+        // atualizarOperador();
+        break;
+
+    case 3:
+        FILE *arquivo = fopen("arquivo/operador.txt", "rt");
+
+        if (arquivo == NULL)
+        {
+            printf("Arquivo não existe ou não pode ser lido.\n");
+            break;
+        }
+        Operador *ptrOperador = malloc(sizeof(Operador));
+
+        int codigoMenu = 0;
+
+        printf("Se você deseja fazer uma leitura de todos os operadores, digite 1. Se você deseja fazer uma leitura de um operador específico, digite 2: ");
+        scanf("%d%*c", &codigoMenu);
+
+        if (codigoMenu == 1)
+        {
+            while (1)
+            {
+                int status = lerOperador(0, arquivo, ptrOperador);
+                if (status)
+                {
+                    printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %s;}\n",
+                           ptrOperador->codigo, ptrOperador->nome, ptrOperador->usuario, ptrOperador->senha, ptrOperador->permissao);
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Fim do arquivo alcançado.\n");
+                    break;
+                }
+            }
+        }
+        else if (codigoMenu == 2)
+        {
+            int codigoOperador = 0;
+            printf("Digite o código único do operador que você deseja ler: ");
+            scanf("%d%*c", &codigoOperador);
+
+            while (1)
+            {
+                int status = lerOperador(0, arquivo, ptrOperador);
+                if (status)
+                {
+                    printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %s;}\n",
+                           ptrOperador->codigo, ptrOperador->nome, ptrOperador->usuario, ptrOperador->senha, ptrOperador->permissao);
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Operador não encontrado ou código incorreto.\n");
+                    break;
+                }
+            }
+        }
+        else
+        {
+            printf("Opção inválida.\n");
+        }
+        free(ptrOperador);
+        fclose(arquivo);
+        break;
+
+    case 4:
+        // deletarOperador();
+        break;
+
+    default:
+        printf("Erro desconhecido.\n");
+        break;
+    }
 }

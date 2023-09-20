@@ -4,25 +4,25 @@
 // ------------Create---------
 
 // Função responsavel pelo registro das informações do hotel;
-void criarHotel(Hotel *estrutura);
+void criarHotel(Hotel *estrutura, FILE *arquivo);
 
 // Função responsavel pelo registro de um hospede;
-void adicionarHospede(Hospede *estrutura);
+void adicionarHospede(Hospede *estrutura, FILE *arquivo);
 
 // funcao responsavel pelo registro de uma categoria
-void adicionarCategoria(Categoria *estrutura);
+void adicionarCategoria(Categoria *estrutura, FILE *arquivo);
 
 // funcao responsavel pelo registro de uma acomodacao
-void adicionarAcomodacao(Acomodacao *estrutura);
+void adicionarAcomodacao(Acomodacao *estrutura, FILE *arquivo);
 
 // funcao responsavel pelo registro de um consumivel
-void adicionarConsumivel(Consumivel *estrutura);
+void adicionarConsumivel(Consumivel *estrutura, FILE *arquivo);
 
 // funcao responsavel pelo registro de um fornecedor
-void adicionarFornecedor(Fornecedor *estrutura);
+void adicionarFornecedor(Fornecedor *estrutura, FILE *arquivo);
 
 // funcao responsavel pelo registro de um operador de sistema
-void adicionarOperador(Operador *estrutura);
+void adicionarOperador(Operador *estrutura, FILE *arquivo);
 
 // ------------Read-----------
 
@@ -45,7 +45,7 @@ int lerOperador(int codigo, FILE *arquivo, Operador *ptrOperador);
 
 // ------------Updtate-----------
 
-//Função responsável por atualizar os registros do hotel;
+// Função responsável por atualizar os registros do hotel;
 int atualizarHotel(Hotel *novosDados);
 
 // Função responsável por atualizar os registros de hóspede;
@@ -64,21 +64,21 @@ int atualizarOperador(int codigo, Operador *novoDados);
 
 // ------------Delete-----------
 
-//Função responsável por deletar os registros do hotel;
+// Função responsável por deletar os registros do hotel;
 int deletarHotel();
 
-//Função responsável por deletar os registros de hóspede;
+// Função responsável por deletar os registros de hóspede;
 int deletarHospede(int codigo);
-//Função responsável por deletar os registros de categoria;
+// Função responsável por deletar os registros de categoria;
 int deletarCategoria(int codigo);
 
-//Função responsável por deletar os registros de acomodação;
+// Função responsável por deletar os registros de acomodação;
 int deletarAcomodacao(int codigo);
-//Função responsável por deletar os registros de consumível;
+// Função responsável por deletar os registros de consumível;
 int deletarConsumivel(int codigo);
-//Função responsável por deletar os registros de fornecedor;
+// Função responsável por deletar os registros de fornecedor;
 int deletarFornecedor(int codigo);
-//Função responsável por deletar os registros de operador;
+// Função responsável por deletar os registros de operador;
 int deletarOperador(int codigo);
 
 #endif
