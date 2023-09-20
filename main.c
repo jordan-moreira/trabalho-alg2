@@ -76,7 +76,9 @@ int main()
     printf("|||||BEM-VINDO AO SISTEMA DE GERENCIAMENTO DE HÓTEIS|||||\n");
 
     int codigoMenu = 0;
-    char tipoArquivo[3] = "txt";
+    char tipoArquivo[3] = "txt",
+        nivelAcesso="g";
+
 
     while (codigoMenu != 7)
     {

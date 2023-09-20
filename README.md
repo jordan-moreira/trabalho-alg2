@@ -13,13 +13,20 @@
 - [ ] criar uma logica de niveis de acesso para diferentes tipos de operadores de sistema:
 gerente geral(acesso total): CRUD de todas as estruturas codigo:g
 
- recepcionista(check-in check-out gerenciamento de hospedes: estrutura Hospede, Reserva e Acomodacao.ocupada ):Create de Hospedes, Read de todas exceto Fornecedor e Operador, Update de Hospede, Reserva, Acomodacao.ocupada, Consumivel.estoque(apenas para subtracao); Delete de Hospede. codigo R
+recepcionista(check-in check-out gerenciamento de hospedes: estrutura Hospede, Reserva e Acomodacao.ocupada ):Create de Hospedes, Read de todas exceto Fornecedor e Operador, Update de Hospede, Reserva, Acomodacao.ocupada, Consumivel.estoque(apenas para subtracao); Delete de Hospede. 
+codigo de acesso: R
 
-  camareiro:Nenhum acesso codigo:n
+camareiro:Nenhum acesso 
+codigo de acesso: N
 
-   garcon:nenhum acesso  codigo:n
+garcon:nenhum acesso  
+codigo de acesso: N
 
-    gerente de estoque(acesso ao estoque):Create para Consumiveis e Fornecedor;Read total exceto Hospede, Categoria, Reserva, Acomodacao e Operador; Atualizacao de Fornecedor e Consumivel; Delete de Fornecedor e Consuivel codigo:e
+gerente de estoque(acesso ao estoque):Create para Consumiveis e Fornecedor;Read total exceto Hospede, Categoria, Reserva, Acomodacao e Operador; Atualizacao de Fornecedor e Consumivel; Delete de Fornecedor e Consuivel 
+codigo de acesso: E
+
+    -[ ] criar a funcao de login e relacionados a checagem do nivel de acesso permitido (luiz)
+
 
 ## implementacoes de cancelamento e reserva de acomodacoes
 
