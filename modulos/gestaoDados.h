@@ -115,25 +115,25 @@ typedef struct
 int selecionarOperacao(char *tipoDoDado);
 
 // funcao responsavel por gerenciar dados do hotel
-void gerenciarHotel();
+void gerenciarHotel(char tipoArquivo);
 
 // funcao responsavel por gerenciar dados dos hospedes
-void gerenciarHospede();
+void gerenciarHospede(char tipoArquivo);
 
 // funcao responsavel por gerenciar dados das categorias dos quartos
-void gerenciarCategoria();
+void gerenciarCategoria(char tipoArquivo);
 
 // funcao responsavel por gerenciar dados dos quartos
-void gerenciarAcomodacao();
+void gerenciarAcomodacao(char tipoArquivo);
 
 // funcao responsavel por gerenciar dados dos consumiveis
-void gerenciarConsumivel();
+void gerenciarConsumivel(char tipoArquivo);
 
 // funcao responsavel por gerenciar dados dos fornecedores
-void gerenciarFornecedor();
+void gerenciarFornecedor(char tipoArquivo);
 
 // funcao responsavel por gerenciar dados dos operadores
-void gerenciarOperador();
+void gerenciarOperador(char tipoArquivo);
 
 // funcao responsvel por coletar e armazenar em uma struct os dados do hotel e retornar o ponteiro da memoria onde a struct esta alocada
 Hotel *coletarDadosHotel();

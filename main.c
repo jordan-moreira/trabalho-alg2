@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include <string.h>
 #include "modulos/gestaoDados.h"
 
-void menuCadastro()
+void menuCadastro(char tipoArquivo)
 {
     int codigoMenu;
 
@@ -13,31 +14,31 @@ void menuCadastro()
         switch (codigoMenu)
         {
         case 1:
-            gerenciarHotel();
+            gerenciarHotel(tipoArquivo);
             break;
 
         case 2:
-            gerenciarHospede();
+            gerenciarHospede(tipoArquivo);
             break;
 
         case 3:
-            gerenciarCategoria();
+            gerenciarCategoria(tipoArquivo);
             break;
 
         case 4:
-            gerenciarAcomodacao();
+            gerenciarAcomodacao(tipoArquivo);
             break;
 
         case 5:
-            gerenciarConsumivel();
+            gerenciarConsumivel(tipoArquivo);
             break;
 
         case 6:
-            gerenciarFornecedor();
+            gerenciarFornecedor(tipoArquivo);
             break;
 
         case 7:
-            gerenciarOperador();
+            gerenciarOperador(tipoArquivo);
             break;
 
         case 8:
@@ -56,6 +57,7 @@ int main()
     printf("Bem-vindo ao sistema de gerenciamento de hotéis.\n");
 
     int codigoMenu = 0;
+    char tipoArquivo[3] = "txt";
 
     while (codigoMenu != 7)
     {
@@ -65,7 +67,7 @@ int main()
         switch (codigoMenu)
         {
         case 1:
-            menuCadastro();
+            menuCadastro(tipoArquivo);
             break;
 
         case 6:
@@ -78,11 +80,13 @@ int main()
 
             if (escolhaArmazenamento == 1)
             { // Seleciona o tipo de armazenamento para texto (txt)
+                strcpy(tipoArquivo, "txt");
                 printf("\nArmazenamento configurado para texto (txt).\n");
             }
             else if (escolhaArmazenamento == 2)
             {
                 // Seleciona o tipo de armazenamento para binário (bin)
+                strcpy(tipoArquivo, "bin");
                 printf("\nArmazenamento configurado para binário (bin).\n");
             }
             else
