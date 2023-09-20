@@ -10,7 +10,16 @@
 - [X] criar a funcao de leitura de documento completo ou de item especifico de todos os tipos de dados Read(cRud)
 - [X] criar a funcao de pesquisa de item especifico para cada dado para o mesmo poder ser alterado Update(crUd)
 - [X] criar a funcao de delecao de item especifico para cada dado Delete(cruD)
-- [ ] criar uma logica de niveis de acesso para diferentes tipos de operadores de sistema
+- [ ] criar uma logica de niveis de acesso para diferentes tipos de operadores de sistema:
+gerente geral(acesso total): CRUD de todas as estruturas codigo:g
+
+ recepcionista(check-in check-out gerenciamento de hospedes: estrutura Hospede, Reserva e Acomodacao.ocupada ):Create de Hospedes, Read de todas exceto Fornecedor e Operador, Update de Hospede, Reserva, Acomodacao.ocupada, Consumivel.estoque(apenas para subtracao); Delete de Hospede. codigo R
+
+  camareiro:Nenhum acesso codigo:n
+
+   garcon:nenhum acesso  codigo:n
+
+    gerente de estoque(acesso ao estoque):Create para Consumiveis e Fornecedor;Read total exceto Hospede, Categoria, Reserva, Acomodacao e Operador; Atualizacao de Fornecedor e Consumivel; Delete de Fornecedor e Consuivel codigo:e
 
 ## implementacoes de cancelamento e reserva de acomodacoes
 
