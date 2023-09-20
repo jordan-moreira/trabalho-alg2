@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "gestaoDados.h"
-#include "crud.h"
+#include "crudTxt.h"
 
 int selecionarOperacao(char *tipoDoDado)
 {
@@ -273,6 +273,7 @@ void gerenciarHotel()
     switch (operacao)
     {
     case 1:
+        Hotel *ptr = coletarDadosHotel();
         FILE *arquivo = fopen("arquivo/hotel.txt", "a");
 
         if (arquivo == NULL)
@@ -280,8 +281,7 @@ void gerenciarHotel()
             printf("Arquivo não existe ou não pode ser aberto!\n");
             break;
         }
-        Hotel *ptr = coletarDadosHotel();
-        criarHotel(ptr, arquivo);
+        criarHotelTxt(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
         printf("Registrado com sucesso!\n");
@@ -301,7 +301,7 @@ void gerenciarHotel()
         }
 
         Hotel *ptrHotel = malloc(sizeof(Hotel));
-        int status = lerHotel(arquivo, ptrHotel);
+        int status = lerHotelTxt(arquivo, ptrHotel);
 
         if (status == 1)
         {
@@ -336,6 +336,7 @@ void gerenciarHospede()
     switch (operacao)
     {
     case 1:
+        Hospede *ptr = coletarDadosHospede();
         FILE *arquivo = fopen("arquivo/hospede.txt", "a");
 
         if (arquivo == NULL)
@@ -344,8 +345,7 @@ void gerenciarHospede()
             break;
         }
 
-        Hospede *ptr = coletarDadosHospede();
-        adicionarHospede(ptr, arquivo);
+        adicionarHospedeTxt(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
 
@@ -376,7 +376,7 @@ void gerenciarHospede()
         {
             while (1)
             {
-                int status = lerHospede(0, arquivo, ptrHospede);
+                int status = lerHospedeTxt(0, arquivo, ptrHospede);
 
                 if (status == 1)
                 {
@@ -405,7 +405,7 @@ void gerenciarHospede()
 
             while (1)
             {
-                int status = lerHospede(codigoHospede, arquivo, ptrHospede);
+                int status = lerHospedeTxt(codigoHospede, arquivo, ptrHospede);
 
                 if (status == 1)
                 {
@@ -452,6 +452,7 @@ void gerenciarCategoria()
     switch (operacao)
     {
     case 1:
+        Categoria *ptr = coletarDadosCategoria();
         FILE *arquivo = fopen("arquivo/categoria.txt", "a");
 
         if (arquivo == NULL)
@@ -460,8 +461,7 @@ void gerenciarCategoria()
             break;
         }
 
-        Categoria *ptr = coletarDadosCategoria();
-        adicionarCategoria(ptr, arquivo);
+        adicionarCategoriaTxt(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
 
@@ -493,7 +493,7 @@ void gerenciarCategoria()
 
             while (1)
             {
-                int status = lerCategoria(0, arquivo, ptrCategoria);
+                int status = lerCategoriaTxt(0, arquivo, ptrCategoria);
 
                 if (status == 1)
                 {
@@ -522,7 +522,7 @@ void gerenciarCategoria()
 
             while (1)
             {
-                int status = lerCategoria(codigoCategoria, arquivo, ptrCategoria);
+                int status = lerCategoriaTxt(codigoCategoria, arquivo, ptrCategoria);
 
                 if (status == 1)
                 {
@@ -570,6 +570,7 @@ void gerenciarAcomodacao()
     switch (operacao)
     {
     case 1:
+        Acomodacao *ptr = coletarDadosAcomodacao();
         FILE *arquivo = fopen("arquivo/acomodacao.txt", "a");
 
         if (arquivo == NULL)
@@ -578,8 +579,7 @@ void gerenciarAcomodacao()
             break;
         }
 
-        Acomodacao *ptr = coletarDadosAcomodacao();
-        adicionarAcomodacao(ptr, arquivo);
+        adicionarAcomodacaoTxt(ptr, arquivo);
         free(ptr);
 
         fclose(arquivo);
@@ -611,7 +611,7 @@ void gerenciarAcomodacao()
 
             while (1)
             {
-                int status = lerAcomodacao(0, arquivo, ptrAcomodacao);
+                int status = lerAcomodacaoTxt(0, arquivo, ptrAcomodacao);
                 if (status == 1)
                 {
                     printf("%d {\n Categoria: %d,\n Ocupada: %d,\n Data Inicial: %d/%d/%d,\n Data Final: %d/%d/%d,\n Descrição: %s,\n Facilidades: %s;}\n",
@@ -638,7 +638,7 @@ void gerenciarAcomodacao()
 
             while (1)
             {
-                int status = lerAcomodacao(codigoAcomodacao, arquivo, ptrAcomodacao);
+                int status = lerAcomodacaoTxt(codigoAcomodacao, arquivo, ptrAcomodacao);
                 if (status == 1)
                 {
                     printf("%d {\n Categoria: %d,\n Ocupada: %d,\n Data Inicial: %d/%d/%d,\n Data Final: %d/%d/%d,\n Descrição: %s,\n Facilidades: %s;}\n",
@@ -684,6 +684,7 @@ void gerenciarConsumivel()
     switch (operacao)
     {
     case 1:
+        Consumivel *ptr = coletarDadosConsumivel();
         FILE *arquivo = fopen("arquivo/consumivel.txt", "a");
 
         if (arquivo == NULL)
@@ -691,8 +692,7 @@ void gerenciarConsumivel()
             printf("Arquivo não existe ou não pode ser aberto!\n");
             break;
         }
-        Consumivel *ptr = coletarDadosConsumivel();
-        adicionarConsumivel(ptr, arquivo);
+        adicionarConsumivelTxt(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
 
@@ -722,7 +722,7 @@ void gerenciarConsumivel()
         {
             while (1)
             {
-                int status = lerConsumivel(0, arquivo, ptrConsumivel);
+                int status = lerConsumivelTxt(0, arquivo, ptrConsumivel);
                 if (status == 1)
                 {
                     printf("%d {\n Estoque: %d,\n Estoque Mínimo: %d,\n Descrição: %s,\n Preço de Custo: %.2f,\n Preço de Venda: %.2f;}\n",
@@ -749,7 +749,7 @@ void gerenciarConsumivel()
 
             while (1)
             {
-                int status = lerConsumivel(codigoConsumivel, arquivo, ptrConsumivel);
+                int status = lerConsumivelTxt(codigoConsumivel, arquivo, ptrConsumivel);
                 if (status == 1)
                 {
                     printf("%d {\n Estoque: %d,\n Estoque Mínimo: %d,\n Descrição: %s,\n Preço de Custo: %.2f,\n Preço de Venda: %.2f;}\n",
@@ -794,6 +794,7 @@ void gerenciarFornecedor()
     switch (operacao)
     {
     case 1:
+        Fornecedor *ptr = coletarDadosFornecedor();
         FILE *arquivo = fopen("arquivo/fornecedor.txt", "a");
 
         if (arquivo == NULL)
@@ -802,8 +803,7 @@ void gerenciarFornecedor()
             break;
         }
 
-        Fornecedor *ptr = coletarDadosFornecedor();
-        adicionarFornecedor(ptr, arquivo);
+        adicionarFornecedorTxt(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
 
@@ -833,7 +833,7 @@ void gerenciarFornecedor()
         {
             while (1)
             {
-                int status = lerFornecedor(0, arquivo, ptrFornecedor);
+                int status = lerFornecedorTxt(0, arquivo, ptrFornecedor);
                 if (status == 1)
                 {
                     printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
@@ -861,7 +861,7 @@ void gerenciarFornecedor()
 
             while (1)
             {
-                int status = lerFornecedor(codigoFornecedor, arquivo, ptrFornecedor);
+                int status = lerFornecedorTxt(codigoFornecedor, arquivo, ptrFornecedor);
                 if (status == 1)
                 {
                     printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
@@ -908,6 +908,7 @@ void gerenciarOperador()
     switch (operacao)
     {
     case 1:
+        Operador *ptr = coletarDadosOperador();
         FILE *arquivo = fopen("arquivo/operador.txt", "a");
 
         if (arquivo == NULL)
@@ -916,8 +917,7 @@ void gerenciarOperador()
             return;
         }
 
-        Operador *ptr = coletarDadosOperador();
-        adicionarOperador(ptr, arquivo);
+        adicionarOperadorTxt(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
 
@@ -947,7 +947,7 @@ void gerenciarOperador()
         {
             while (1)
             {
-                int status = lerOperador(0, arquivo, ptrOperador);
+                int status = lerOperadorTxt(0, arquivo, ptrOperador);
                 if (status)
                 {
                     printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %s;}\n",
@@ -974,7 +974,7 @@ void gerenciarOperador()
 
             while (1)
             {
-                int status = lerOperador(0, arquivo, ptrOperador);
+                int status = lerOperadorTxt(codigoOperador, arquivo, ptrOperador);
                 if (status)
                 {
                     printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %s;}\n",
