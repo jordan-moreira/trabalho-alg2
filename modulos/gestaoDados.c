@@ -272,11 +272,12 @@ void gerenciarHotel(char tipoArquivo)
     char item[] = "hotel";
     int operacao = selecionarOperacao(item);
     FILE *arquivo;
+    Hotel *ptrHotel;
 
     switch (operacao)
     {
     case 1:
-        Hotel *ptr = coletarDadosHotel();
+        ptrHotel = coletarDadosHotel();
 
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hotel.txt", "a") : fopen("arquivos/hotel.bin", "ab");
 
@@ -285,9 +286,9 @@ void gerenciarHotel(char tipoArquivo)
             printf("Arquivo não existe ou não pode ser aberto!\n");
             break;
         }
-        (tipoArquivo == 'T') ? criarHotelTxt(ptr, arquivo) : criarHotelBin(ptr, arquivo);
+        (tipoArquivo == 'T') ? criarHotelTxt(ptrHotel, arquivo) : criarHotelBin(ptrHotel, arquivo);
 
-        free(ptr);
+        free(ptrHotel);
         fclose(arquivo);
         printf("Registrado com sucesso!\n");
         break;
@@ -305,7 +306,7 @@ void gerenciarHotel(char tipoArquivo)
             break;
         }
 
-        Hotel *ptrHotel = malloc(sizeof(Hotel));
+        ptrHotel = malloc(sizeof(Hotel));
         int status = (tipoArquivo == 'T') ? lerHotelTxt(arquivo, ptrHotel) : lerHotelBin(arquivo, ptrHotel);
 
         if (status == 1)
@@ -360,7 +361,13 @@ void gerenciarHospede(char tipoArquivo)
         break;
 
     case 2:
-        // atualizarHospede();
+        int codigoHospede = 0;
+        ptr = coletarDadosHospede();
+        printf("Digite o código único do hóspede que você deseja ler: ");
+        scanf("%d%*c", &codigoHospede);
+        (tipoArquivo == 'T') ? atualizarHospedeTxt(codigoHospede, ptr) : atualizarHospedeBin(codigoHospede, ptr);
+        free(ptr);
+        fclose(arquivo);
         break;
 
     case 3:

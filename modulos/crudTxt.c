@@ -162,8 +162,8 @@ int lerOperadorTxt(int codigo, FILE *arquivo, Operador *ptrOperador)
 // Função para atualizar um registro de Hospede
 int atualizarHospedeTxt(int codigo, Hospede *novoDados)
 {
-    FILE *arquivo = fopen("arquivo/hospede.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/hospede.txt", "r");
+    FILE *tempFile = fopen("arquivos/temp.txt", "a");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -172,10 +172,10 @@ int atualizarHospedeTxt(int codigo, Hospede *novoDados)
     }
 
     int encontrado = 0; // Indica se o código foi encontrado
-
+    Hospede *antigosDados = malloc(sizeof(Hospede));
     while (1)
     {
-        int resultadoLeitura = lerHospedeTxt(0, arquivo, novoDados);
+        int resultadoLeitura = lerHospedeTxt(0, arquivo, antigosDados);
         if (resultadoLeitura == 0)
         {
             // Fim do arquivo
@@ -184,26 +184,26 @@ int atualizarHospedeTxt(int codigo, Hospede *novoDados)
 
         if (resultadoLeitura == 1)
         {
-            if (novoDados->codigo == codigo)
+            if (antigosDados->codigo == codigo)
             {
                 // Se o código foi encontrado, atualize os dados com os novos dados
-                fwrite(novoDados, sizeof(Hospede), 1, tempFile);
+                adicionarHospedeTxt(novoDados, tempFile);
                 encontrado = 1;
             }
             else
             {
                 // Se não for o código que estamos procurando, escreva o registro original de volta no arquivo temporário
-                fwrite(novoDados, sizeof(Hospede), 1, tempFile);
+                adicionarHospedeTxt(antigosDados, tempFile);
             }
         }
     }
-
+    free(antigosDados);
     fclose(arquivo);
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/hospede.txt");
-    rename("arquivo/temp.txt", "arquivo/hospede.txt");
+    remove("arquivos/hospede.txt");
+    rename("arquivos/temp.txt", "arquivos/hospede.txt");
 
     if (encontrado)
     {
@@ -220,8 +220,8 @@ int atualizarHospedeTxt(int codigo, Hospede *novoDados)
 // Função para atualizar um registro de Categoria
 int atualizarCategoriaTxt(int codigo, Categoria *novoDados)
 {
-    FILE *arquivo = fopen("arquivo/categoria.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/categoria.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -248,8 +248,8 @@ int atualizarCategoriaTxt(int codigo, Categoria *novoDados)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/categoria.txt");
-    rename("arquivo/temp.txt", "arquivo/categoria.txt");
+    remove("arquivos/categoria.txt");
+    rename("arquivos/temp.txt", "arquivos/categoria.txt");
 
     if (encontrado)
     {
@@ -266,8 +266,8 @@ int atualizarCategoriaTxt(int codigo, Categoria *novoDados)
 // Função para atualizar um registro de Acomodação
 int atualizarAcomodacaoTxt(int codigo, Acomodacao *novoDados)
 {
-    FILE *arquivo = fopen("arquivo/acomodacao.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/acomodacao.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -299,8 +299,8 @@ int atualizarAcomodacaoTxt(int codigo, Acomodacao *novoDados)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/acomodacao.txt");
-    rename("arquivo/temp.txt", "arquivo/acomodacao.txt");
+    remove("arquivos/acomodacao.txt");
+    rename("arquivos/temp.txt", "arquivos/acomodacao.txt");
 
     if (encontrado)
     {
@@ -317,8 +317,8 @@ int atualizarAcomodacaoTxt(int codigo, Acomodacao *novoDados)
 // Função para atualizar um registro de Hotel
 int atualizarHotelTxt(Hotel *novosDados)
 {
-    FILE *arquivo = fopen("arquivo/hotel.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/hotel.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -335,8 +335,8 @@ int atualizarHotelTxt(Hotel *novosDados)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/hotel.txt");
-    rename("arquivo/temp.txt", "arquivo/hotel.txt");
+    remove("arquivos/hotel.txt");
+    rename("arquivos/temp.txt", "arquivos/hotel.txt");
 
     printf("Registro atualizado com sucesso!\n");
     return 1; // Indica que a operação foi bem-sucedida
@@ -345,8 +345,8 @@ int atualizarHotelTxt(Hotel *novosDados)
 // Função para atualizar um registro de consumível
 int atualizarConsumivelTxt(int codigo, Consumivel *novosDados)
 {
-    FILE *arquivo = fopen("arquivo/consumivel.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/consumivel.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -378,8 +378,8 @@ int atualizarConsumivelTxt(int codigo, Consumivel *novosDados)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/consumivel.txt");
-    rename("arquivo/temp.txt", "arquivo/consumivel.txt");
+    remove("arquivos/consumivel.txt");
+    rename("arquivos/temp.txt", "arquivos/consumivel.txt");
 
     if (encontrado)
     {
@@ -396,8 +396,8 @@ int atualizarConsumivelTxt(int codigo, Consumivel *novosDados)
 // Função para atualizar um registro de fornecedor
 int atualizarFornecedorTxt(int codigo, Fornecedor *novoDados)
 {
-    FILE *arquivo = fopen("arquivo/fornecedor.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/fornecedor.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -429,8 +429,8 @@ int atualizarFornecedorTxt(int codigo, Fornecedor *novoDados)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/fornecedor.txt");
-    rename("arquivo/temp.txt", "arquivo/fornecedor.txt");
+    remove("arquivos/fornecedor.txt");
+    rename("arquivos/temp.txt", "arquivos/fornecedor.txt");
 
     if (encontrado)
     {
@@ -447,8 +447,8 @@ int atualizarFornecedorTxt(int codigo, Fornecedor *novoDados)
 // Função para atualizar um registro de operador
 int atualizarOperadorTxt(int codigo, Operador *novoDados)
 {
-    FILE *arquivo = fopen("arquivo/operador.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/operador.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -480,8 +480,8 @@ int atualizarOperadorTxt(int codigo, Operador *novoDados)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/operador.txt");
-    rename("arquivo/temp.txt", "arquivo/operador.txt");
+    remove("arquivos/operador.txt");
+    rename("arquivos/temp.txt", "arquivos/operador.txt");
 
     if (encontrado)
     {
@@ -500,7 +500,7 @@ int atualizarOperadorTxt(int codigo, Operador *novoDados)
 // Função para deletar todos os registros de Hotel
 int deletarHotelTxt()
 {
-    FILE *arquivo = fopen("arquivo/hotel.txt", "w");
+    FILE *arquivo = fopen("arquivos/hotel.txt", "w");
 
     if (arquivo == NULL)
     {
@@ -518,8 +518,8 @@ int deletarHotelTxt()
 // Função para deletar um hóspede por código
 int deletarHospedeTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/hospede.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/hospede.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -547,8 +547,8 @@ int deletarHospedeTxt(int codigo)
     fclose(tempFile);
 
     // Substitui o arquivo original pelo arquivo temporário
-    remove("arquivo/hospede.txt");
-    rename("arquivo/temp.txt", "arquivo/hospede.txt");
+    remove("arquivos/hospede.txt");
+    rename("arquivos/temp.txt", "arquivos/hospede.txt");
 
     if (encontrado)
     {
@@ -565,8 +565,8 @@ int deletarHospedeTxt(int codigo)
 // Função para deletar uma categoria por código
 int deletarCategoriaTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/categoria.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/categoria.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -594,8 +594,8 @@ int deletarCategoriaTxt(int codigo)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/categoria.txt");
-    rename("arquivo/temp.txt", "arquivo/categoria.txt");
+    remove("arquivos/categoria.txt");
+    rename("arquivos/temp.txt", "arquivos/categoria.txt");
 
     if (encontrado)
     {
@@ -612,8 +612,8 @@ int deletarCategoriaTxt(int codigo)
 // Função para deletar uma acomodação por código
 int deletarAcomodacaoTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/acomodacao.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/acomodacao.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -641,8 +641,8 @@ int deletarAcomodacaoTxt(int codigo)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/acomodacao.txt");
-    rename("arquivo/temp.txt", "arquivo/acomodacao.txt");
+    remove("arquivos/acomodacao.txt");
+    rename("arquivos/temp.txt", "arquivos/acomodacao.txt");
 
     if (encontrado)
     {
@@ -659,8 +659,8 @@ int deletarAcomodacaoTxt(int codigo)
 // Função para deletar um consumível por código
 int deletarConsumivelTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/consumivel.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/consumivel.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -688,8 +688,8 @@ int deletarConsumivelTxt(int codigo)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/consumivel.txt");
-    rename("arquivo/temp.txt", "arquivo/consumivel.txt");
+    remove("arquivos/consumivel.txt");
+    rename("arquivos/temp.txt", "arquivos/consumivel.txt");
 
     if (encontrado)
     {
@@ -706,8 +706,8 @@ int deletarConsumivelTxt(int codigo)
 // Função para deletar um fornecedor por código
 int deletarFornecedorTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/fornecedor.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/fornecedor.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -735,8 +735,8 @@ int deletarFornecedorTxt(int codigo)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/fornecedor.txt");
-    rename("arquivo/temp.txt", "arquivo/fornecedor.txt");
+    remove("arquivos/fornecedor.txt");
+    rename("arquivos/temp.txt", "arquivos/fornecedor.txt");
 
     if (encontrado)
     {
@@ -753,8 +753,8 @@ int deletarFornecedorTxt(int codigo)
 // Função para deletar um operador por código
 int deletarOperadorTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/operador.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/operador.txt", "r+");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
@@ -782,8 +782,8 @@ int deletarOperadorTxt(int codigo)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/operador.txt");
-    rename("arquivo/temp.txt", "arquivo/operador.txt");
+    remove("arquivos/operador.txt");
+    rename("arquivos/temp.txt", "arquivos/operador.txt");
 
     if (encontrado)
     {
