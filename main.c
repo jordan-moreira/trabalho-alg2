@@ -6,14 +6,13 @@ void menuCadastro(char tipoArquivo)
 {
     int codigoMenu;
 
-    while (codigoMenu != 8)
+    while (codigoMenu != 4)
     {
         printf("--- MENU ---\n 1 - Informações dos hóspedes.\n 2 - Lista de categorias das acomodações.\n 3 - Informações das acomodações.\n 4 - Voltar à tela principal.\n\nDigite um código referente ao item que você deseja gerenciar: ");
         scanf("%d%*c", &codigoMenu);
 
         switch (codigoMenu)
         {
-        
 
         case 1:
             gerenciarHospede(tipoArquivo);
@@ -38,36 +37,40 @@ void menuCadastro(char tipoArquivo)
     }
 }
 
-void menuAdm(char tipoArquivo){
+void menuAdm(char tipoArquivo)
+{
     int codigoMenu;
     printf("--- MENU ---\n 1 - Tabela de consumíveis.\n 2 - Lista de fornecedores.\n 3 - Lista de operadores do sistema.\n 4 - Voltar à tela principal.\n 5 - Informções sobre o Hotel\n\nDigite um código referente ao item que você deseja gerenciar: ");
-    scanf("%d",&codigoMenu);
-
-    switch(codigoMenu){
+    scanf("%d", &codigoMenu);
+    while (codigoMenu != 4)
+    {
+        switch (codigoMenu)
+        {
         case 1:
-        gerenciarConsumivel(tipoArquivo);
-        break;
+            gerenciarConsumivel(tipoArquivo);
+            break;
 
         case 2:
-        gerenciarFornecedor(tipoArquivo);
-        break;
+            gerenciarFornecedor(tipoArquivo);
+            break;
 
         case 3:
-    gerenciarOperador(tipoArquivo);
+            gerenciarOperador(tipoArquivo);
 
-        break;
+            break;
 
         case 4:
-    printf("Voltando à tela inicial\n\n");
-        break;
+            printf("Voltando à tela inicial\n\n");
+            break;
 
         case 5:
-        gerenciarHotel(tipoArquivo);
-        break;
+            gerenciarHotel(tipoArquivo);
+            break;
 
         default:
-        printf("Código de menu informado inválido!!\n\n");
-        break;
+            printf("Código de menu informado inválido!!\n\n");
+            break;
+        }
     }
 }
 
@@ -76,9 +79,8 @@ int main()
     printf("|||||BEM-VINDO AO SISTEMA DE GERENCIAMENTO DE HÓTEIS|||||\n");
 
     int codigoMenu = 0;
-    char tipoArquivo[3] = "txt",
-        nivelAcesso="g";
-
+    char tipoArquivo = 'T',
+         nivelAcesso = 'g';
 
     while (codigoMenu != 7)
     {
@@ -91,9 +93,8 @@ int main()
             menuCadastro(tipoArquivo);
             break;
 
-
-            case 3:
-                menuAdm(tipoArquivo);
+        case 3:
+            menuAdm(tipoArquivo);
 
         case 6:
             printf("\nEscolha o tipo de armazenamento (txt ou binário):\n");
@@ -105,13 +106,14 @@ int main()
 
             if (escolhaArmazenamento == 1)
             { // Seleciona o tipo de armazenamento para texto (txt)
-                strcpy(tipoArquivo, "txt");
+                // strcpy(tipoArquivo, "T");
+                tipoArquivo = 'T';
                 printf("\nArmazenamento configurado para texto (txt).\n");
             }
             else if (escolhaArmazenamento == 2)
             {
                 // Seleciona o tipo de armazenamento para binário (bin)
-                strcpy(tipoArquivo, "bin");
+                tipoArquivo = 'B';
                 printf("\nArmazenamento configurado para binário (bin).\n");
             }
             else

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "gestaoDados.h"
 #include "crudTxt.h"
 
@@ -174,7 +175,7 @@ int atualizarHospedeTxt(int codigo, Hospede *novoDados)
 
     while (1)
     {
-        int resultadoLeitura = lerHospede(0, arquivo, novoDados);
+        int resultadoLeitura = lerHospedeTxt(0, arquivo, novoDados);
         if (resultadoLeitura == 0)
         {
             // Fim do arquivo

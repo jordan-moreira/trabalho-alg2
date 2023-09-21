@@ -271,21 +271,21 @@ void gerenciarHotel(char tipoArquivo)
 {
     char item[] = "hotel";
     int operacao = selecionarOperacao(item);
+    FILE *arquivo;
 
     switch (operacao)
     {
     case 1:
         Hotel *ptr = coletarDadosHotel();
-        FILE *arquivo;
 
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/hotel.txt", "a") : fopen("arquivo/hotel.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hotel.txt", "a") : fopen("arquivos/hotel.bin", "ab");
 
         if (arquivo == NULL)
         {
             printf("Arquivo não existe ou não pode ser aberto!\n");
             break;
         }
-        strcmp(tipoArquivo, "txt") == 0 ? criarHotelTxt(ptr, arquivo) : criarHotelBin(ptr, arquivo);
+        (tipoArquivo == 'T') ? criarHotelTxt(ptr, arquivo) : criarHotelBin(ptr, arquivo);
 
         free(ptr);
         fclose(arquivo);
@@ -297,9 +297,7 @@ void gerenciarHotel(char tipoArquivo)
         // break;
 
     case 3:
-        FILE *arquivo;
-
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/hotel.bin", "rb") : fopen("arquivo/hotel.txt", "r");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hotel.txt", "r") : fopen("arquivos/hotel.bin", "rb");
 
         if (arquivo == NULL)
         {
@@ -308,7 +306,7 @@ void gerenciarHotel(char tipoArquivo)
         }
 
         Hotel *ptrHotel = malloc(sizeof(Hotel));
-        int status = strcmp(tipoArquivo, "txt") == 0 ? lerHotelTxt(arquivo, ptrHotel) : lerHotelBin(arquivo, ptrHotel);
+        int status = (tipoArquivo == 'T') ? lerHotelTxt(arquivo, ptrHotel) : lerHotelBin(arquivo, ptrHotel);
 
         if (status == 1)
         {
@@ -339,14 +337,14 @@ void gerenciarHospede(char tipoArquivo)
 {
     char item[] = "hospede";
     int operacao = selecionarOperacao(item);
+    FILE *arquivo;
 
     switch (operacao)
     {
     case 1:
         Hospede *ptr = coletarDadosHospede();
-        FILE *arquivo;
 
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/hospede.txt", "a") : fopen("arquivo/hospede.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hospede.txt", "a") : fopen("arquivos/hospede.bin", "ab");
 
         if (arquivo == NULL)
         {
@@ -354,7 +352,7 @@ void gerenciarHospede(char tipoArquivo)
             break;
         }
 
-        strcmp(tipoArquivo, "txt") == 0 ? adicionarHospedeTxt(ptr, arquivo) : adicionarHospedeTxtBin(ptr, arquivo);
+        (tipoArquivo == 'T') ? adicionarHospedeTxt(ptr, arquivo) : adicionarHospedeBin(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
 
@@ -367,9 +365,7 @@ void gerenciarHospede(char tipoArquivo)
 
     case 3:
 
-        FILE *arquivo;
-
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/hospede.txt", "a") : fopen("arquivo/hospede.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hospede.txt", "r") : fopen("arquivos/hospede.bin", "rb");
 
         if (arquivo == NULL)
         {
@@ -387,7 +383,7 @@ void gerenciarHospede(char tipoArquivo)
         {
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerHospedeTxt(0, arquivo, ptrHospede) : lerHospedeBin(0, arquivo, ptrHospede);
+                int status = (tipoArquivo == 'T') ? lerHospedeTxt(0, arquivo, ptrHospede) : lerHospedeBin(0, arquivo, ptrHospede);
 
                 if (status == 1)
                 {
@@ -416,7 +412,7 @@ void gerenciarHospede(char tipoArquivo)
 
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerHospedeTxt(codigoHospede, arquivo, ptrHospede) : lerHospedeBin(codigoHospede, arquivo, ptrHospede);
+                int status = (tipoArquivo == 'T') ? lerHospedeTxt(codigoHospede, arquivo, ptrHospede) : lerHospedeBin(codigoHospede, arquivo, ptrHospede);
 
                 if (status == 1)
                 {
@@ -460,13 +456,13 @@ void gerenciarCategoria(char tipoArquivo)
     char item[] = "categoria";
     int operacao = selecionarOperacao(item);
 
+    FILE *arquivo;
     switch (operacao)
     {
     case 1:
         Categoria *ptr = coletarDadosCategoria();
-        FILE *arquivo;
 
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/hospede.txt", "a") : fopen("arquivo/hospede.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hospede.txt", "a") : fopen("arquivos/hospede.bin", "ab");
 
         if (arquivo == NULL)
         {
@@ -474,7 +470,7 @@ void gerenciarCategoria(char tipoArquivo)
             break;
         }
 
-        strcmp(tipoArquivo, "txt") == 0 ? adicionarCategoriaTxt(ptr, arquivo) : adicionarCategoriaBin(ptr, arquivo);
+        (tipoArquivo == 'T') ? adicionarCategoriaTxt(ptr, arquivo) : adicionarCategoriaBin(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
 
@@ -487,9 +483,7 @@ void gerenciarCategoria(char tipoArquivo)
 
     case 3:
 
-        FILE *arquivo;
-
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/hospede.txt", "a") : fopen("arquivo/hospede.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hospede.txt", "r") : fopen("arquivos/hospede.bin", "rb");
 
         if (arquivo == NULL)
         {
@@ -508,7 +502,7 @@ void gerenciarCategoria(char tipoArquivo)
 
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerCategoriaTxt(0, arquivo, ptrCategoria) : lerCategoriaBin(0, arquivo, ptrCategoria);
+                int status = (tipoArquivo == 'T') ? lerCategoriaTxt(0, arquivo, ptrCategoria) : lerCategoriaBin(0, arquivo, ptrCategoria);
                 if (status == 1)
                 {
 
@@ -536,7 +530,7 @@ void gerenciarCategoria(char tipoArquivo)
 
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerCategoriaTxt(codigoCategoria, arquivo, ptrCategoria) : lerCategoriaBin(codigoCategoria, arquivo, ptrCategoria);
+                int status = (tipoArquivo == 'T') ? lerCategoriaTxt(codigoCategoria, arquivo, ptrCategoria) : lerCategoriaBin(codigoCategoria, arquivo, ptrCategoria);
                 if (status == 1)
                 {
 
@@ -579,14 +573,14 @@ void gerenciarAcomodacao(char tipoArquivo)
 {
     char item[] = "acomodacao";
     int operacao = selecionarOperacao(item);
+    FILE *arquivo;
 
     switch (operacao)
     {
     case 1:
         Acomodacao *ptr = coletarDadosAcomodacao();
-        FILE *arquivo;
 
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/acomodacao.txt", "a") : fopen("arquivo/acomodacao.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/acomodacao.txt", "a") : fopen("arquivos/acomodacao.bin", "ab");
 
         if (arquivo == NULL)
         {
@@ -594,7 +588,7 @@ void gerenciarAcomodacao(char tipoArquivo)
             break;
         }
 
-        strcmp(tipoArquivo, "txt") == 0 ? adicionarAcomodacaoTxt(ptr, arquivo) : adicionarAcomodacaoBin(ptr, arquivo);
+        (tipoArquivo == 'T') ? adicionarAcomodacaoTxt(ptr, arquivo) : adicionarAcomodacaoBin(ptr, arquivo);
         free(ptr);
 
         fclose(arquivo);
@@ -607,9 +601,7 @@ void gerenciarAcomodacao(char tipoArquivo)
         break;
 
     case 3:
-        FILE *arquivo;
-
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/acomodacao.txt", "a") : fopen("arquivo/acomodacao.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/acomodacao.txt", "r") : fopen("arquivos/acomodacao.bin", "rb");
         if (arquivo == NULL)
         {
             printf("Arquivo não existe ou não pode ser lido.\n");
@@ -627,7 +619,7 @@ void gerenciarAcomodacao(char tipoArquivo)
 
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerAcomodacaoTxt(0, arquivo, ptrAcomodacao) : lerAcomodacaoBin(0, arquivo, ptrAcomodacao);
+                int status = (tipoArquivo == 'T') ? lerAcomodacaoTxt(0, arquivo, ptrAcomodacao) : lerAcomodacaoBin(0, arquivo, ptrAcomodacao);
                 if (status == 1)
                 {
                     printf("%d {\n Categoria: %d,\n Ocupada: %d,\n Data Inicial: %d/%d/%d,\n Data Final: %d/%d/%d,\n Descrição: %s,\n Facilidades: %s;}\n",
@@ -654,7 +646,7 @@ void gerenciarAcomodacao(char tipoArquivo)
 
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerAcomodacaoTxt(codigoAcomodacao, arquivo, ptrAcomodacao) : lerAcomodacaoBin(codigoAcomodacao, arquivo, ptrAcomodacao);
+                int status = (tipoArquivo == 'T') ? lerAcomodacaoTxt(codigoAcomodacao, arquivo, ptrAcomodacao) : lerAcomodacaoBin(codigoAcomodacao, arquivo, ptrAcomodacao);
                 if (status == 1)
                 {
                     printf("%d {\n Categoria: %d,\n Ocupada: %d,\n Data Inicial: %d/%d/%d,\n Data Final: %d/%d/%d,\n Descrição: %s,\n Facilidades: %s;}\n",
@@ -697,19 +689,19 @@ void gerenciarConsumivel(char tipoArquivo)
     char item[] = "consumivel";
     int operacao = selecionarOperacao(item);
 
+    FILE *arquivo;
     switch (operacao)
     {
     case 1:
         Consumivel *ptr = coletarDadosConsumivel();
-        FILE *arquivo;
 
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/consumivel.txt", "a") : fopen("arquivo/consumivel.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/consumivel.txt", "a") : fopen("arquivos/consumivel.bin", "ab");
         if (arquivo == NULL)
         {
             printf("Arquivo não existe ou não pode ser aberto!\n");
             break;
         }
-        strcmp(tipoArquivo, "txt") == 0 ? adicionarConsumivelTxt(ptr, arquivo) : adicionarConsumivelBin(ptr, arquivo);
+        (tipoArquivo == 'T') ? adicionarConsumivelTxt(ptr, arquivo) : adicionarConsumivelBin(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
 
@@ -721,9 +713,7 @@ void gerenciarConsumivel(char tipoArquivo)
         break;
 
     case 3:
-        FILE *arquivo;
-
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/consumivel.txt", "a") : fopen("arquivo/consumivel.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/consumivel.txt", "r") : fopen("arquivos/consumivel.bin", "rb");
         if (arquivo == NULL)
         {
             printf("Arquivo não existe ou não pode ser lido.\n");
@@ -740,7 +730,7 @@ void gerenciarConsumivel(char tipoArquivo)
         {
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerConsumivelTxt(0, arquivo, ptrConsumivel) : lerConsumivelBin(0, arquivo, ptrConsumivel);
+                int status = (tipoArquivo == 'T') ? lerConsumivelTxt(0, arquivo, ptrConsumivel) : lerConsumivelBin(0, arquivo, ptrConsumivel);
                 if (status == 1)
                 {
                     printf("%d {\n Estoque: %d,\n Estoque Mínimo: %d,\n Descrição: %s,\n Preço de Custo: %.2f,\n Preço de Venda: %.2f;}\n",
@@ -767,7 +757,7 @@ void gerenciarConsumivel(char tipoArquivo)
 
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerConsumivelTxt(codigoConsumivel, arquivo, ptrConsumivel) : lerConsumivelBin(codigoConsumivel, arquivo, ptrConsumivel);
+                int status = (tipoArquivo == 'T') ? lerConsumivelTxt(codigoConsumivel, arquivo, ptrConsumivel) : lerConsumivelBin(codigoConsumivel, arquivo, ptrConsumivel);
                 if (status == 1)
                 {
                     printf("%d {\n Estoque: %d,\n Estoque Mínimo: %d,\n Descrição: %s,\n Preço de Custo: %.2f,\n Preço de Venda: %.2f;}\n",
@@ -809,20 +799,20 @@ void gerenciarFornecedor(char tipoArquivo)
     char item[] = "fornecedor";
     int operacao = selecionarOperacao(item);
 
+    FILE *arquivo;
     switch (operacao)
     {
     case 1:
         Fornecedor *ptr = coletarDadosFornecedor();
-        FILE *arquivo;
 
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/fornecedor.txt", "a") : fopen("arquivo/fornecedor.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/fornecedor.txt", "a") : fopen("arquivos/fornecedor.bin", "ab");
         if (arquivo == NULL)
         {
             printf("Arquivo não existe ou não pode ser aberto!\n");
             break;
         }
 
-        strcmp(tipoArquivo, "txt") == 0 ? adicionarFornecedorTxt(ptr, arquivo) : adicionarFornecedorBin(ptr, arquivo);
+        (tipoArquivo == 'T') ? adicionarFornecedorTxt(ptr, arquivo) : adicionarFornecedorBin(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
 
@@ -834,9 +824,7 @@ void gerenciarFornecedor(char tipoArquivo)
         break;
 
     case 3:
-        FILE *arquivo;
-
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/fornecedor.txt", "a") : fopen("arquivo/fornecedor.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/fornecedor.txt", "r") : fopen("arquivos/fornecedor.bin", "rb");
         if (arquivo == NULL)
         {
             printf("Arquivo não existe ou não pode ser lido.\n");
@@ -853,7 +841,7 @@ void gerenciarFornecedor(char tipoArquivo)
         {
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerFornecedorTxt(0, arquivo, ptrFornecedor) : lerFornecedorBin(0, arquivo, ptrFornecedor);
+                int status = (tipoArquivo == 'T') ? lerFornecedorTxt(0, arquivo, ptrFornecedor) : lerFornecedorBin(0, arquivo, ptrFornecedor);
                 if (status == 1)
                 {
                     printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
@@ -881,7 +869,7 @@ void gerenciarFornecedor(char tipoArquivo)
 
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerFornecedorTxt(codigoFornecedor, arquivo, ptrFornecedor) : lerFornecedorBin(codigoFornecedor, arquivo, ptrFornecedor);
+                int status = (tipoArquivo == 'T') ? lerFornecedorTxt(codigoFornecedor, arquivo, ptrFornecedor) : lerFornecedorBin(codigoFornecedor, arquivo, ptrFornecedor);
                 if (status == 1)
                 {
                     printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
@@ -925,20 +913,20 @@ void gerenciarOperador(char tipoArquivo)
     char item[] = "operador";
     int operacao = selecionarOperacao(item);
 
+    FILE *arquivo;
     switch (operacao)
     {
     case 1:
         Operador *ptr = coletarDadosOperador();
-        FILE *arquivo;
 
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/operador.txt", "a") : fopen("arquivo/operador.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/operador.txt", "a") : fopen("arquivos/operador.bin", "ab");
         if (arquivo == NULL)
         {
             printf("Arquivo não existe ou não pode ser aberto!\n");
             return;
         }
 
-        strcmp(tipoArquivo, "txt") == 0 ? adicionarOperadorTxt(ptr, arquivo) : adicionarOperadorBin(ptr, arquivo);
+        (tipoArquivo == 'T') ? adicionarOperadorTxt(ptr, arquivo) : adicionarOperadorBin(ptr, arquivo);
         free(ptr);
         fclose(arquivo);
 
@@ -950,9 +938,7 @@ void gerenciarOperador(char tipoArquivo)
         break;
 
     case 3:
-        FILE *arquivo;
-
-        arquivo = strcmp(tipoArquivo, "txt") == 0 ? fopen("arquivo/operador.txt", "a") : fopen("arquivo/operador.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/operador.txt", "r") : fopen("arquivos/operador.bin", "rb");
         if (arquivo == NULL)
         {
             printf("Arquivo não existe ou não pode ser lido.\n");
@@ -969,7 +955,7 @@ void gerenciarOperador(char tipoArquivo)
         {
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerOperadorTxt(0, arquivo, ptrOperador) : lerOperadorBin(0, arquivo, ptrOperador);
+                int status = (tipoArquivo == 'T') ? lerOperadorTxt(0, arquivo, ptrOperador) : lerOperadorBin(0, arquivo, ptrOperador);
                 if (status)
                 {
                     printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %s;}\n",
@@ -996,7 +982,7 @@ void gerenciarOperador(char tipoArquivo)
 
             while (1)
             {
-                int status = strcmp(tipoArquivo, "txt") == 0 ? lerOperadorTxt(codigoOperador, arquivo, ptrOperador) : lerOperadorBin(codigoOperador, arquivo, ptrOperador);
+                int status = (tipoArquivo == 'T') ? lerOperadorTxt(codigoOperador, arquivo, ptrOperador) : lerOperadorBin(codigoOperador, arquivo, ptrOperador);
 
                 if (status)
                 {

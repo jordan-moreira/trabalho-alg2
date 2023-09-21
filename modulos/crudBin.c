@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "gestaoDados.h"
 #include "crudBin.h"
 
@@ -149,7 +150,7 @@ int atualizarHospedeBin(int codigo, Hospede *novoDados)
 
     while (1)
     {
-        int resultadoLeitura = lerHospede(0, arquivo, novoDados);
+        int resultadoLeitura = lerHospedeBin(0, arquivo, novoDados);
         if (resultadoLeitura == 0)
         {
             // Fim do arquivo
