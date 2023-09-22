@@ -293,9 +293,12 @@ void gerenciarHotel(char tipoArquivo)
         printf("Registrado com sucesso!\n");
         break;
 
-        // case 2:
-        // atualizarHotel();
-        // break;
+    case 2:
+        ptrHotel = coletarDadosHotel();
+        int status = (tipoArquivo == 'T') ? atualizarHotelTxt(ptrHotel) : atualizarHotelBin(ptrHotel);
+        status == 1 ? printf("registros de hotel atualizados com sucesso") : printf("erro ao atualizar registros de hotel");
+        free(ptrHotel);
+        break;
 
     case 3:
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hotel.txt", "r") : fopen("arquivos/hotel.bin", "rb");
@@ -324,9 +327,10 @@ void gerenciarHotel(char tipoArquivo)
 
         break;
 
-        // case 4:
-        // deletarHotel();
-        // break;
+    case 4:
+        int status = (tipoArquivo == 'T') ? deletarHotelTxt() : deletarHotelBin();
+        status == 1 ? printf("registros de hotel deletados com sucesso") : printf("erro ao deletar registros de hotel");
+        break;
 
     default:
         printf("Erro desconhecido.\n");
@@ -339,11 +343,12 @@ void gerenciarHospede(char tipoArquivo)
     char item[] = "hospede";
     int operacao = selecionarOperacao(item);
     FILE *arquivo;
+    Hospede *ptrHospede;
 
     switch (operacao)
     {
     case 1:
-        Hospede *ptr = coletarDadosHospede();
+        ptrHospede = coletarDadosHospede();
 
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hospede.txt", "a") : fopen("arquivos/hospede.bin", "ab");
 
@@ -353,8 +358,8 @@ void gerenciarHospede(char tipoArquivo)
             break;
         }
 
-        (tipoArquivo == 'T') ? adicionarHospedeTxt(ptr, arquivo) : adicionarHospedeBin(ptr, arquivo);
-        free(ptr);
+        (tipoArquivo == 'T') ? adicionarHospedeTxt(ptrHospede, arquivo) : adicionarHospedeBin(ptrHospede, arquivo);
+        free(ptrHospede);
         fclose(arquivo);
 
         printf("Registrado com sucesso!\n");
@@ -362,12 +367,13 @@ void gerenciarHospede(char tipoArquivo)
 
     case 2:
         int codigoHospede = 0;
-        ptr = coletarDadosHospede();
-        printf("Digite o código único do hóspede que você deseja ler: ");
+        ptrHospede = coletarDadosHospede();
+        printf("Digite o código único do hóspede que você deseja atualizar: ");
         scanf("%d%*c", &codigoHospede);
-        (tipoArquivo == 'T') ? atualizarHospedeTxt(codigoHospede, ptr) : atualizarHospedeBin(codigoHospede, ptr);
-        free(ptr);
-        fclose(arquivo);
+        int status = (tipoArquivo == 'T') ? atualizarHospedeTxt(codigoHospede, ptrHospede) : atualizarHospedeBin(codigoHospede, ptrHospede);
+
+        status == 1 ? printf("registro de hopede atualizado com sucesso") : printf("erro ao atualizar registro de hospede");
+        free(ptrHospede);
         break;
 
     case 3:
@@ -379,7 +385,7 @@ void gerenciarHospede(char tipoArquivo)
             printf("Arquivo não existe ou não pode ser lido.\n");
             break;
         }
-        Hospede *ptrHospede = malloc(sizeof(Hospede));
+        ptrHospede = malloc(sizeof(Hospede));
 
         int codigoMenu = 0;
 
@@ -449,7 +455,12 @@ void gerenciarHospede(char tipoArquivo)
         break;
 
     case 4:
-        // deletarHospede();
+        int codigoHospede = 0;
+        printf("Digite o código único do hóspede que você deseja deletar: ");
+        scanf("%d%*c", &codigoHospede);
+        int status = (tipoArquivo == 'T') ? deletarHospedeTxt(codigoHospede) : deletarHospedeBin(codigoHospede);
+
+        status == 1 ? printf("registro de hopede deletado com sucesso") : printf("erro ao deletar registro de hospede");
         break;
 
     default:

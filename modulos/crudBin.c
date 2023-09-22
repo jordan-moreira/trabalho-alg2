@@ -134,60 +134,67 @@ int lerOperadorBin(int codigo, FILE *arquivo, Operador *ptrOperador)
 
 // ------------Update---------
 
-// Função para atualizar um registro de Hospede
-int atualizarHospedeBin(int codigo, Hospede *novoDados)
+// Função para atualizar um registro de Hotel
+int atualizarHotelBin(Hotel *novosDados)
 {
-    FILE *arquivo = fopen("arquivo/hospede.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/hotel.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
-    int encontrado = 0; // Indica se o código foi encontrado
-
-    while (1)
-    {
-        int resultadoLeitura = lerHospedeBin(0, arquivo, novoDados);
-        if (resultadoLeitura == 0)
-        {
-            // Fim do arquivo
-            break;
-        }
-
-        if (resultadoLeitura == 1)
-        {
-            if (novoDados->codigo == codigo)
-            {
-                // Se o código foi encontrado, atualize os dados com os novos dados
-                fwrite(novoDados, sizeof(Hospede), 1, tempFile);
-                encontrado = 1;
-            }
-            else
-            {
-                // Se não for o código que estamos procurando, escreva o registro original de volta no arquivo temporário
-                fwrite(novoDados, sizeof(Hospede), 1, tempFile);
-            }
-        }
-    }
+    fwrite(novosDados, sizeof(Hotel), 1, tempFile);
 
     fclose(arquivo);
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/hospede.txt");
-    rename("arquivo/temp.txt", "arquivo/hospede.txt");
+    remove("arquivos/hotel.bin");
+    rename("arquivos/temp.bin", "arquivos/hotel.bin");
+
+    return 1; // Indica que a operação foi bem-sucedida
+}
+
+// Função para atualizar um registro de Hospede
+int atualizarHospedeBin(int codigo, Hospede *novoDados)
+{
+    FILE *arquivo = fopen("arquivos/hospede.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
+
+    if (arquivo == NULL || tempFile == NULL)
+    {
+        return 0; // Indica que a operação falhou
+    }
+
+    int encontrado = 0; // Indica se o código foi encontrado
+
+    Hospede hospedeTemp; // Estrutura temporária para armazenar os dados lidos
+
+    while (fread(&hospedeTemp, sizeof(Hospede), 1, arquivo) == 1)
+    {
+        if (hospedeTemp.codigo == codigo)
+        {
+            // Se o código foi encontrado, atualize os dados com os novos dados
+            memcpy(&hospedeTemp, novoDados, sizeof(Hospede));
+            encontrado = 1;
+        }
+        fwrite(&hospedeTemp, sizeof(Hospede), 1, tempFile);
+    }
+    fclose(arquivo);
+    fclose(tempFile);
+
+    // Substitua o arquivo original pelo arquivo temporário
+    remove("arquivos/hospede.bin");
+    rename("arquivos/temp.bin", "arquivos/hospede.bin");
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -195,12 +202,11 @@ int atualizarHospedeBin(int codigo, Hospede *novoDados)
 // Função para atualizar um registro de Categoria
 int atualizarCategoriaBin(int codigo, Categoria *novoDados)
 {
-    FILE *arquivo = fopen("arquivo/categoria.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/categoria.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -223,17 +229,15 @@ int atualizarCategoriaBin(int codigo, Categoria *novoDados)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/categoria.txt");
-    rename("arquivo/temp.txt", "arquivo/categoria.txt");
+    remove("arquivos/categoria.bin");
+    rename("arquivos/temp.bin", "arquivos/categoria.bin");
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -241,12 +245,11 @@ int atualizarCategoriaBin(int codigo, Categoria *novoDados)
 // Função para atualizar um registro de Acomodação
 int atualizarAcomodacaoBin(int codigo, Acomodacao *novoDados)
 {
-    FILE *arquivo = fopen("arquivo/acomodacao.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/acomodacao.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -260,72 +263,36 @@ int atualizarAcomodacaoBin(int codigo, Acomodacao *novoDados)
         {
             // Se o código foi encontrado, atualize os dados com os novos dados
             memcpy(&acomodacaoTemp, novoDados, sizeof(Acomodacao));
-            fwrite(&acomodacaoTemp, sizeof(Acomodacao), 1, tempFile);
             encontrado = 1;
         }
-        else
-        {
-            // Se não for o código que estamos procurando, escreva o registro original no arquivo temporário
-            fwrite(&acomodacaoTemp, sizeof(Acomodacao), 1, tempFile);
-        }
+        fwrite(&acomodacaoTemp, sizeof(Acomodacao), 1, tempFile);
     }
 
     fclose(arquivo);
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/acomodacao.txt");
-    rename("arquivo/temp.txt", "arquivo/acomodacao.txt");
+    remove("arquivos/acomodacao.bin");
+    rename("arquivos/temp.bin", "arquivos/acomodacao.bin");
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
-}
-
-// Função para atualizar um registro de Hotel
-int atualizarHotelBin(Hotel *novosDados)
-{
-    FILE *arquivo = fopen("arquivo/hotel.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
-
-    if (arquivo == NULL || tempFile == NULL)
-    {
-        printf("Erro ao abrir arquivos!\n");
-        return 0; // Indica que a operação falhou
-    }
-
-    Hotel hotelTemp; // Estrutura temporária para armazenar os dados lidos
-
-    memcpy(&hotelTemp, novosDados, sizeof(Hotel));
-    fwrite(&hotelTemp, sizeof(Hotel), 1, tempFile);
-
-    fclose(arquivo);
-    fclose(tempFile);
-
-    // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/hotel.txt");
-    rename("arquivo/temp.txt", "arquivo/hotel.txt");
-
-    printf("Registro atualizado com sucesso!\n");
-    return 1; // Indica que a operação foi bem-sucedida
 }
 
 // Função para atualizar um registro de consumível
 int atualizarConsumivelBin(int codigo, Consumivel *novosDados)
 {
-    FILE *arquivo = fopen("arquivo/consumivel.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/consumivel.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -339,31 +306,24 @@ int atualizarConsumivelBin(int codigo, Consumivel *novosDados)
         {
             // Se o código foi encontrado, atualize os dados com os novos dados
             memcpy(&consumivelTemp, novosDados, sizeof(Consumivel));
-            fwrite(&consumivelTemp, sizeof(Consumivel), 1, tempFile);
             encontrado = 1;
         }
-        else
-        {
-            // Se não for o código que estamos procurando, escreva o registro original no arquivo temporário
-            fwrite(&consumivelTemp, sizeof(Consumivel), 1, tempFile);
-        }
+        fwrite(&consumivelTemp, sizeof(Consumivel), 1, tempFile);
     }
 
     fclose(arquivo);
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/consumivel.txt");
-    rename("arquivo/temp.txt", "arquivo/consumivel.txt");
+    remove("arquivos/consumivel.bin");
+    rename("arquivos/temp.bin", "arquivos/consumivel.bin");
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -371,12 +331,11 @@ int atualizarConsumivelBin(int codigo, Consumivel *novosDados)
 // Função para atualizar um registro de fornecedor
 int atualizarFornecedorBin(int codigo, Fornecedor *novoDados)
 {
-    FILE *arquivo = fopen("arquivo/fornecedor.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/fornecedor.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -390,31 +349,24 @@ int atualizarFornecedorBin(int codigo, Fornecedor *novoDados)
         {
             // Se o código foi encontrado, atualize os dados com os novos dados
             memcpy(&fornecedorTemp, novoDados, sizeof(Fornecedor));
-            fwrite(&fornecedorTemp, sizeof(Fornecedor), 1, tempFile);
             encontrado = 1;
         }
-        else
-        {
-            // Se não for o código que estamos procurando, escreva o registro original no arquivo temporário
-            fwrite(&fornecedorTemp, sizeof(Fornecedor), 1, tempFile);
-        }
+        fwrite(&fornecedorTemp, sizeof(Fornecedor), 1, tempFile);
     }
 
     fclose(arquivo);
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/fornecedor.txt");
-    rename("arquivo/temp.txt", "arquivo/fornecedor.txt");
+    remove("arquivos/fornecedor.bin");
+    rename("arquivos/temp.bin", "arquivos/fornecedor.bin");
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -422,12 +374,11 @@ int atualizarFornecedorBin(int codigo, Fornecedor *novoDados)
 // Função para atualizar um registro de operador
 int atualizarOperadorBin(int codigo, Operador *novoDados)
 {
-    FILE *arquivo = fopen("arquivo/operador.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/operador.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -441,31 +392,24 @@ int atualizarOperadorBin(int codigo, Operador *novoDados)
         {
             // Se o código foi encontrado, atualize os dados com os novos dados
             memcpy(&operadorTemp, novoDados, sizeof(Operador));
-            fwrite(&operadorTemp, sizeof(Operador), 1, tempFile);
             encontrado = 1;
         }
-        else
-        {
-            // Se não for o código que estamos procurando, escreva o registro original no arquivo temporário
-            fwrite(&operadorTemp, sizeof(Operador), 1, tempFile);
-        }
+        fwrite(&operadorTemp, sizeof(Operador), 1, tempFile);
     }
 
     fclose(arquivo);
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/operador.txt");
-    rename("arquivo/temp.txt", "arquivo/operador.txt");
+    remove("arquivos/operador.bin");
+    rename("arquivos/temp.bin", "arquivos/operador.bin");
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -475,30 +419,26 @@ int atualizarOperadorBin(int codigo, Operador *novoDados)
 // Função para deletar todos os registros de Hotel
 int deletarHotelBin()
 {
-    FILE *arquivo = fopen("arquivo/hotel.txt", "w");
+    FILE *arquivo = fopen("arquivos/hotel.bin", "wb"); // abrindo o arquivo ja existente no modo "w" os seus dados sao apagados
 
     if (arquivo == NULL)
     {
-        printf("Erro ao abrir o arquivo!\n");
         return 0; // Indica que a operação falhou
     }
 
-    // Feche o arquivo imediatamente para excluí-lo
     fclose(arquivo);
 
-    printf("Todos os registros de hotel foram excluídos com sucesso!\n");
     return 1; // Indica que a operação foi bem-sucedida
 }
 
 // Função para deletar um hóspede por código
 int deletarHospedeBin(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/hospede.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/hospede.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -522,17 +462,15 @@ int deletarHospedeBin(int codigo)
     fclose(tempFile);
 
     // Substitui o arquivo original pelo arquivo temporário
-    remove("arquivo/hospede.txt");
-    rename("arquivo/temp.txt", "arquivo/hospede.txt");
+    remove("arquivos/hospede.bin");
+    rename("arquivos/temp.bin", "arquivos/hospede.bin");
 
     if (encontrado)
     {
-        printf("Hóspede com código %d excluída com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Hóspede com código %d não encontrada!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -540,12 +478,11 @@ int deletarHospedeBin(int codigo)
 // Função para deletar uma categoria por código
 int deletarCategoriaBin(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/categoria.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/categoria.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -569,17 +506,15 @@ int deletarCategoriaBin(int codigo)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/categoria.txt");
-    rename("arquivo/temp.txt", "arquivo/categoria.txt");
+    remove("arquivos/categoria.bin");
+    rename("arquivos/temp.bin", "arquivos/categoria.bin");
 
     if (encontrado)
     {
-        printf("Categoria com código %d excluída com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Categoria com código %d não encontrada!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -587,12 +522,11 @@ int deletarCategoriaBin(int codigo)
 // Função para deletar uma acomodação por código
 int deletarAcomodacaoBin(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/acomodacao.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/acomodacao.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -616,17 +550,15 @@ int deletarAcomodacaoBin(int codigo)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/acomodacao.txt");
-    rename("arquivo/temp.txt", "arquivo/acomodacao.txt");
+    remove("arquivos/acomodacao.bin");
+    rename("arquivos/temp.bin", "arquivos/acomodacao.bin");
 
     if (encontrado)
     {
-        printf("Acomodação com código %d excluída com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Acomodação com código %d não encontrada!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -634,12 +566,11 @@ int deletarAcomodacaoBin(int codigo)
 // Função para deletar um consumível por código
 int deletarConsumivelBin(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/consumivel.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/consumivel.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -663,17 +594,15 @@ int deletarConsumivelBin(int codigo)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/consumivel.txt");
-    rename("arquivo/temp.txt", "arquivo/consumivel.txt");
+    remove("arquivos/consumivel.bin");
+    rename("arquivos/temp.bin", "arquivos/consumivel.bin");
 
     if (encontrado)
     {
-        printf("Consumível com código %d excluído com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Consumível com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -681,12 +610,11 @@ int deletarConsumivelBin(int codigo)
 // Função para deletar um fornecedor por código
 int deletarFornecedorBin(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/fornecedor.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/fornecedor.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -710,17 +638,15 @@ int deletarFornecedorBin(int codigo)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/fornecedor.txt");
-    rename("arquivo/temp.txt", "arquivo/fornecedor.txt");
+    remove("arquivos/fornecedor.bin");
+    rename("arquivos/temp.bin", "arquivos/fornecedor.bin");
 
     if (encontrado)
     {
-        printf("Fornecedor com código %d excluído com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Fornecedor com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -728,12 +654,11 @@ int deletarFornecedorBin(int codigo)
 // Função para deletar um operador por código
 int deletarOperadorBin(int codigo)
 {
-    FILE *arquivo = fopen("arquivo/operador.txt", "r+");
-    FILE *tempFile = fopen("arquivo/temp.txt", "w");
+    FILE *arquivo = fopen("arquivos/operador.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -757,17 +682,15 @@ int deletarOperadorBin(int codigo)
     fclose(tempFile);
 
     // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivo/operador.txt");
-    rename("arquivo/temp.txt", "arquivo/operador.txt");
+    remove("arquivos/operador.bin");
+    rename("arquivos/temp.bin", "arquivos/operador.bin");
 
     if (encontrado)
     {
-        printf("Operador com código %d excluído com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Operador com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }

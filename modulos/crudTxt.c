@@ -4,8 +4,6 @@
 #include "gestaoDados.h"
 #include "crudTxt.h"
 
-// Capturar dados;
-// Trabalhar com os dados;
 // Gravar no arquivo;
 
 // ------------Create---------
@@ -159,15 +157,36 @@ int lerOperadorTxt(int codigo, FILE *arquivo, Operador *ptrOperador)
 
 // ------------Update---------
 
+// Função para atualizar um registro de Hotel
+int atualizarHotelTxt(Hotel *novoDados)
+{
+    FILE *arquivo = fopen("arquivos/hotel.txt", "r");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
+
+    if (arquivo == NULL || tempFile == NULL)
+    {
+        return 0; // Indica que a operação falhou
+    }
+
+    criarHotelTxt(novoDados, tempFile);
+
+    fclose(arquivo);
+    fclose(tempFile);
+
+    // Substitua o arquivo original pelo arquivo temporário
+    remove("arquivos/hotel.txt");
+    rename("arquivos/temp.txt", "arquivos/hotel.txt");
+    return 1;
+}
+
 // Função para atualizar um registro de Hospede
 int atualizarHospedeTxt(int codigo, Hospede *novoDados)
 {
     FILE *arquivo = fopen("arquivos/hospede.txt", "r");
-    FILE *tempFile = fopen("arquivos/temp.txt", "a");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
@@ -207,12 +226,10 @@ int atualizarHospedeTxt(int codigo, Hospede *novoDados)
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -220,30 +237,41 @@ int atualizarHospedeTxt(int codigo, Hospede *novoDados)
 // Função para atualizar um registro de Categoria
 int atualizarCategoriaTxt(int codigo, Categoria *novoDados)
 {
-    FILE *arquivo = fopen("arquivos/categoria.txt", "r+");
+    FILE *arquivo = fopen("arquivos/categoria.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
     int encontrado = 0; // Indica se o código foi encontrado
-
-    Categoria categoriaTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&categoriaTemp, sizeof(Categoria), 1, arquivo) == 1)
+    Categoria *antigosDados = malloc(sizeof(Categoria));
+    while (1)
     {
-        if (categoriaTemp.codigo == codigo)
+        int resultadoLeitura = lerCategoriaTxt(0, arquivo, antigosDados);
+        if (resultadoLeitura == 0)
         {
-            // Se o código foi encontrado, atualize os dados com os novos dados
-            memcpy(&categoriaTemp, novoDados, sizeof(Categoria));
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        fwrite(&categoriaTemp, sizeof(Categoria), 1, tempFile);
-    }
 
+        if (resultadoLeitura == 1)
+        {
+            if (antigosDados->codigo == codigo)
+            {
+                // Se o código foi encontrado, atualize os dados com os novos dados
+                adicionarCategoriaTxt(novoDados, tempFile);
+                encontrado = 1;
+            }
+            else
+            {
+                // Se não for o código que estamos procurando, escreva o registro original de volta no arquivo temporário
+                adicionarCategoriaTxt(antigosDados, tempFile);
+            }
+        }
+    }
+    free(antigosDados);
     fclose(arquivo);
     fclose(tempFile);
 
@@ -253,12 +281,10 @@ int atualizarCategoriaTxt(int codigo, Categoria *novoDados)
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -266,35 +292,41 @@ int atualizarCategoriaTxt(int codigo, Categoria *novoDados)
 // Função para atualizar um registro de Acomodação
 int atualizarAcomodacaoTxt(int codigo, Acomodacao *novoDados)
 {
-    FILE *arquivo = fopen("arquivos/acomodacao.txt", "r+");
+    FILE *arquivo = fopen("arquivos/acomodacao.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
     int encontrado = 0; // Indica se o código foi encontrado
-
-    Acomodacao acomodacaoTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&acomodacaoTemp, sizeof(Acomodacao), 1, arquivo) == 1)
+    Acomodacao *antigosDados = malloc(sizeof(Acomodacao));
+    while (1)
     {
-        if (acomodacaoTemp.codigo == codigo)
+        int resultadoLeitura = lerAcomodacaoTxt(0, arquivo, antigosDados);
+        if (resultadoLeitura == 0)
         {
-            // Se o código foi encontrado, atualize os dados com os novos dados
-            memcpy(&acomodacaoTemp, novoDados, sizeof(Acomodacao));
-            fwrite(&acomodacaoTemp, sizeof(Acomodacao), 1, tempFile);
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        else
+
+        if (resultadoLeitura == 1)
         {
-            // Se não for o código que estamos procurando, escreva o registro original no arquivo temporário
-            fwrite(&acomodacaoTemp, sizeof(Acomodacao), 1, tempFile);
+            if (antigosDados->codigo == codigo)
+            {
+                // Se o código foi encontrado, atualize os dados com os novos dados
+                adicionarAcomodacaoTxt(novoDados, tempFile);
+                encontrado = 1;
+            }
+            else
+            {
+                // Se não for o código que estamos procurando, escreva o registro original de volta no arquivo temporário
+                adicionarAcomodacaoTxt(antigosDados, tempFile);
+            }
         }
     }
-
+    free(antigosDados);
     fclose(arquivo);
     fclose(tempFile);
 
@@ -304,76 +336,52 @@ int atualizarAcomodacaoTxt(int codigo, Acomodacao *novoDados)
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
 
-// Função para atualizar um registro de Hotel
-int atualizarHotelTxt(Hotel *novosDados)
-{
-    FILE *arquivo = fopen("arquivos/hotel.txt", "r+");
-    FILE *tempFile = fopen("arquivos/temp.txt", "w");
-
-    if (arquivo == NULL || tempFile == NULL)
-    {
-        printf("Erro ao abrir arquivos!\n");
-        return 0; // Indica que a operação falhou
-    }
-
-    Hotel hotelTemp; // Estrutura temporária para armazenar os dados lidos
-
-    memcpy(&hotelTemp, novosDados, sizeof(Hotel));
-    fwrite(&hotelTemp, sizeof(Hotel), 1, tempFile);
-
-    fclose(arquivo);
-    fclose(tempFile);
-
-    // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivos/hotel.txt");
-    rename("arquivos/temp.txt", "arquivos/hotel.txt");
-
-    printf("Registro atualizado com sucesso!\n");
-    return 1; // Indica que a operação foi bem-sucedida
-}
-
 // Função para atualizar um registro de consumível
-int atualizarConsumivelTxt(int codigo, Consumivel *novosDados)
+int atualizarConsumivelTxt(int codigo, Consumivel *novoDados)
 {
-    FILE *arquivo = fopen("arquivos/consumivel.txt", "r+");
+    FILE *arquivo = fopen("arquivos/consumivel.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
     int encontrado = 0; // Indica se o código foi encontrado
-
-    Consumivel consumivelTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&consumivelTemp, sizeof(Consumivel), 1, arquivo) == 1)
+    Consumivel *antigosDados = malloc(sizeof(Consumivel));
+    while (1)
     {
-        if (consumivelTemp.codigo == codigo)
+        int resultadoLeitura = lerConsumivelTxt(0, arquivo, antigosDados);
+        if (resultadoLeitura == 0)
         {
-            // Se o código foi encontrado, atualize os dados com os novos dados
-            memcpy(&consumivelTemp, novosDados, sizeof(Consumivel));
-            fwrite(&consumivelTemp, sizeof(Consumivel), 1, tempFile);
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        else
+
+        if (resultadoLeitura == 1)
         {
-            // Se não for o código que estamos procurando, escreva o registro original no arquivo temporário
-            fwrite(&consumivelTemp, sizeof(Consumivel), 1, tempFile);
+            if (antigosDados->codigo == codigo)
+            {
+                // Se o código foi encontrado, atualize os dados com os novos dados
+                adicionarConsumivelTxt(novoDados, tempFile);
+                encontrado = 1;
+            }
+            else
+            {
+                // Se não for o código que estamos procurando, escreva o registro original de volta no arquivo temporário
+                adicionarConsumivelTxt(antigosDados, tempFile);
+            }
         }
     }
-
+    free(antigosDados);
     fclose(arquivo);
     fclose(tempFile);
 
@@ -383,12 +391,10 @@ int atualizarConsumivelTxt(int codigo, Consumivel *novosDados)
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -396,35 +402,41 @@ int atualizarConsumivelTxt(int codigo, Consumivel *novosDados)
 // Função para atualizar um registro de fornecedor
 int atualizarFornecedorTxt(int codigo, Fornecedor *novoDados)
 {
-    FILE *arquivo = fopen("arquivos/fornecedor.txt", "r+");
+    FILE *arquivo = fopen("arquivos/fornecedor.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
     int encontrado = 0; // Indica se o código foi encontrado
-
-    Fornecedor fornecedorTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&fornecedorTemp, sizeof(Fornecedor), 1, arquivo) == 1)
+    Fornecedor *antigosDados = malloc(sizeof(Fornecedor));
+    while (1)
     {
-        if (fornecedorTemp.codigo == codigo)
+        int resultadoLeitura = lerFornecedorTxt(0, arquivo, antigosDados);
+        if (resultadoLeitura == 0)
         {
-            // Se o código foi encontrado, atualize os dados com os novos dados
-            memcpy(&fornecedorTemp, novoDados, sizeof(Fornecedor));
-            fwrite(&fornecedorTemp, sizeof(Fornecedor), 1, tempFile);
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        else
+
+        if (resultadoLeitura == 1)
         {
-            // Se não for o código que estamos procurando, escreva o registro original no arquivo temporário
-            fwrite(&fornecedorTemp, sizeof(Fornecedor), 1, tempFile);
+            if (antigosDados->codigo == codigo)
+            {
+                // Se o código foi encontrado, atualize os dados com os novos dados
+                adicionarFornecedorTxt(novoDados, tempFile);
+                encontrado = 1;
+            }
+            else
+            {
+                // Se não for o código que estamos procurando, escreva o registro original de volta no arquivo temporário
+                adicionarFornecedorTxt(antigosDados, tempFile);
+            }
         }
     }
-
+    free(antigosDados);
     fclose(arquivo);
     fclose(tempFile);
 
@@ -434,12 +446,10 @@ int atualizarFornecedorTxt(int codigo, Fornecedor *novoDados)
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -447,35 +457,41 @@ int atualizarFornecedorTxt(int codigo, Fornecedor *novoDados)
 // Função para atualizar um registro de operador
 int atualizarOperadorTxt(int codigo, Operador *novoDados)
 {
-    FILE *arquivo = fopen("arquivos/operador.txt", "r+");
+    FILE *arquivo = fopen("arquivos/operador.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
     int encontrado = 0; // Indica se o código foi encontrado
-
-    Operador operadorTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&operadorTemp, sizeof(Operador), 1, arquivo) == 1)
+    Operador *antigosDados = malloc(sizeof(Operador));
+    while (1)
     {
-        if (operadorTemp.codigo == codigo)
+        int resultadoLeitura = lerOperadorTxt(0, arquivo, antigosDados);
+        if (resultadoLeitura == 0)
         {
-            // Se o código foi encontrado, atualize os dados com os novos dados
-            memcpy(&operadorTemp, novoDados, sizeof(Operador));
-            fwrite(&operadorTemp, sizeof(Operador), 1, tempFile);
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        else
+
+        if (resultadoLeitura == 1)
         {
-            // Se não for o código que estamos procurando, escreva o registro original no arquivo temporário
-            fwrite(&operadorTemp, sizeof(Operador), 1, tempFile);
+            if (antigosDados->codigo == codigo)
+            {
+                // Se o código foi encontrado, atualize os dados com os novos dados
+                adicionarOperadorTxt(novoDados, tempFile);
+                encontrado = 1;
+            }
+            else
+            {
+                // Se não for o código que estamos procurando, escreva o registro original de volta no arquivo temporário
+                adicionarOperadorTxt(antigosDados, tempFile);
+            }
         }
     }
-
+    free(antigosDados);
     fclose(arquivo);
     fclose(tempFile);
 
@@ -485,12 +501,10 @@ int atualizarOperadorTxt(int codigo, Operador *novoDados)
 
     if (encontrado)
     {
-        printf("Registro com código %d atualizado com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Registro com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -500,64 +514,68 @@ int atualizarOperadorTxt(int codigo, Operador *novoDados)
 // Função para deletar todos os registros de Hotel
 int deletarHotelTxt()
 {
-    FILE *arquivo = fopen("arquivos/hotel.txt", "w");
+    FILE *arquivo = fopen("arquivos/hotel.txt", "w"); // abrindo o arquivo ja existente no modo "w" os seus dados sao apagados
 
     if (arquivo == NULL)
     {
-        printf("Erro ao abrir o arquivo!\n");
         return 0; // Indica que a operação falhou
     }
 
-    // Feche o arquivo imediatamente para excluí-lo
+    // Feche o arquivo
     fclose(arquivo);
 
-    printf("Todos os registros de hotel foram excluídos com sucesso!\n");
     return 1; // Indica que a operação foi bem-sucedida
 }
 
 // Função para deletar um hóspede por código
 int deletarHospedeTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivos/hospede.txt", "r+");
+    FILE *arquivo = fopen("arquivos/hospede.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
-    int encontrado = 0; // Indica se o código foi encontrado
-
-    Hospede hospedeTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&hospedeTemp, sizeof(Hospede), 1, arquivo) == 1)
+    int encontrado = 0;                                // Indica se o código foi encontrado
+    Hospede *dadosOriginais = malloc(sizeof(Hospede)); // Estrutura temporária para armazenar os dados lidos
+    while (1)
     {
-        if (hospedeTemp.codigo == codigo)
+        int resultadoLeitura = lerHospedeTxt(0, arquivo, dadosOriginais);
+        if (resultadoLeitura == 0)
         {
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        else
+
+        if (resultadoLeitura == 1)
         {
-            fwrite(&hospedeTemp, sizeof(Hospede), 1, tempFile);
+            if (dadosOriginais->codigo == codigo)
+            {
+                // Se o código foi encontrado, nao o escreva no novo arquivo
+                encontrado = 1;
+            }
+            else
+            {
+                adicionarHospedeTxt(dadosOriginais, tempFile);
+            }
         }
     }
-
+    free(dadosOriginais);
     fclose(arquivo);
     fclose(tempFile);
 
-    // Substitui o arquivo original pelo arquivo temporário
+    // Substitua o arquivo original pelo arquivo temporário
     remove("arquivos/hospede.txt");
     rename("arquivos/temp.txt", "arquivos/hospede.txt");
 
     if (encontrado)
     {
-        printf("Hóspede com código %d excluída com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Hóspede com código %d não encontrada!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -565,31 +583,39 @@ int deletarHospedeTxt(int codigo)
 // Função para deletar uma categoria por código
 int deletarCategoriaTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivos/categoria.txt", "r+");
+    FILE *arquivo = fopen("arquivos/categoria.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
-    int encontrado = 0; // Indica se o código foi encontrado
-
-    Categoria categoriaTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&categoriaTemp, sizeof(Categoria), 1, arquivo) == 1)
+    int encontrado = 0;                                    // Indica se o código foi encontrado
+    Categoria *dadosOriginais = malloc(sizeof(Categoria)); // Estrutura temporária para armazenar os dados lidos
+    while (1)
     {
-        if (categoriaTemp.codigo == codigo)
+        int resultadoLeitura = lerCategoriaTxt(0, arquivo, dadosOriginais);
+        if (resultadoLeitura == 0)
         {
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        else
+
+        if (resultadoLeitura == 1)
         {
-            fwrite(&categoriaTemp, sizeof(Categoria), 1, tempFile);
+            if (dadosOriginais->codigo == codigo)
+            {
+                // Se o código foi encontrado, nao o escreva no novo arquivo
+                encontrado = 1;
+            }
+            else
+            {
+                adicionarCategoriaTxt(dadosOriginais, tempFile);
+            }
         }
     }
-
+    free(dadosOriginais);
     fclose(arquivo);
     fclose(tempFile);
 
@@ -599,12 +625,10 @@ int deletarCategoriaTxt(int codigo)
 
     if (encontrado)
     {
-        printf("Categoria com código %d excluída com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Categoria com código %d não encontrada!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -612,31 +636,39 @@ int deletarCategoriaTxt(int codigo)
 // Função para deletar uma acomodação por código
 int deletarAcomodacaoTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivos/acomodacao.txt", "r+");
+    FILE *arquivo = fopen("arquivos/acomodacao.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
-    int encontrado = 0; // Indica se o código foi encontrado
-
-    Acomodacao acomodacaoTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&acomodacaoTemp, sizeof(Acomodacao), 1, arquivo) == 1)
+    int encontrado = 0;                                      // Indica se o código foi encontrado
+    Acomodacao *dadosOriginais = malloc(sizeof(Acomodacao)); // Estrutura temporária para armazenar os dados lidos
+    while (1)
     {
-        if (acomodacaoTemp.codigo == codigo)
+        int resultadoLeitura = lerAcomodacaoTxt(0, arquivo, dadosOriginais);
+        if (resultadoLeitura == 0)
         {
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        else
+
+        if (resultadoLeitura == 1)
         {
-            fwrite(&acomodacaoTemp, sizeof(Acomodacao), 1, tempFile);
+            if (dadosOriginais->codigo == codigo)
+            {
+                // Se o código foi encontrado, nao o escreva no novo arquivo
+                encontrado = 1;
+            }
+            else
+            {
+                adicionarAcomodacaoTxt(dadosOriginais, tempFile);
+            }
         }
     }
-
+    free(dadosOriginais);
     fclose(arquivo);
     fclose(tempFile);
 
@@ -646,12 +678,10 @@ int deletarAcomodacaoTxt(int codigo)
 
     if (encontrado)
     {
-        printf("Acomodação com código %d excluída com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Acomodação com código %d não encontrada!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -659,31 +689,39 @@ int deletarAcomodacaoTxt(int codigo)
 // Função para deletar um consumível por código
 int deletarConsumivelTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivos/consumivel.txt", "r+");
+    FILE *arquivo = fopen("arquivos/consumivel.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
-    int encontrado = 0; // Indica se o código foi encontrado
-
-    Consumivel consumivelTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&consumivelTemp, sizeof(Consumivel), 1, arquivo) == 1)
+    int encontrado = 0;                                      // Indica se o código foi encontrado
+    Consumivel *dadosOriginais = malloc(sizeof(Consumivel)); // Estrutura temporária para armazenar os dados lidos
+    while (1)
     {
-        if (consumivelTemp.codigo == codigo)
+        int resultadoLeitura = lerConsumivelTxt(0, arquivo, dadosOriginais);
+        if (resultadoLeitura == 0)
         {
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        else
+
+        if (resultadoLeitura == 1)
         {
-            fwrite(&consumivelTemp, sizeof(Consumivel), 1, tempFile);
+            if (dadosOriginais->codigo == codigo)
+            {
+                // Se o código foi encontrado, nao o escreva no novo arquivo
+                encontrado = 1;
+            }
+            else
+            {
+                adicionarConsumivelTxt(dadosOriginais, tempFile);
+            }
         }
     }
-
+    free(dadosOriginais);
     fclose(arquivo);
     fclose(tempFile);
 
@@ -693,12 +731,10 @@ int deletarConsumivelTxt(int codigo)
 
     if (encontrado)
     {
-        printf("Consumível com código %d excluído com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Consumível com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -706,31 +742,39 @@ int deletarConsumivelTxt(int codigo)
 // Função para deletar um fornecedor por código
 int deletarFornecedorTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivos/fornecedor.txt", "r+");
+    FILE *arquivo = fopen("arquivos/fornecedor.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
-    int encontrado = 0; // Indica se o código foi encontrado
-
-    Fornecedor fornecedorTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&fornecedorTemp, sizeof(Fornecedor), 1, arquivo) == 1)
+    int encontrado = 0;                                      // Indica se o código foi encontrado
+    Fornecedor *dadosOriginais = malloc(sizeof(Fornecedor)); // Estrutura temporária para armazenar os dados lidos
+    while (1)
     {
-        if (fornecedorTemp.codigo == codigo)
+        int resultadoLeitura = lerFornecedorTxt(0, arquivo, dadosOriginais);
+        if (resultadoLeitura == 0)
         {
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        else
+
+        if (resultadoLeitura == 1)
         {
-            fwrite(&fornecedorTemp, sizeof(Fornecedor), 1, tempFile);
+            if (dadosOriginais->codigo == codigo)
+            {
+                // Se o código foi encontrado, nao o escreva no novo arquivo
+                encontrado = 1;
+            }
+            else
+            {
+                adicionarFornecedorTxt(dadosOriginais, tempFile);
+            }
         }
     }
-
+    free(dadosOriginais);
     fclose(arquivo);
     fclose(tempFile);
 
@@ -740,12 +784,10 @@ int deletarFornecedorTxt(int codigo)
 
     if (encontrado)
     {
-        printf("Fornecedor com código %d excluído com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Fornecedor com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
@@ -753,31 +795,39 @@ int deletarFornecedorTxt(int codigo)
 // Função para deletar um operador por código
 int deletarOperadorTxt(int codigo)
 {
-    FILE *arquivo = fopen("arquivos/operador.txt", "r+");
+    FILE *arquivo = fopen("arquivos/operador.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("Erro ao abrir arquivos!\n");
         return 0; // Indica que a operação falhou
     }
 
-    int encontrado = 0; // Indica se o código foi encontrado
-
-    Operador operadorTemp; // Estrutura temporária para armazenar os dados lidos
-
-    while (fread(&operadorTemp, sizeof(Operador), 1, arquivo) == 1)
+    int encontrado = 0;                                  // Indica se o código foi encontrado
+    Operador *dadosOriginais = malloc(sizeof(Operador)); // Estrutura temporária para armazenar os dados lidos
+    while (1)
     {
-        if (operadorTemp.codigo == codigo)
+        int resultadoLeitura = lerOperadorTxt(0, arquivo, dadosOriginais);
+        if (resultadoLeitura == 0)
         {
-            encontrado = 1;
+            // Fim do arquivo
+            break;
         }
-        else
+
+        if (resultadoLeitura == 1)
         {
-            fwrite(&operadorTemp, sizeof(Operador), 1, tempFile);
+            if (dadosOriginais->codigo == codigo)
+            {
+                // Se o código foi encontrado, nao o escreva no novo arquivo
+                encontrado = 1;
+            }
+            else
+            {
+                adicionarOperadorTxt(dadosOriginais, tempFile);
+            }
         }
     }
-
+    free(dadosOriginais);
     fclose(arquivo);
     fclose(tempFile);
 
@@ -787,12 +837,10 @@ int deletarOperadorTxt(int codigo)
 
     if (encontrado)
     {
-        printf("Operador com código %d excluído com sucesso!\n", codigo);
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
-        printf("Operador com código %d não encontrado!\n", codigo);
         return 0; // Indica que o código não foi encontrado
     }
 }
