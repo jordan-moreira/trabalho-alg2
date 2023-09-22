@@ -271,6 +271,7 @@ void gerenciarHotel(char tipoArquivo)
 {
     char item[] = "hotel";
     int operacao = selecionarOperacao(item);
+    int status;
     FILE *arquivo;
     Hotel *ptrHotel;
 
@@ -295,7 +296,7 @@ void gerenciarHotel(char tipoArquivo)
 
     case 2:
         ptrHotel = coletarDadosHotel();
-        int status = (tipoArquivo == 'T') ? atualizarHotelTxt(ptrHotel) : atualizarHotelBin(ptrHotel);
+        status = (tipoArquivo == 'T') ? atualizarHotelTxt(ptrHotel) : atualizarHotelBin(ptrHotel);
         status == 1 ? printf("registros de hotel atualizados com sucesso") : printf("erro ao atualizar registros de hotel");
         free(ptrHotel);
         break;
@@ -310,7 +311,7 @@ void gerenciarHotel(char tipoArquivo)
         }
 
         ptrHotel = malloc(sizeof(Hotel));
-        int status = (tipoArquivo == 'T') ? lerHotelTxt(arquivo, ptrHotel) : lerHotelBin(arquivo, ptrHotel);
+        status = (tipoArquivo == 'T') ? lerHotelTxt(arquivo, ptrHotel) : lerHotelBin(arquivo, ptrHotel);
 
         if (status == 1)
         {
@@ -328,7 +329,7 @@ void gerenciarHotel(char tipoArquivo)
         break;
 
     case 4:
-        int status = (tipoArquivo == 'T') ? deletarHotelTxt() : deletarHotelBin();
+        status = (tipoArquivo == 'T') ? deletarHotelTxt() : deletarHotelBin();
         status == 1 ? printf("registros de hotel deletados com sucesso") : printf("erro ao deletar registros de hotel");
         break;
 
@@ -342,6 +343,8 @@ void gerenciarHospede(char tipoArquivo)
 {
     char item[] = "hospede";
     int operacao = selecionarOperacao(item);
+    int status;
+    int codigoHospede;
     FILE *arquivo;
     Hospede *ptrHospede;
 
@@ -366,13 +369,13 @@ void gerenciarHospede(char tipoArquivo)
         break;
 
     case 2:
-        int codigoHospede = 0;
+        codigoHospede = 0;
         ptrHospede = coletarDadosHospede();
-        printf("Digite o código único do hóspede que você deseja atualizar: ");
+        printf("Digite o código único do hospede que você deseja atualizar: ");
         scanf("%d%*c", &codigoHospede);
-        int status = (tipoArquivo == 'T') ? atualizarHospedeTxt(codigoHospede, ptrHospede) : atualizarHospedeBin(codigoHospede, ptrHospede);
+        status = (tipoArquivo == 'T') ? atualizarHospedeTxt(codigoHospede, ptrHospede) : atualizarHospedeBin(codigoHospede, ptrHospede);
 
-        status == 1 ? printf("registro de hopede atualizado com sucesso") : printf("erro ao atualizar registro de hospede");
+        status == 1 ? printf("registro de hospede atualizado com sucesso") : printf("erro ao atualizar registro de hospede");
         free(ptrHospede);
         break;
 
@@ -396,7 +399,7 @@ void gerenciarHospede(char tipoArquivo)
         {
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerHospedeTxt(0, arquivo, ptrHospede) : lerHospedeBin(0, arquivo, ptrHospede);
+                status = (tipoArquivo == 'T') ? lerHospedeTxt(0, arquivo, ptrHospede) : lerHospedeBin(0, arquivo, ptrHospede);
 
                 if (status == 1)
                 {
@@ -419,13 +422,13 @@ void gerenciarHospede(char tipoArquivo)
         }
         else if (codigoMenu == 2)
         {
-            int codigoHospede = 0;
+            codigoHospede = 0;
             printf("Digite o código único do hóspede que você deseja ler: ");
             scanf("%d%*c", &codigoHospede);
 
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerHospedeTxt(codigoHospede, arquivo, ptrHospede) : lerHospedeBin(codigoHospede, arquivo, ptrHospede);
+                status = (tipoArquivo == 'T') ? lerHospedeTxt(codigoHospede, arquivo, ptrHospede) : lerHospedeBin(codigoHospede, arquivo, ptrHospede);
 
                 if (status == 1)
                 {
@@ -455,12 +458,12 @@ void gerenciarHospede(char tipoArquivo)
         break;
 
     case 4:
-        int codigoHospede = 0;
-        printf("Digite o código único do hóspede que você deseja deletar: ");
+        codigoHospede = 0;
+        printf("Digite o código único do hospede que você deseja deletar: ");
         scanf("%d%*c", &codigoHospede);
-        int status = (tipoArquivo == 'T') ? deletarHospedeTxt(codigoHospede) : deletarHospedeBin(codigoHospede);
+        status = (tipoArquivo == 'T') ? deletarHospedeTxt(codigoHospede) : deletarHospedeBin(codigoHospede);
 
-        status == 1 ? printf("registro de hopede deletado com sucesso") : printf("erro ao deletar registro de hospede");
+        status == 1 ? printf("registro de hospede deletado com sucesso") : printf("erro ao deletar registro de hospede");
         break;
 
     default:
@@ -473,14 +476,16 @@ void gerenciarCategoria(char tipoArquivo)
 {
     char item[] = "categoria";
     int operacao = selecionarOperacao(item);
-
+    int status;
+    int codigoCategoria;
     FILE *arquivo;
+    Categoria *ptrCategoria;
     switch (operacao)
     {
     case 1:
-        Categoria *ptr = coletarDadosCategoria();
+        ptrCategoria = coletarDadosCategoria();
 
-        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hospede.txt", "a") : fopen("arquivos/hospede.bin", "ab");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/categoria.txt", "a") : fopen("arquivos/categoria.bin", "ab");
 
         if (arquivo == NULL)
         {
@@ -488,27 +493,34 @@ void gerenciarCategoria(char tipoArquivo)
             break;
         }
 
-        (tipoArquivo == 'T') ? adicionarCategoriaTxt(ptr, arquivo) : adicionarCategoriaBin(ptr, arquivo);
-        free(ptr);
+        (tipoArquivo == 'T') ? adicionarCategoriaTxt(ptrCategoria, arquivo) : adicionarCategoriaBin(ptrCategoria, arquivo);
+        free(ptrCategoria);
         fclose(arquivo);
 
         printf("Registrado com sucesso!\n");
         break;
 
     case 2:
-        // atualizarCategoria();
+        codigoCategoria = 0;
+        ptrCategoria = coletarDadosCategoria();
+        printf("Digite o código único da categoria que você deseja atualizar: ");
+        scanf("%d%*c", &codigoCategoria);
+        status = (tipoArquivo == 'T') ? atualizarCategoriaTxt(codigoCategoria, ptrCategoria) : atualizarCategoriaBin(codigoCategoria, ptrCategoria);
+
+        status == 1 ? printf("registro de categoria atualizado com sucesso") : printf("erro ao atualizar registro de categoria");
+        free(ptrCategoria);
         break;
 
     case 3:
 
-        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hospede.txt", "r") : fopen("arquivos/hospede.bin", "rb");
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/categoria.txt", "r") : fopen("arquivos/categoria.bin", "rb");
 
         if (arquivo == NULL)
         {
             printf("Arquivo não existe ou não pode ser lido.\n");
             break;
         }
-        Categoria *ptrCategoria = malloc(sizeof(Categoria));
+        ptrCategoria = malloc(sizeof(Categoria));
 
         int codigoMenu = 0;
 
@@ -520,7 +532,7 @@ void gerenciarCategoria(char tipoArquivo)
 
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerCategoriaTxt(0, arquivo, ptrCategoria) : lerCategoriaBin(0, arquivo, ptrCategoria);
+                status = (tipoArquivo == 'T') ? lerCategoriaTxt(0, arquivo, ptrCategoria) : lerCategoriaBin(0, arquivo, ptrCategoria);
                 if (status == 1)
                 {
 
@@ -542,13 +554,13 @@ void gerenciarCategoria(char tipoArquivo)
         }
         else if (codigoMenu == 2)
         {
-            int codigoCategoria = 0;
+            codigoCategoria = 0;
             printf("Digite o código único da categoria que você deseja ler: ");
             scanf("%d%*c", &codigoCategoria);
 
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerCategoriaTxt(codigoCategoria, arquivo, ptrCategoria) : lerCategoriaBin(codigoCategoria, arquivo, ptrCategoria);
+                status = (tipoArquivo == 'T') ? lerCategoriaTxt(codigoCategoria, arquivo, ptrCategoria) : lerCategoriaBin(codigoCategoria, arquivo, ptrCategoria);
                 if (status == 1)
                 {
 
@@ -578,7 +590,12 @@ void gerenciarCategoria(char tipoArquivo)
         break;
 
     case 4:
-        // deletarCategoria();
+        codigoCategoria = 0;
+        printf("Digite o código único do categoria que você deseja deletar: ");
+        scanf("%d%*c", &codigoCategoria);
+        status = (tipoArquivo == 'T') ? deletarCategoriaTxt(codigoCategoria) : deletarCategoriaBin(codigoCategoria);
+
+        status == 1 ? printf("registro de categoria deletado com sucesso") : printf("erro ao deletar registro de categoria");
         break;
 
     default:
@@ -591,12 +608,15 @@ void gerenciarAcomodacao(char tipoArquivo)
 {
     char item[] = "acomodacao";
     int operacao = selecionarOperacao(item);
+    int status;
+    int codigoAcomodacao;
     FILE *arquivo;
+    Acomodacao *ptrAcomodacao;
 
     switch (operacao)
     {
     case 1:
-        Acomodacao *ptr = coletarDadosAcomodacao();
+        ptrAcomodacao = coletarDadosAcomodacao();
 
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/acomodacao.txt", "a") : fopen("arquivos/acomodacao.bin", "ab");
 
@@ -606,8 +626,8 @@ void gerenciarAcomodacao(char tipoArquivo)
             break;
         }
 
-        (tipoArquivo == 'T') ? adicionarAcomodacaoTxt(ptr, arquivo) : adicionarAcomodacaoBin(ptr, arquivo);
-        free(ptr);
+        (tipoArquivo == 'T') ? adicionarAcomodacaoTxt(ptrAcomodacao, arquivo) : adicionarAcomodacaoBin(ptrAcomodacao, arquivo);
+        free(ptrAcomodacao);
 
         fclose(arquivo);
 
@@ -615,7 +635,14 @@ void gerenciarAcomodacao(char tipoArquivo)
         break;
 
     case 2:
-        // atualizarAcomodacao();
+        codigoAcomodacao = 0;
+        ptrAcomodacao = coletarDadosAcomodacao();
+        printf("Digite o código único do acomodacao que você deseja atualizar: ");
+        scanf("%d%*c", &codigoAcomodacao);
+        status = (tipoArquivo == 'T') ? atualizarAcomodacaoTxt(codigoAcomodacao, ptrAcomodacao) : atualizarAcomodacaoBin(codigoAcomodacao, ptrAcomodacao);
+
+        status == 1 ? printf("registro de acomodacao atualizado com sucesso") : printf("erro ao atualizar registro de acomodacao");
+        free(ptrAcomodacao);
         break;
 
     case 3:
@@ -625,7 +652,7 @@ void gerenciarAcomodacao(char tipoArquivo)
             printf("Arquivo não existe ou não pode ser lido.\n");
             break;
         }
-        Acomodacao *ptrAcomodacao = malloc(sizeof(Acomodacao));
+        ptrAcomodacao = malloc(sizeof(Acomodacao));
 
         int codigoMenu = 0;
 
@@ -637,7 +664,7 @@ void gerenciarAcomodacao(char tipoArquivo)
 
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerAcomodacaoTxt(0, arquivo, ptrAcomodacao) : lerAcomodacaoBin(0, arquivo, ptrAcomodacao);
+                status = (tipoArquivo == 'T') ? lerAcomodacaoTxt(0, arquivo, ptrAcomodacao) : lerAcomodacaoBin(0, arquivo, ptrAcomodacao);
                 if (status == 1)
                 {
                     printf("%d {\n Categoria: %d,\n Ocupada: %d,\n Data Inicial: %d/%d/%d,\n Data Final: %d/%d/%d,\n Descrição: %s,\n Facilidades: %s;}\n",
@@ -658,13 +685,13 @@ void gerenciarAcomodacao(char tipoArquivo)
         }
         else if (codigoMenu == 2)
         {
-            int codigoAcomodacao = 0;
+            codigoAcomodacao = 0;
             printf("Digite o código único da acomodação que você deseja ler: ");
             scanf("%d%*c", &codigoAcomodacao);
 
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerAcomodacaoTxt(codigoAcomodacao, arquivo, ptrAcomodacao) : lerAcomodacaoBin(codigoAcomodacao, arquivo, ptrAcomodacao);
+                status = (tipoArquivo == 'T') ? lerAcomodacaoTxt(codigoAcomodacao, arquivo, ptrAcomodacao) : lerAcomodacaoBin(codigoAcomodacao, arquivo, ptrAcomodacao);
                 if (status == 1)
                 {
                     printf("%d {\n Categoria: %d,\n Ocupada: %d,\n Data Inicial: %d/%d/%d,\n Data Final: %d/%d/%d,\n Descrição: %s,\n Facilidades: %s;}\n",
@@ -693,7 +720,12 @@ void gerenciarAcomodacao(char tipoArquivo)
         break;
 
     case 4:
-        // deletarAcomodacao();
+        codigoAcomodacao = 0;
+        printf("Digite o código único do acomodacao que você deseja deletar: ");
+        scanf("%d%*c", &codigoAcomodacao);
+        status = (tipoArquivo == 'T') ? deletarAcomodacaoTxt(codigoAcomodacao) : deletarAcomodacaoBin(codigoAcomodacao);
+
+        status == 1 ? printf("registro de acomodacao deletado com sucesso") : printf("erro ao deletar registro de acomodacao");
         break;
 
     default:
@@ -707,11 +739,14 @@ void gerenciarConsumivel(char tipoArquivo)
     char item[] = "consumivel";
     int operacao = selecionarOperacao(item);
 
+    int status;
+    int codigoConsumivel;
     FILE *arquivo;
+    Consumivel *ptrConsumivel;
     switch (operacao)
     {
     case 1:
-        Consumivel *ptr = coletarDadosConsumivel();
+        ptrConsumivel = coletarDadosConsumivel();
 
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/consumivel.txt", "a") : fopen("arquivos/consumivel.bin", "ab");
         if (arquivo == NULL)
@@ -719,15 +754,22 @@ void gerenciarConsumivel(char tipoArquivo)
             printf("Arquivo não existe ou não pode ser aberto!\n");
             break;
         }
-        (tipoArquivo == 'T') ? adicionarConsumivelTxt(ptr, arquivo) : adicionarConsumivelBin(ptr, arquivo);
-        free(ptr);
+        (tipoArquivo == 'T') ? adicionarConsumivelTxt(ptrConsumivel, arquivo) : adicionarConsumivelBin(ptrConsumivel, arquivo);
+        free(ptrConsumivel);
         fclose(arquivo);
 
         printf("Registrado com sucesso!\n");
         break;
 
     case 2:
-        // atualizarConsumivel();
+        codigoConsumivel = 0;
+        ptrConsumivel = coletarDadosConsumivel();
+        printf("Digite o código único do consumivel que você deseja atualizar: ");
+        scanf("%d%*c", &codigoConsumivel);
+        status = (tipoArquivo == 'T') ? atualizarConsumivelTxt(codigoConsumivel, ptrConsumivel) : atualizarConsumivelBin(codigoConsumivel, ptrConsumivel);
+
+        status == 1 ? printf("registro de consumivel atualizado com sucesso") : printf("erro ao atualizar registro de consumivel");
+        free(ptrConsumivel);
         break;
 
     case 3:
@@ -737,7 +779,7 @@ void gerenciarConsumivel(char tipoArquivo)
             printf("Arquivo não existe ou não pode ser lido.\n");
             break;
         }
-        Consumivel *ptrConsumivel = malloc(sizeof(Consumivel));
+        ptrConsumivel = malloc(sizeof(Consumivel));
 
         int codigoMenu = 0;
 
@@ -748,7 +790,7 @@ void gerenciarConsumivel(char tipoArquivo)
         {
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerConsumivelTxt(0, arquivo, ptrConsumivel) : lerConsumivelBin(0, arquivo, ptrConsumivel);
+                status = (tipoArquivo == 'T') ? lerConsumivelTxt(0, arquivo, ptrConsumivel) : lerConsumivelBin(0, arquivo, ptrConsumivel);
                 if (status == 1)
                 {
                     printf("%d {\n Estoque: %d,\n Estoque Mínimo: %d,\n Descrição: %s,\n Preço de Custo: %.2f,\n Preço de Venda: %.2f;}\n",
@@ -769,13 +811,13 @@ void gerenciarConsumivel(char tipoArquivo)
         }
         else if (codigoMenu == 2)
         {
-            int codigoConsumivel = 0;
+            codigoConsumivel = 0;
             printf("Digite o código único do produto consumível que você deseja ler: ");
             scanf("%d%*c", &codigoConsumivel);
 
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerConsumivelTxt(codigoConsumivel, arquivo, ptrConsumivel) : lerConsumivelBin(codigoConsumivel, arquivo, ptrConsumivel);
+                status = (tipoArquivo == 'T') ? lerConsumivelTxt(codigoConsumivel, arquivo, ptrConsumivel) : lerConsumivelBin(codigoConsumivel, arquivo, ptrConsumivel);
                 if (status == 1)
                 {
                     printf("%d {\n Estoque: %d,\n Estoque Mínimo: %d,\n Descrição: %s,\n Preço de Custo: %.2f,\n Preço de Venda: %.2f;}\n",
@@ -803,7 +845,12 @@ void gerenciarConsumivel(char tipoArquivo)
         break;
 
     case 4:
-        // deletarConsumivel();
+        codigoConsumivel = 0;
+        printf("Digite o código único do consumivel que você deseja deletar: ");
+        scanf("%d%*c", &codigoConsumivel);
+        status = (tipoArquivo == 'T') ? deletarConsumivelTxt(codigoConsumivel) : deletarConsumivelBin(codigoConsumivel);
+
+        status == 1 ? printf("registro de consumivel deletado com sucesso") : printf("erro ao deletar registro de consumivel");
         break;
 
     default:
@@ -817,11 +864,14 @@ void gerenciarFornecedor(char tipoArquivo)
     char item[] = "fornecedor";
     int operacao = selecionarOperacao(item);
 
+    int status;
+    int codigoFornecedor;
     FILE *arquivo;
+    Fornecedor *ptrFornecedor;
     switch (operacao)
     {
     case 1:
-        Fornecedor *ptr = coletarDadosFornecedor();
+        ptrFornecedor = coletarDadosFornecedor();
 
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/fornecedor.txt", "a") : fopen("arquivos/fornecedor.bin", "ab");
         if (arquivo == NULL)
@@ -830,15 +880,22 @@ void gerenciarFornecedor(char tipoArquivo)
             break;
         }
 
-        (tipoArquivo == 'T') ? adicionarFornecedorTxt(ptr, arquivo) : adicionarFornecedorBin(ptr, arquivo);
-        free(ptr);
+        (tipoArquivo == 'T') ? adicionarFornecedorTxt(ptrFornecedor, arquivo) : adicionarFornecedorBin(ptrFornecedor, arquivo);
+        free(ptrFornecedor);
         fclose(arquivo);
 
         printf("Registrado com sucesso!\n");
         break;
 
     case 2:
-        // atualizarFornecedor();
+        codigoFornecedor = 0;
+        ptrFornecedor = coletarDadosFornecedor();
+        printf("Digite o código único do fornecedor que você deseja atualizar: ");
+        scanf("%d%*c", &codigoFornecedor);
+        status = (tipoArquivo == 'T') ? atualizarFornecedorTxt(codigoFornecedor, ptrFornecedor) : atualizarFornecedorBin(codigoFornecedor, ptrFornecedor);
+
+        status == 1 ? printf("registro de fornecedor atualizado com sucesso") : printf("erro ao atualizar registro de fornecedor");
+        free(ptrFornecedor);
         break;
 
     case 3:
@@ -848,7 +905,7 @@ void gerenciarFornecedor(char tipoArquivo)
             printf("Arquivo não existe ou não pode ser lido.\n");
             break;
         }
-        Fornecedor *ptrFornecedor = malloc(sizeof(Fornecedor));
+        ptrFornecedor = malloc(sizeof(Fornecedor));
 
         int codigoMenu = 0;
 
@@ -859,7 +916,7 @@ void gerenciarFornecedor(char tipoArquivo)
         {
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerFornecedorTxt(0, arquivo, ptrFornecedor) : lerFornecedorBin(0, arquivo, ptrFornecedor);
+                status = (tipoArquivo == 'T') ? lerFornecedorTxt(0, arquivo, ptrFornecedor) : lerFornecedorBin(0, arquivo, ptrFornecedor);
                 if (status == 1)
                 {
                     printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
@@ -881,13 +938,13 @@ void gerenciarFornecedor(char tipoArquivo)
         }
         else if (codigoMenu == 2)
         {
-            int codigoFornecedor = 0;
+            codigoFornecedor = 0;
             printf("Digite o código único do fornecedor que você deseja ler: ");
             scanf("%d%*c", &codigoFornecedor);
 
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerFornecedorTxt(codigoFornecedor, arquivo, ptrFornecedor) : lerFornecedorBin(codigoFornecedor, arquivo, ptrFornecedor);
+                status = (tipoArquivo == 'T') ? lerFornecedorTxt(codigoFornecedor, arquivo, ptrFornecedor) : lerFornecedorBin(codigoFornecedor, arquivo, ptrFornecedor);
                 if (status == 1)
                 {
                     printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
@@ -917,7 +974,12 @@ void gerenciarFornecedor(char tipoArquivo)
         break;
 
     case 4:
-        // deletarFornecedor();
+        codigoFornecedor = 0;
+        printf("Digite o código único do fornecedor que você deseja deletar: ");
+        scanf("%d%*c", &codigoFornecedor);
+        status = (tipoArquivo == 'T') ? deletarFornecedorTxt(codigoFornecedor) : deletarFornecedorBin(codigoFornecedor);
+
+        status == 1 ? printf("registro de fornecedor deletado com sucesso") : printf("erro ao deletar registro de fornecedor");
         break;
 
     default:
@@ -931,11 +993,14 @@ void gerenciarOperador(char tipoArquivo)
     char item[] = "operador";
     int operacao = selecionarOperacao(item);
 
+    int status;
+    int codigoOperador;
     FILE *arquivo;
+    Operador *ptrOperador;
     switch (operacao)
     {
     case 1:
-        Operador *ptr = coletarDadosOperador();
+        ptrOperador = coletarDadosOperador();
 
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/operador.txt", "a") : fopen("arquivos/operador.bin", "ab");
         if (arquivo == NULL)
@@ -944,15 +1009,22 @@ void gerenciarOperador(char tipoArquivo)
             return;
         }
 
-        (tipoArquivo == 'T') ? adicionarOperadorTxt(ptr, arquivo) : adicionarOperadorBin(ptr, arquivo);
-        free(ptr);
+        (tipoArquivo == 'T') ? adicionarOperadorTxt(ptrOperador, arquivo) : adicionarOperadorBin(ptrOperador, arquivo);
+        free(ptrOperador);
         fclose(arquivo);
 
         printf("Registrado com sucesso!\n");
         break;
 
     case 2:
-        // atualizarOperador();
+        codigoOperador = 0;
+        ptrOperador = coletarDadosOperador();
+        printf("Digite o código único do operador que você deseja atualizar: ");
+        scanf("%d%*c", &codigoOperador);
+        status = (tipoArquivo == 'T') ? atualizarOperadorTxt(codigoOperador, ptrOperador) : atualizarOperadorBin(codigoOperador, ptrOperador);
+
+        status == 1 ? printf("registro de operador atualizado com sucesso") : printf("erro ao atualizar registro de operador");
+        free(ptrOperador);
         break;
 
     case 3:
@@ -962,7 +1034,7 @@ void gerenciarOperador(char tipoArquivo)
             printf("Arquivo não existe ou não pode ser lido.\n");
             break;
         }
-        Operador *ptrOperador = malloc(sizeof(Operador));
+        ptrOperador = malloc(sizeof(Operador));
 
         int codigoMenu = 0;
 
@@ -973,7 +1045,7 @@ void gerenciarOperador(char tipoArquivo)
         {
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerOperadorTxt(0, arquivo, ptrOperador) : lerOperadorBin(0, arquivo, ptrOperador);
+                status = (tipoArquivo == 'T') ? lerOperadorTxt(0, arquivo, ptrOperador) : lerOperadorBin(0, arquivo, ptrOperador);
                 if (status)
                 {
                     printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %s;}\n",
@@ -994,13 +1066,13 @@ void gerenciarOperador(char tipoArquivo)
         }
         else if (codigoMenu == 2)
         {
-            int codigoOperador = 0;
+            codigoOperador = 0;
             printf("Digite o código único do operador que você deseja ler: ");
             scanf("%d%*c", &codigoOperador);
 
             while (1)
             {
-                int status = (tipoArquivo == 'T') ? lerOperadorTxt(codigoOperador, arquivo, ptrOperador) : lerOperadorBin(codigoOperador, arquivo, ptrOperador);
+                status = (tipoArquivo == 'T') ? lerOperadorTxt(codigoOperador, arquivo, ptrOperador) : lerOperadorBin(codigoOperador, arquivo, ptrOperador);
 
                 if (status)
                 {
@@ -1029,7 +1101,12 @@ void gerenciarOperador(char tipoArquivo)
         break;
 
     case 4:
-        // deletarOperador();
+        codigoOperador = 0;
+        printf("Digite o código único do operador que você deseja deletar: ");
+        scanf("%d%*c", &codigoOperador);
+        status = (tipoArquivo == 'T') ? deletarOperadorTxt(codigoOperador) : deletarOperadorBin(codigoOperador);
+
+        status == 1 ? printf("registro de operador deletado com sucesso") : printf("erro ao deletar registro de operador");
         break;
 
     default:
