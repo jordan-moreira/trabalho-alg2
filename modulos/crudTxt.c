@@ -55,7 +55,7 @@ void adicionarFornecedorTxt(Fornecedor *estrutura, FILE *arquivo)
 void adicionarOperadorTxt(Operador *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%s ;}\n\n",
+    fprintf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%c ;}\n\n",
             estrutura->codigo, estrutura->nome, estrutura->usuario, estrutura->senha, estrutura->permissao);
 }
 
@@ -144,7 +144,7 @@ int lerFornecedorTxt(int codigo, FILE *arquivo, Fornecedor *ptrFornecedor)
 
 int lerOperadorTxt(int codigo, FILE *arquivo, Operador *ptrOperador)
 {
-    if (fscanf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%s ;}", &ptrOperador->codigo, &ptrOperador->nome, &ptrOperador->usuario, &ptrOperador->senha, &ptrOperador->permissao) == 5)
+    if (fscanf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%c ;}", &ptrOperador->codigo, &ptrOperador->nome, &ptrOperador->usuario, &ptrOperador->senha, &ptrOperador->permissao) == 5)
     {
         if (ptrOperador->codigo == codigo || codigo == 0)
         {

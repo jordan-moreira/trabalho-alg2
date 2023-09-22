@@ -106,7 +106,7 @@ typedef struct
     char nome[100],
         usuario[100],
         senha[100],
-        permissao[1];
+        permissao;
 } Operador;
 
 // -------------------FUNÇÕES-------------

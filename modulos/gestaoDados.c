@@ -262,7 +262,7 @@ Operador *coletarDadosOperador()
     scanf("%s", ptrOperador->senha);
 
     printf("Digite a permissão do operador: ");
-    scanf("%s", ptrOperador->permissao);
+    scanf(" %c", &ptrOperador->permissao);
 
     return ptrOperador;
 }
@@ -1048,7 +1048,7 @@ void gerenciarOperador(char tipoArquivo)
                 status = (tipoArquivo == 'T') ? lerOperadorTxt(0, arquivo, ptrOperador) : lerOperadorBin(0, arquivo, ptrOperador);
                 if (status)
                 {
-                    printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %s;}\n",
+                    printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %c;}\n",
                            ptrOperador->codigo, ptrOperador->nome, ptrOperador->usuario, ptrOperador->senha, ptrOperador->permissao);
                     continue;
                 }
@@ -1076,7 +1076,7 @@ void gerenciarOperador(char tipoArquivo)
 
                 if (status)
                 {
-                    printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %s;}\n",
+                    printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %c;}\n",
                            ptrOperador->codigo, ptrOperador->nome, ptrOperador->usuario, ptrOperador->senha, ptrOperador->permissao);
                     continue;
                 }

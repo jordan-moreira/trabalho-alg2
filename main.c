@@ -1,25 +1,31 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "modulos/gestaoDados.h"
 
-struct LoginSenha{
+struct LoginSenha
+{
     char login[50];
-    char senha [50];
+    char senha[50];
 };
 
-int fazerLogin(struct LoginSenha *operador,char *codigoPermissao){
-    FILE *arquivo = fopen("arquivos/operador.txt","r");
-    Operador *ptrOperador;
-    while(1){
-if (fscanf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%s ;}", &ptrOperador->codigo, &ptrOperador->nome, &ptrOperador->usuario, &ptrOperador->senha, &ptrOperador->permissao) == 5)
+int fazerLogin(struct LoginSenha *operador, char *codigoPermissao)
+{
+    FILE *arquivo = fopen("arquivos/operador.txt", "r");
+    Operador ptrOperador;
+    while (1)
     {
-        if (strcmp(ptrOperador->usuario , operador->login) && strcmp(prtoperador -> senha , operador =>senha)){
-        
-            &codigoPermissao = ptrOperador -> permissao;
-            return 1;
+        if (fscanf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%c ;}", &ptrOperador.codigo, &ptrOperador.nome, &ptrOperador.usuario, &ptrOperador.senha, &ptrOperador.permissao) == 5)
+        {
+            if (strcmp(ptrOperador.usuario, operador->login) == 0 && strcmp(ptrOperador.senha, operador->senha) == 0)
+            {
+
+                *codigoPermissao = ptrOperador.permissao;
+                return 1;
+            }
         }
+        return 0;
     }
-    return 0;    }
 }
 
 void menuCadastro(char tipoArquivo)
@@ -100,7 +106,7 @@ int main()
 
     int codigoMenu = 0;
     char tipoArquivo = 'T',
-         nivelAcesso = 'g';
+         codigoPermissao = 'g';
 
     while (codigoMenu != 7)
     {
@@ -146,23 +152,27 @@ int main()
             printf("\nEncerrando o programa...\n");
             break;
 
-            case 8: 
-                struct LoginSenha *operador ;
-    
-    printf("Digite o login :");
-    scanf("%s",operador ->login);
-    
-    printf("Digite a senha :");
-    scanf("%s",operador ->senha);
-    
-    int status = fazerLogin(operador,codigoPermissao);
-    
-    if(status == 1){
-        printf("Logado com sucesso!");
-    }else{
-        printf("Erro de login!");
-    }
-    break;
+        case 8:
+            struct LoginSenha *operador;
+
+            printf("Digite o login :");
+            scanf("%s", operador->login);
+
+            printf("Digite a senha :");
+            scanf("%s", operador->senha);
+
+            int status = fazerLogin(operador, &codigoPermissao);
+
+            if (status == 1)
+            {
+                printf("Logado com sucesso!\n");
+            }
+            else
+            {
+                printf("Erro de login!\n");
+            }
+            printf("%c", codigoPermissao);
+            break;
 
         default:
             printf("\nCódigo de menu informado é inválido!\n\n");
