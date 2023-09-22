@@ -2,6 +2,26 @@
 #include <string.h>
 #include "modulos/gestaoDados.h"
 
+struct LoginSenha{
+    char login[50];
+    char senha [50];
+};
+
+int fazerLogin(struct LoginSenha *operador,char *codigoPermissao){
+    FILE *arquivo = fopen("arquivos/operador.txt","r");
+    Operador *ptrOperador;
+    while(1){
+if (fscanf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%s ;}", &ptrOperador->codigo, &ptrOperador->nome, &ptrOperador->usuario, &ptrOperador->senha, &ptrOperador->permissao) == 5)
+    {
+        if (strcmp(ptrOperador->usuario , operador->login) && strcmp(prtoperador -> senha , operador =>senha)){
+        
+            &codigoPermissao = ptrOperador -> permissao;
+            return 1;
+        }
+    }
+    return 0;    }
+}
+
 void menuCadastro(char tipoArquivo)
 {
     int codigoMenu;
@@ -84,7 +104,7 @@ int main()
 
     while (codigoMenu != 7)
     {
-        printf("--- MENU ---\n 1 - Cadastrar e gerir dados armazenados.\n 2 - Gerenciar reservas de quartos.\n 3 - Gerir dados administrativos.\n 4 - Relatórios do sistema.\n 5 - Importar/Exportar dados.\n 6 - Alterar configuração de armazenamento.\n 7 - Encerrar o programa.\n\nDigite um código referente à operação que você deseja fazer: ");
+        printf("--- MENU ---\n 1 - Cadastrar e gerir dados armazenados.\n 2 - Gerenciar reservas de quartos.\n 3 - Gerir dados administrativos.\n 4 - Relatórios do sistema.\n 5 - Importar/Exportar dados.\n 6 - Alterar configuração de armazenamento.\n 7 - Encerrar o programa.\n8 - Fazer login.\n\nDigite um código referente à operação que você deseja fazer: ");
         scanf(" %d%*c", &codigoMenu);
 
         switch (codigoMenu)
@@ -125,6 +145,24 @@ int main()
         case 7:
             printf("\nEncerrando o programa...\n");
             break;
+
+            case 8: 
+                struct LoginSenha *operador ;
+    
+    printf("Digite o login :");
+    scanf("%s",operador ->login);
+    
+    printf("Digite a senha :");
+    scanf("%s",operador ->senha);
+    
+    int status = fazerLogin(operador,codigoPermissao);
+    
+    if(status == 1){
+        printf("Logado com sucesso!");
+    }else{
+        printf("Erro de login!");
+    }
+    break;
 
         default:
             printf("\nCódigo de menu informado é inválido!\n\n");
