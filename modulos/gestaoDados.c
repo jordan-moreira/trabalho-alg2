@@ -261,9 +261,12 @@ Operador *coletarDadosOperador()
     printf("Digite a senha do operador: ");
     scanf("%s", ptrOperador->senha);
 
+    while(&ptrOperador->permissao != 'g' ||&ptrOperador->permissao !='r' ||&ptrOperador->permissao!='e'){
+    printf("||||| Menu de Cargos |||||\ng-Gernte geral.\nr-Recepcionista.\ne-Gerente de estoque");
+    
     printf("Digite a permissão do operador: ");
     scanf(" %c", &ptrOperador->permissao);
-
+    }
     return ptrOperador;
 }
 
