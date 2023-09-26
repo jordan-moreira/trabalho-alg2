@@ -55,7 +55,7 @@ void adicionarFornecedorTxt(Fornecedor *estrutura, FILE *arquivo)
 void adicionarOperadorTxt(Operador *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%c ;}\n\n",
+    fprintf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%c ;}\n",
             estrutura->codigo, estrutura->nome, estrutura->usuario, estrutura->senha, estrutura->permissao);
 }
 

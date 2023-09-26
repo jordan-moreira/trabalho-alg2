@@ -121,10 +121,10 @@ void gerenciarHotel(char tipoArquivo, char codigoPermissao);
 void gerenciarHospede(char tipoArquivo);
 
 // funcao responsavel por gerenciar dados das categorias dos quartos
-void gerenciarCategoria(char tipoArquivo);
+void gerenciarCategoria(char tipoArquivo, char codigoPermissao);
 
 // funcao responsavel por gerenciar dados dos quartos
-void gerenciarAcomodacao(char tipoArquivo);
+void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao);
 
 // funcao responsavel por gerenciar dados dos consumiveis
 void gerenciarConsumivel(char tipoArquivo);

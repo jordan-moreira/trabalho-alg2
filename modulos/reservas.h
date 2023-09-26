@@ -1,6 +1,4 @@
-#ifdef RESERVA_H;
-#define RESERVA_H;
+#ifndef RESERVA_H
+#define RESERVA_H
 
-#endif;
-
-
+#endif

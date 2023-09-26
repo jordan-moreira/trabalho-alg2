@@ -71,7 +71,7 @@ Hotel *coletarDadosHotel()
 
     return ptrHotel;
 }
-0
+
 Hospede *coletarDadosHospede()
 {
     Hospede *ptrHospede = malloc(sizeof(Hospede));
@@ -261,11 +261,12 @@ Operador *coletarDadosOperador()
     printf("Digite a senha do operador: ");
     scanf("%s", ptrOperador->senha);
 
-    while(&ptrOperador->permissao != 'g' ||&ptrOperador->permissao !='r' ||&ptrOperador->permissao!='e'){
-    printf("||||| Menu de Cargos |||||\ng-Gernte geral.\nr-Recepcionista.\ne-Gerente de estoque");
-    
-    printf("Digite a permissão do operador: ");
-    scanf(" %c", &ptrOperador->permissao);
+    while (ptrOperador->permissao != 'g' && ptrOperador->permissao != 'r' && ptrOperador->permissao != 'e')
+    {
+        printf("||||| Menu de Cargos |||||\ng-Gernte geral.\nr-Recepcionista.\ne-Gerente de estoque\n");
+
+        printf("Digite a permissão do operador: ");
+        scanf(" %c", &ptrOperador->permissao);
     }
     return ptrOperador;
 }
@@ -278,9 +279,11 @@ void gerenciarHotel(char tipoArquivo, char codigoPermissao)
     FILE *arquivo;
     Hotel *ptrHotel;
 
-    if(codigoPermissao == 'r' || codigoPermissao == 'e'){
-        if(operacao != 3){
-            printf("Acesso bloqueado!!!");
+    if (codigoPermissao == 'r' || codigoPermissao == 'e')
+    {
+        if (operacao != 3)
+        {
+            printf("Acesso bloqueado!!!\n");
             return;
         }
     }
@@ -481,7 +484,7 @@ void gerenciarHospede(char tipoArquivo)
     }
 }
 
-void gerenciarCategoria(char tipoArquivo)
+void gerenciarCategoria(char tipoArquivo, char codigoPermissao)
 {
     char item[] = "categoria";
     int operacao = selecionarOperacao(item);
@@ -489,8 +492,10 @@ void gerenciarCategoria(char tipoArquivo)
     int codigoCategoria;
     FILE *arquivo;
     Categoria *ptrCategoria;
-    if(codigoPermissao == 'r'){
-        if(codigoMenu !=3){
+    if (codigoPermissao == 'r')
+    {
+        if (operacao != 3)
+        {
             printf("Acesso negado !!!");
             return;
         }
@@ -619,7 +624,7 @@ void gerenciarCategoria(char tipoArquivo)
     }
 }
 
-void gerenciarAcomodacao(char tipoArquivo)
+void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao)
 {
     char item[] = "acomodacao";
     int operacao = selecionarOperacao(item);
@@ -628,8 +633,10 @@ void gerenciarAcomodacao(char tipoArquivo)
     FILE *arquivo;
     Acomodacao *ptrAcomodacao;
 
-     if(codigoPermissao == 'r'){
-        if(codigoMenu !=3){
+    if (codigoPermissao == 'r')
+    {
+        if (operacao != 3)
+        {
             printf("Acesso negado !!!");
             return;
         }

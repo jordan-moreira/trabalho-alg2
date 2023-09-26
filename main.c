@@ -10,7 +10,7 @@ struct LoginSenha
 };
 
 int fazerLogin(struct LoginSenha *operador, char *codigoPermissao)
-{ 
+{
     FILE *arquivo = fopen("arquivos/operador.txt", "r");
     Operador ptrOperador;
     while (1)
@@ -24,7 +24,10 @@ int fazerLogin(struct LoginSenha *operador, char *codigoPermissao)
                 return 1;
             }
         }
-        return 0;
+        else if (feof(arquivo))
+        {
+            return 0;
+        }
     }
 }
 
@@ -37,7 +40,6 @@ void menuCadastro(char tipoArquivo, char codigoPermissao)
         printf("--- MENU ---\n 1 - Informações dos hóspedes.\n 2 - Lista de categorias das acomodações.\n 3 - Informações das acomodações.\n 4 - Voltar à tela principal.\n\nDigite um código referente ao item que você deseja gerenciar: ");
         scanf("%d%*c", &codigoMenu);
 
-
         switch (codigoMenu)
         {
 
@@ -46,11 +48,11 @@ void menuCadastro(char tipoArquivo, char codigoPermissao)
             break;
 
         case 2:
-            gerenciarCategoria(tipoArquivo);
+            gerenciarCategoria(tipoArquivo, codigoPermissao);
             break;
 
         case 3:
-            gerenciarAcomodacao(tipoArquivo);
+            gerenciarAcomodacao(tipoArquivo, codigoPermissao);
             break;
 
         case 4:
@@ -66,23 +68,30 @@ void menuCadastro(char tipoArquivo, char codigoPermissao)
 
 void menuAdm(char tipoArquivo, char codigoPermissao)
 {
-  int codigoMenu;
-printf("--- MENU ---\n 1 - Tabela de consumíveis.\n 2 - Lista de fornecedores.\n 3 - Lista de operadores do sistema.\n 4 - Voltar à tela principal.\n 5 - Informações sobre o Hotel\n\nDigite um código referente ao item que você deseja gerenciar: ");
-scanf("%d", &codigoMenu);
+    int codigoMenu;
+    printf("--- MENU ---\n 1 - Tabela de consumíveis.\n 2 - Lista de fornecedores.\n 3 - Lista de operadores do sistema.\n 4 - Voltar à tela principal.\n 5 - Informções sobre o Hotel\n\nDigite um código referente ao item que você deseja gerenciar: ");
+    scanf("%d", &codigoMenu);
 
-if (codigoPermissao == 'e') {
-    if (codigoMenu == 3) {
-        printf("Acesso Negado !!!");
-        return;
+    if (codigoPermissao == 'e')
+    {
+        if (codigoMenu == 3)
+        {
+            printf("Acesso Negado !!!\n");
+            return;
+        }
     }
-} else if (codigoPermissao == 'r') {
-    if (codigoMenu != 4 && codigoMenu != 5) {
-        printf("Acesso negado !!!");
-        return;
+    else if (codigoPermissao == 'r')
+    {
+
+        if (codigoMenu != 4 && codigoMenu != 5)
+        {
+            printf("Acesso negado !!!");
+            return;
+        }
     }
-}
-    while (codigoMenu != 4){
-    
+    while (codigoMenu != 4)
+    {
+
         switch (codigoMenu)
         {
         case 1:
@@ -103,7 +112,7 @@ if (codigoPermissao == 'e') {
             break;
 
         case 5:
-            gerenciarHotel(tipoArquivo,codigoPermissao);
+            gerenciarHotel(tipoArquivo, codigoPermissao);
             break;
 
         default:
@@ -126,22 +135,23 @@ int main()
         printf("--- MENU ---\n 1 - Cadastrar e gerir dados armazenados.\n 2 - Gerenciar reservas de quartos.\n 3 - Gerir dados administrativos.\n 4 - Relatórios do sistema.\n 5 - Importar/Exportar dados.\n 6 - Alterar configuração de armazenamento.\n 7 - Encerrar o programa.\n8 - Fazer login.\n\nDigite um código referente à operação que você deseja fazer: ");
         scanf(" %d%*c", &codigoMenu);
 
-
-    if(codigoPermissao == 'e'){
-        if(codigoMenu != 3 && codigoMenu !=7){
-        printf("Acesso bloqueado!!!");
-        return;
-            
+        if (codigoPermissao == 'e')
+        {
+            if (codigoMenu != 3 && codigoMenu != 7)
+            {
+                printf("Acesso bloqueado!!!");
+                return 0;
+            }
         }
-    }
         switch (codigoMenu)
         {
         case 1:
-            menuCadastro(tipoArquivo,codigoPermissao);
+            menuCadastro(tipoArquivo, codigoPermissao);
             break;
 
         case 3:
-            menuAdm(tipoArquivo,codigoPermissao);
+            menuAdm(tipoArquivo, codigoPermissao);
+            break;
 
         case 6:
             printf("\nEscolha o tipo de armazenamento (txt ou binário):\n");
@@ -192,7 +202,7 @@ int main()
             {
                 printf("Erro de login!\n");
             }
-            printf("%c", codigoPermissao);
+            printf("%c\n", codigoPermissao);
             break;
 
         default:

@@ -1,2 +1,3 @@
-3{nome:luiz , usuario:reiDelas , senha:pauPequeno , permissao:n ;}
-
+3{nome:luiz , usuario:reiDelas , senha:pauPequeno , permissao:r ;}
+4{nome:jordan , usuario:doido , senha:seiLa , permissao:g ;}
+5{nome:gabriel , usuario:seiLa , senha:nSei , permissao:e ;}
