@@ -37,6 +37,7 @@ void menuCadastro(char tipoArquivo, char codigoPermissao)
         printf("--- MENU ---\n 1 - Informações dos hóspedes.\n 2 - Lista de categorias das acomodações.\n 3 - Informações das acomodações.\n 4 - Voltar à tela principal.\n\nDigite um código referente ao item que você deseja gerenciar: ");
         scanf("%d%*c", &codigoMenu);
 
+
         switch (codigoMenu)
         {
 
@@ -68,8 +69,20 @@ void menuAdm(char tipoArquivo, char codigoPermissao)
     int codigoMenu;
     printf("--- MENU ---\n 1 - Tabela de consumíveis.\n 2 - Lista de fornecedores.\n 3 - Lista de operadores do sistema.\n 4 - Voltar à tela principal.\n 5 - Informções sobre o Hotel\n\nDigite um código referente ao item que você deseja gerenciar: ");
     scanf("%d", &codigoMenu);
-    while (codigoMenu != 4)
-    {
+    if(codigoPermissao == 'e'){
+        if(codigoMenu == 3){
+            printf("Acesso Negado !!!");
+            return;
+        }
+        if(codigoPermissao == 'r'){
+            if(codigoMenu !=4 && codigoMenu !=5){
+                printf("Acesso negado !!!");
+                return;
+            }
+        }
+    }
+    while (codigoMenu != 4){
+    
         switch (codigoMenu)
         {
         case 1:
@@ -113,6 +126,14 @@ int main()
         printf("--- MENU ---\n 1 - Cadastrar e gerir dados armazenados.\n 2 - Gerenciar reservas de quartos.\n 3 - Gerir dados administrativos.\n 4 - Relatórios do sistema.\n 5 - Importar/Exportar dados.\n 6 - Alterar configuração de armazenamento.\n 7 - Encerrar o programa.\n8 - Fazer login.\n\nDigite um código referente à operação que você deseja fazer: ");
         scanf(" %d%*c", &codigoMenu);
 
+
+    if(codigoPermissao == 'e'){
+        if(codigoMenu != 3 && codigoMenu !=7){
+        printf("Acesso bloqueado!!!");
+        return;
+            
+        }
+    }
         switch (codigoMenu)
         {
         case 1:

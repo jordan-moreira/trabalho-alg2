@@ -486,6 +486,12 @@ void gerenciarCategoria(char tipoArquivo)
     int codigoCategoria;
     FILE *arquivo;
     Categoria *ptrCategoria;
+    if(codigoPermissao == 'r'){
+        if(codigoMenu !=3){
+            printf("Acesso negado !!!");
+            return;
+        }
+    }
     switch (operacao)
     {
     case 1:
@@ -618,6 +624,13 @@ void gerenciarAcomodacao(char tipoArquivo)
     int codigoAcomodacao;
     FILE *arquivo;
     Acomodacao *ptrAcomodacao;
+
+     if(codigoPermissao == 'r'){
+        if(codigoMenu !=3){
+            printf("Acesso negado !!!");
+            return;
+        }
+    }
 
     switch (operacao)
     {
