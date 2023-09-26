@@ -71,7 +71,7 @@ Hotel *coletarDadosHotel()
 
     return ptrHotel;
 }
-
+0
 Hospede *coletarDadosHospede()
 {
     Hospede *ptrHospede = malloc(sizeof(Hospede));
