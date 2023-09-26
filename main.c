@@ -3,6 +3,12 @@
 #include <string.h>
 #include "modulos/gestaoDados.h"
 
+// Define códigos de escape ANSI para cores de texto
+#define ANSI_RESET "\x1b[0m"
+#define ANSI_BOLD "\x1b[1m"
+#define ANSI_GREEN "\x1b[32m"
+#define ANSI_RED "\x1b[31m"
+
 struct LoginSenha
 {
     char login[50];
@@ -35,89 +41,116 @@ void menuCadastro(char tipoArquivo, char codigoPermissao)
 {
     int codigoMenu;
 
-    while (codigoMenu != 4)
+    printf(ANSI_BOLD ANSI_GREEN "Menu de Cadastro Selecionado (Tipo de Arquivo: %c)\n" ANSI_RESET, tipoArquivo);
+    if (codigoPermissao == 'e') {
+        printf(ANSI_RED "Acesso bloqueado!!!\n" ANSI_RESET);
+    } 
+    else
     {
-        printf("--- MENU ---\n 1 - Informações dos hóspedes.\n 2 - Lista de categorias das acomodações.\n 3 - Informações das acomodações.\n 4 - Voltar à tela principal.\n\nDigite um código referente ao item que você deseja gerenciar: ");
-        scanf("%d%*c", &codigoMenu);
-
-        switch (codigoMenu)
+        while (codigoMenu != 4)
         {
+            printf("--- MENU ---\n");
+            printf(" 1 - " ANSI_BOLD "Informações dos hóspedes.\n" ANSI_RESET);
+            printf(" 2 - " ANSI_BOLD "Lista de categorias das acomodações.\n" ANSI_RESET);
+            printf(" 3 - " ANSI_BOLD "Informações das acomodações.\n" ANSI_RESET);
+            printf(" 4 - " ANSI_BOLD "Voltar à tela principal.\n" ANSI_RESET);
 
-        case 1:
-            gerenciarHospede(tipoArquivo);
-            break;
+            printf("\nDigite um código referente ao item que você deseja gerenciar: ");
+            scanf("%d%*c", &codigoMenu);
 
-        case 2:
-            gerenciarCategoria(tipoArquivo, codigoPermissao);
-            break;
+            switch (codigoMenu)
+            {
 
-        case 3:
-            gerenciarAcomodacao(tipoArquivo, codigoPermissao);
-            break;
+                case 1:
+                gerenciarHospede(tipoArquivo);
+                break;
 
-        case 4:
-            printf("Voltando para a tela principal.\n\n");
-            break;
+                case 2:
+                gerenciarCategoria(tipoArquivo, codigoPermissao);
+                break;
 
-        default:
-            printf("\nCódigo de menu informado é inválido!\n\n");
-            break;
+                case 3:
+                gerenciarAcomodacao(tipoArquivo, codigoPermissao);
+                break;
+
+                case 4:
+                printf("Voltando para a tela principal.\n\n");
+                break;
+
+                default:
+                printf("\nCódigo de menu informado é inválido!\n\n");
+                break;
         }
     }
+    } 
 }
+
 
 void menuAdm(char tipoArquivo, char codigoPermissao)
 {
-    int codigoMenu;
-    printf("--- MENU ---\n 1 - Tabela de consumíveis.\n 2 - Lista de fornecedores.\n 3 - Lista de operadores do sistema.\n 4 - Voltar à tela principal.\n 5 - Informções sobre o Hotel\n\nDigite um código referente ao item que você deseja gerenciar: ");
-    scanf("%d", &codigoMenu);
-
-    if (codigoPermissao == 'e')
-    {
-        if (codigoMenu == 3)
-        {
-            printf("Acesso Negado !!!\n");
-            return;
-        }
+    printf(ANSI_BOLD ANSI_GREEN "Menu Administrativo Selecionado (Tipo de Arquivo: %c)\n" ANSI_RESET, tipoArquivo);
+    if (codigoPermissao == 'e') {
+        printf(ANSI_RED "Acesso bloqueado!!!\n" ANSI_RESET);
     }
-    else if (codigoPermissao == 'r')
+    else
     {
+        int codigoMenu;
+        printf("--- MENU ---\n");
+        printf(" 1 - " ANSI_BOLD "Tabela de consumíveis.\n" ANSI_RESET);
+        printf(" 2 - " ANSI_BOLD "Lista de fornecedores.\n" ANSI_RESET);
+        printf(" 3 - " ANSI_BOLD "Lista de operadores do sistema.\n" ANSI_RESET);
+        printf(" 4 - " ANSI_BOLD "Voltar à tela principal.\n" ANSI_RESET);
+        printf(" 5 - " ANSI_BOLD "Informações sobre o Hotel.\n" ANSI_RESET);
 
-        if (codigoMenu != 4 && codigoMenu != 5)
+        printf("\nDigite um código referente ao item que você deseja gerenciar: ");
+        scanf("%d", &codigoMenu);
+
+        if (codigoPermissao == 'e')
         {
-            printf("Acesso negado !!!");
-            return;
+            if (codigoMenu == 3)
+            {
+                printf(ANSI_RED "Acesso bloqueado!!!\n" ANSI_RESET);
+                return;
+            }
         }
-    }
-    while (codigoMenu != 4)
-    {
-
-        switch (codigoMenu)
+        else if (codigoPermissao == 'r')
         {
-        case 1:
-            gerenciarConsumivel(tipoArquivo);
-            break;
 
-        case 2:
-            gerenciarFornecedor(tipoArquivo);
-            break;
+            if (codigoMenu != 4 && codigoMenu != 5)
+            {
+                printf(ANSI_RED "Acesso bloqueado!!!\n" ANSI_RESET);
+                return;
+            }
+        }
+        while (codigoMenu != 4)
+        {
 
-        case 3:
-            gerenciarOperador(tipoArquivo);
+            switch (codigoMenu)
+            {
+            case 1:
+                gerenciarConsumivel(tipoArquivo);
+                break;
 
-            break;
+            case 2:
+                gerenciarFornecedor(tipoArquivo);
+                break;
 
-        case 4:
-            printf("Voltando à tela inicial\n\n");
-            break;
+            case 3:
+                gerenciarOperador(tipoArquivo);
+                break;
 
-        case 5:
-            gerenciarHotel(tipoArquivo, codigoPermissao);
-            break;
+            case 4:
+                printf("Voltando à tela inicial\n\n");
+                break;
 
-        default:
-            printf("Código de menu informado inválido!!\n\n");
-            break;
+            case 5:
+                gerenciarHotel(tipoArquivo, codigoPermissao);
+                break;
+
+            default:
+                printf("Código de menu informado inválido!!\n\n");
+                break;
+            }
         }
     }
 }
@@ -132,82 +165,79 @@ int main()
 
     while (codigoMenu != 7)
     {
-        printf("--- MENU ---\n 1 - Cadastrar e gerir dados armazenados.\n 2 - Gerenciar reservas de quartos.\n 3 - Gerir dados administrativos.\n 4 - Relatórios do sistema.\n 5 - Importar/Exportar dados.\n 6 - Alterar configuração de armazenamento.\n 7 - Encerrar o programa.\n8 - Fazer login.\n\nDigite um código referente à operação que você deseja fazer: ");
+        printf("--- MENU ---\n");
+        printf(" 1 - " ANSI_BOLD "Cadastrar e gerir dados armazenados.\n" ANSI_RESET);
+        printf(" 2 - " ANSI_BOLD "Gerenciar reservas de quartos.\n" ANSI_RESET);
+        printf(" 3 - " ANSI_BOLD "Gerir dados administrativos.\n" ANSI_RESET);
+        printf(" 4 - " ANSI_BOLD "Relatórios do sistema.\n" ANSI_RESET);
+        printf(" 5 - " ANSI_BOLD "Importar/Exportar dados.\n" ANSI_RESET);
+        printf(" 6 - " ANSI_BOLD "Alterar configuração de armazenamento.\n" ANSI_RESET);
+        printf(" 7 - " ANSI_BOLD "Encerrar o programa.\n" ANSI_RESET);
+        printf(" 8 - " ANSI_BOLD "Fazer login.\n" ANSI_RESET);
+        printf("\nDigite um código referente à operação que você deseja fazer: ");
         scanf(" %d%*c", &codigoMenu);
 
-        if (codigoPermissao == 'e')
-        {
-            if (codigoMenu != 3 && codigoMenu != 7)
-            {
-                printf("Acesso bloqueado!!!");
-                return 0;
+        if (codigoPermissao == 'e') {
+            if (codigoMenu != 3 && codigoMenu != 7) {
+                printf(ANSI_RED "Acesso bloqueado!!!\n" ANSI_RESET);
+                continue;
             }
         }
-        switch (codigoMenu)
-        {
-        case 1:
-            menuCadastro(tipoArquivo, codigoPermissao);
-            break;
 
-        case 3:
-            menuAdm(tipoArquivo, codigoPermissao);
-            break;
+        switch (codigoMenu) {
+            case 1:
+                menuCadastro(tipoArquivo, codigoPermissao);
+                break;
 
-        case 6:
-            printf("\nEscolha o tipo de armazenamento (txt ou binário):\n");
-            printf("1 - Texto (txt)\n");
-            printf("2 - Binário (bin)\n");
+            case 3:
+                menuAdm(tipoArquivo, codigoPermissao);
+                break;
 
-            int escolhaArmazenamento;
-            scanf("%d", &escolhaArmazenamento);
+            case 6:
+                printf("\nEscolha o tipo de armazenamento (txt ou binário):\n");
+                printf("1 - Texto (txt)\n");
+                printf("2 - Binário (bin)\n");
 
-            if (escolhaArmazenamento == 1)
-            { // Seleciona o tipo de armazenamento para texto (txt)
-                // strcpy(tipoArquivo, "T");
-                tipoArquivo = 'T';
-                printf("\nArmazenamento configurado para texto (txt).\n");
-            }
-            else if (escolhaArmazenamento == 2)
-            {
-                // Seleciona o tipo de armazenamento para binário (bin)
-                tipoArquivo = 'B';
-                printf("\nArmazenamento configurado para binário (bin).\n");
-            }
-            else
-            {
-                printf("\nOpção inválida.\n");
-            }
-            break;
+                int escolhaArmazenamento;
+                scanf("%d", &escolhaArmazenamento);
 
-        case 7:
-            printf("\nEncerrando o programa...\n");
-            break;
+                if (escolhaArmazenamento == 1) {
+                    tipoArquivo = 'T';
+                    printf("\nArmazenamento configurado para texto (txt).\n");
+                } else if (escolhaArmazenamento == 2) {
+                    tipoArquivo = 'B';
+                    printf("\nArmazenamento configurado para binário (bin).\n");
+                } else {
+                    printf(ANSI_RED "\nOpção inválida.\n" ANSI_RESET);
+                }
+                break;
 
-        case 8:
-            struct LoginSenha *operador;
+            case 7:
+                printf("\nEncerrando o programa...\n");
+                break;
 
-            printf("Digite o login :");
-            scanf("%s", operador->login);
+            case 8:
+                struct LoginSenha operador;
 
-            printf("Digite a senha :");
-            scanf("%s", operador->senha);
+                printf("Digite o login: ");
+                scanf("%s", operador.login);
 
-            int status = fazerLogin(operador, &codigoPermissao);
+                printf("Digite a senha: ");
+                scanf("%s", operador.senha);
 
-            if (status == 1)
-            {
-                printf("Logado com sucesso!\n");
-            }
-            else
-            {
-                printf("Erro de login!\n");
-            }
-            printf("%c\n", codigoPermissao);
-            break;
+                int status = fazerLogin(&operador, &codigoPermissao);
 
-        default:
-            printf("\nCódigo de menu informado é inválido!\n\n");
-            break;
+                if (status == 1) {
+                    printf(ANSI_GREEN "Logado com sucesso!\n" ANSI_RESET);
+                } else {
+                    printf(ANSI_RED "Erro de login!\n" ANSI_RESET);
+                }
+                printf("Código de permissão: %c\n", codigoPermissao);
+                break;
+
+            default:
+                printf(ANSI_RED "\nCódigo de menu informado é inválido!\n\n" ANSI_RESET);
+                break;
         }
     }
 
