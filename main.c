@@ -10,7 +10,7 @@ struct LoginSenha
 };
 
 int fazerLogin(struct LoginSenha *operador, char *codigoPermissao)
-{
+{ 
     FILE *arquivo = fopen("arquivos/operador.txt", "r");
     Operador ptrOperador;
     while (1)
@@ -28,7 +28,7 @@ int fazerLogin(struct LoginSenha *operador, char *codigoPermissao)
     }
 }
 
-void menuCadastro(char tipoArquivo)
+void menuCadastro(char tipoArquivo, char codigoPermissao)
 {
     int codigoMenu;
 
@@ -63,7 +63,7 @@ void menuCadastro(char tipoArquivo)
     }
 }
 
-void menuAdm(char tipoArquivo)
+void menuAdm(char tipoArquivo, char codigoPermissao)
 {
     int codigoMenu;
     printf("--- MENU ---\n 1 - Tabela de consumíveis.\n 2 - Lista de fornecedores.\n 3 - Lista de operadores do sistema.\n 4 - Voltar à tela principal.\n 5 - Informções sobre o Hotel\n\nDigite um código referente ao item que você deseja gerenciar: ");
@@ -90,7 +90,7 @@ void menuAdm(char tipoArquivo)
             break;
 
         case 5:
-            gerenciarHotel(tipoArquivo);
+            gerenciarHotel(tipoArquivo,codigoPermissao);
             break;
 
         default:
@@ -116,11 +116,11 @@ int main()
         switch (codigoMenu)
         {
         case 1:
-            menuCadastro(tipoArquivo);
+            menuCadastro(tipoArquivo,codigoPermissao);
             break;
 
         case 3:
-            menuAdm(tipoArquivo);
+            menuAdm(tipoArquivo,codigoPermissao);
 
         case 6:
             printf("\nEscolha o tipo de armazenamento (txt ou binário):\n");

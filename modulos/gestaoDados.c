@@ -267,7 +267,7 @@ Operador *coletarDadosOperador()
     return ptrOperador;
 }
 
-void gerenciarHotel(char tipoArquivo)
+void gerenciarHotel(char tipoArquivo, char codigoPermissao)
 {
     char item[] = "hotel";
     int operacao = selecionarOperacao(item);
@@ -275,6 +275,12 @@ void gerenciarHotel(char tipoArquivo)
     FILE *arquivo;
     Hotel *ptrHotel;
 
+    if(codigoPermissao == 'r' || codigoPermissao == 'e'){
+        if(operacao != 3){
+            printf("Acesso bloqueado!!!");
+            return;
+        }
+    }
     switch (operacao)
     {
     case 1:

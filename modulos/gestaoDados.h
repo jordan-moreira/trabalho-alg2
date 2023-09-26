@@ -115,7 +115,7 @@ typedef struct
 int selecionarOperacao(char *tipoDoDado);
 
 // funcao responsavel por gerenciar dados do hotel
-void gerenciarHotel(char tipoArquivo);
+void gerenciarHotel(char tipoArquivo, char codigoPermissao);
 
 // funcao responsavel por gerenciar dados dos hospedes
 void gerenciarHospede(char tipoArquivo);
