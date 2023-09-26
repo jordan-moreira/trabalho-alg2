@@ -66,21 +66,21 @@ void menuCadastro(char tipoArquivo, char codigoPermissao)
 
 void menuAdm(char tipoArquivo, char codigoPermissao)
 {
-    int codigoMenu;
-    printf("--- MENU ---\n 1 - Tabela de consumíveis.\n 2 - Lista de fornecedores.\n 3 - Lista de operadores do sistema.\n 4 - Voltar à tela principal.\n 5 - Informções sobre o Hotel\n\nDigite um código referente ao item que você deseja gerenciar: ");
-    scanf("%d", &codigoMenu);
-    if(codigoPermissao == 'e'){
-        if(codigoMenu == 3){
-            printf("Acesso Negado !!!");
-            return;
-        }
-        if(codigoPermissao == 'r'){
-            if(codigoMenu !=4 && codigoMenu !=5){
-                printf("Acesso negado !!!");
-                return;
-            }
-        }
+  int codigoMenu;
+printf("--- MENU ---\n 1 - Tabela de consumíveis.\n 2 - Lista de fornecedores.\n 3 - Lista de operadores do sistema.\n 4 - Voltar à tela principal.\n 5 - Informações sobre o Hotel\n\nDigite um código referente ao item que você deseja gerenciar: ");
+scanf("%d", &codigoMenu);
+
+if (codigoPermissao == 'e') {
+    if (codigoMenu == 3) {
+        printf("Acesso Negado !!!");
+        return;
     }
+} else if (codigoPermissao == 'r') {
+    if (codigoMenu != 4 && codigoMenu != 5) {
+        printf("Acesso negado !!!");
+        return;
+    }
+}
     while (codigoMenu != 4){
     
         switch (codigoMenu)
