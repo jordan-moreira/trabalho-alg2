@@ -4,6 +4,7 @@
 #include "gestaoDados.h"
 #include "crudTxt.h"
 #include "crudBin.h"
+//Funcoes criadas para serem implementadas no codigo.
 
 // Define códigos de escape ANSI para cores de texto
 #define ANSI_RESET "\x1b[0m"
@@ -14,7 +15,7 @@
 int selecionarOperacao(char *tipoDoDado)
 {
     int codigoMenu = 0;
-    printf("Digite o código referente à operação a ser realizada:\n");
+    printf("Digite o código referente à operação a ser realizada:\n");//codMenu para administrar operações do hotel.
 
     while (codigoMenu < 1 || codigoMenu > 4)
     {
@@ -35,16 +36,16 @@ int selecionarOperacao(char *tipoDoDado)
     }
 }
 
-Hotel *coletarDadosHotel()
+Hotel *coletarDadosHotel()//Funcao para retornar um ponteiro de memoria onde estao os dados.
 {
-    Hotel *ptrHotel = malloc(sizeof(Hotel));
+    Hotel *ptrHotel = malloc(sizeof(Hotel));//Memoria alocada para salvar dados coletados.
 
     if (ptrHotel == NULL)
     {
         printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
-
+    //  printf e scanf para adicionar e salvar e coletar dados do hotem em memoria.
     printf("Digite o nome do hotel: ");
     scanf("%s", ptrHotel->nome);
 
@@ -81,16 +82,16 @@ Hotel *coletarDadosHotel()
     return ptrHotel;
 }
 
-Hospede *coletarDadosHospede()
+Hospede *coletarDadosHospede()//Funcao para retornar um ponteiro de memoria onde estao os dados.
 {
-    Hospede *ptrHospede = malloc(sizeof(Hospede));
+    Hospede *ptrHospede = malloc(sizeof(Hospede));//Memoria criada para salvar dados coletados.
 
     if (ptrHospede == NULL)
     {
         printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
-
+    // Criado printf e scanf para coletar e armazenar dados de hospedes.
     printf("Digite o código do hóspede: ");
     scanf("%d", &ptrHospede->codigo);
 
@@ -121,16 +122,17 @@ Hospede *coletarDadosHospede()
     return ptrHospede;
 }
 
-Categoria *coletarDadosCategoria()
+Categoria *coletarDadosCategoria()//Funcao para retornar um ponteiro de memoria onde estao os dados.
 {
-    Categoria *ptrCategoria = malloc(sizeof(Categoria));
+{
+    Categoria *ptrCategoria = malloc(sizeof(Categoria));//Memoria criada para salvar dados coletados.
 
     if (ptrCategoria == NULL)
     {
         printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
-
+    //  Logica criada para hospede decidir qual categoria lhe-convem.
     printf("Digite o código da categoria: ");
     scanf("%d", &ptrCategoria->codigo);
 
@@ -146,15 +148,17 @@ Categoria *coletarDadosCategoria()
     return ptrCategoria;
 }
 
-Acomodacao *coletarDadosAcomodacao()
+Acomodacao *coletarDadosAcomodacao()//Funcao para retornar um ponteiro de memoria onde estao os dados.
 {
-    Acomodacao *ptrAcomodacao = malloc(sizeof(Acomodacao));
+{
+    Acomodacao *ptrAcomodacao = malloc(sizeof(Acomodacao));//Memoria criada para salvar dados coletados.
 
     if (ptrAcomodacao == NULL)
     {
         printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
+    //Criado logica para informar acmodacoes fornecidas pelo hotel e com  facilidades. Tambem a possivel data de entrada do hospede e saida(dataInicial e dataFinal).
 
     printf("Digite o código da acomodação: ");
     scanf("%d", &ptrAcomodacao->codigo);
@@ -180,16 +184,17 @@ Acomodacao *coletarDadosAcomodacao()
     return ptrAcomodacao;
 }
 
-Consumivel *coletarDadosConsumivel()
+Consumivel *coletarDadosConsumivel()//Funcao para retornar um ponteiro de memoria onde estao os dados.
 {
-    Consumivel *ptrConsumivel = malloc(sizeof(Consumivel));
+    Consumivel *ptrConsumivel = malloc(sizeof(Consumivel));//Memoria criada para salvar dados coletados.
+
 
     if (ptrConsumivel == NULL)
     {
         printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
-
+    //Logica para coleta de dados de consumiveis e informar preço e tamanho do estoque de tal produto.
     printf("Digite o código do consumível: ");
     scanf("%d", &ptrConsumivel->codigo);
 
@@ -211,16 +216,16 @@ Consumivel *coletarDadosConsumivel()
     return ptrConsumivel;
 }
 
-Fornecedor *coletarDadosFornecedor()
+Fornecedor *coletarDadosFornecedor()//Funcao para retornar um ponteiro de memoria onde estao os dados.
 {
-    Fornecedor *ptrFornecedor = malloc(sizeof(Fornecedor));
+    Fornecedor *ptrFornecedor = malloc(sizeof(Fornecedor));//Memoria criada para salvar dados coletados.
 
     if (ptrFornecedor == NULL)
     {
         printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
-
+    //Logica para coleta de dados de fornecedores.
     printf("Digite o código do fornecedor: ");
     scanf("%d", &ptrFornecedor->codigo);
 
@@ -248,16 +253,16 @@ Fornecedor *coletarDadosFornecedor()
     return ptrFornecedor;
 }
 
-Operador *coletarDadosOperador()
+Operador *coletarDadosOperador()//Funcao para retornar um ponteiro de memoria onde estao os dados.
 {
-    Operador *ptrOperador = malloc(sizeof(Operador));
+    Operador *ptrOperador = malloc(sizeof(Operador));//Memoria criada para salvar dados coletados.
 
     if (ptrOperador == NULL)
     {
         printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
-
+    //Logica criada para adicionar operadores ao sistema.
     printf("Digite o código do operador: ");
     scanf("%d", &ptrOperador->codigo);
 
@@ -270,7 +275,7 @@ Operador *coletarDadosOperador()
     printf("Digite a senha do operador: ");
     scanf("%s", ptrOperador->senha);
 
-    while (ptrOperador->permissao != 'g' && ptrOperador->permissao != 'r' && ptrOperador->permissao != 'e')
+    while (ptrOperador->permissao != 'g' && ptrOperador->permissao != 'r' && ptrOperador->permissao != 'e')//Logica para coletar o cargo do operador de sistema.
     {
         printf("||||| Menu de Cargos |||||\ng-Gernte geral.\nr-Recepcionista.\ne-Gerente de estoque\n");
 
@@ -280,7 +285,7 @@ Operador *coletarDadosOperador()
     return ptrOperador;
 }
 
-void gerenciarHotel(char tipoArquivo, char codigoPermissao)
+void gerenciarHotel(char tipoArquivo, char codigoPermissao)//Logica criada para que se usuario não tiver acesso, seja barrado.
 {
     char item[] = "hotel";
     int operacao = selecionarOperacao(item);
