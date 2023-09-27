@@ -1,5 +1,9 @@
 # implementacoes a serem feitas
 
+- [ ] criar uma funcao responsavel por clonar os arquivos no tipo de armazanemento selecionado(txt ou bin) para todas as 7 estruturas 
+- [ ] alterar o tipo das variaveis de Categoria.codigo e Acomodacao.categoria para q elas aceitem texto
+- [ ] criar um menu de categorias disponiveis para serem selecionas na funcao coletarDadosAcomodacao (coo na funcao coletarDadosOperador na selecao de cargos)
+
 ## implementacoes de cadastro e gerenciamento de dados
 
 - [X] criar um menu de selecao de operacao primaria q sera executado na inicializacao do sistema.
@@ -29,9 +33,7 @@ codigo de acesso: E
 ## implementacoes de cancelamento e reserva de acomodacoes
 
 - [ ] criar uma funcao responsavel por gerir as reservas das acomodacoes questionando se o usuario pretende reservar uma acomodacao ou cancelar uma reserva
-- [ ] criar uma funcao que questione a forma de filtragem das acomodacoes ( por data, categoria de acomodação, quantidade de pessoas, tipo de facilidade, ou por uma combinação destes critérios) para a realizacao de uma reserva
-- [ ] criar um funcao de busca para filtrar as acomodacoes q atendem os criterios exigidos 
-
-gerente de estoque(acesso aarmazene esses dados em memoria e retorne uma lista de ponteiros das acomodacoes compativeis
-- [ ] criar uma funcao q receba a lista de ponteiros acima e mostre na tela as informacoes sobre os quartos
-- [ ]criar uma funcao responsavel por receber um ponteiro de um quarto anteriormente reservado e atualizalo para um quarto vago
+- [ ] criar uma funcao para coletar os dados de filtragem como na funcao coletarDadosAcomodacao
+- [ ] criar um funcao para comparar os dados informados com os dados salvos no arquivo printar as estruturas compativeis e seus codigos de identificacao
+- [ ] criar uma funcao para coletar o codigo da acomodacao a ser reservada e salvar a data da reserva (dataInicial e dataFinal)
+ 
