@@ -5,6 +5,12 @@
 #include "crudTxt.h"
 #include "crudBin.h"
 
+// Define códigos de escape ANSI para cores de texto
+#define ANSI_RESET "\x1b[0m"
+#define ANSI_BOLD "\x1b[1m"
+#define ANSI_GREEN "\x1b[32m"
+#define ANSI_RED "\x1b[31m"
+
 int selecionarOperacao(char *tipoDoDado)
 {
     int codigoMenu = 0;
@@ -12,7 +18,10 @@ int selecionarOperacao(char *tipoDoDado)
 
     while (codigoMenu < 1 || codigoMenu > 4)
     {
-        printf("1 - Adicionar %s.\n 2 - Atualizar informações de %s.\n 3 - Ler informações de %s.\n 4 - Deletar %s.\n", tipoDoDado, tipoDoDado, tipoDoDado, tipoDoDado);
+        printf("1 -" ANSI_BOLD "Adicionar %s.\n" ANSI_RESET, tipoDoDado);
+        printf("2 -" ANSI_BOLD "Atualizar informações de %s.\n" ANSI_RESET, tipoDoDado);
+        printf("3 -" ANSI_BOLD "Ler informações de %s.\n" ANSI_RESET, tipoDoDado);
+        printf("4 -" ANSI_BOLD "Deletar %s.\n" ANSI_RESET, tipoDoDado);
         scanf("%d%*c", &codigoMenu);
 
         if (codigoMenu >= 1 && codigoMenu <= 4)
@@ -21,7 +30,7 @@ int selecionarOperacao(char *tipoDoDado)
         }
         else
         {
-            printf("Opção inválida.\n");
+            printf( ANSI_RED "Opção inválida.\n" ANSI_RESET);
         }
     }
 }
@@ -32,7 +41,7 @@ Hotel *coletarDadosHotel()
 
     if (ptrHotel == NULL)
     {
-        printf("Erro na alocação de memória.\n");
+        printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
 
@@ -78,7 +87,7 @@ Hospede *coletarDadosHospede()
 
     if (ptrHospede == NULL)
     {
-        printf("Erro na alocação de memória.\n");
+        printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
 
@@ -118,7 +127,7 @@ Categoria *coletarDadosCategoria()
 
     if (ptrCategoria == NULL)
     {
-        printf("Erro na alocação de memória.\n");
+        printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
 
@@ -143,7 +152,7 @@ Acomodacao *coletarDadosAcomodacao()
 
     if (ptrAcomodacao == NULL)
     {
-        printf("Erro na alocação de memória.\n");
+        printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
 
@@ -177,7 +186,7 @@ Consumivel *coletarDadosConsumivel()
 
     if (ptrConsumivel == NULL)
     {
-        printf("Erro na alocação de memória.\n");
+        printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
 
@@ -208,7 +217,7 @@ Fornecedor *coletarDadosFornecedor()
 
     if (ptrFornecedor == NULL)
     {
-        printf("Erro na alocação de memória.\n");
+        printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
 
@@ -245,7 +254,7 @@ Operador *coletarDadosOperador()
 
     if (ptrOperador == NULL)
     {
-        printf("Erro na alocação de memória.\n");
+        printf( ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
         return NULL;
     }
 
@@ -283,7 +292,7 @@ void gerenciarHotel(char tipoArquivo, char codigoPermissao)
     {
         if (operacao != 3)
         {
-            printf("Acesso bloqueado!!!\n");
+            printf( ANSI_RED "Acesso bloqueado!!!\n" ANSI_RESET);
             return;
         }
     }
@@ -296,20 +305,20 @@ void gerenciarHotel(char tipoArquivo, char codigoPermissao)
 
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser aberto!\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
             break;
         }
         (tipoArquivo == 'T') ? criarHotelTxt(ptrHotel, arquivo) : criarHotelBin(ptrHotel, arquivo);
 
         free(ptrHotel);
         fclose(arquivo);
-        printf("Registrado com sucesso!\n");
+        printf( ANSI_GREEN "Registrado com sucesso!\n" ANSI_RESET);
         break;
 
     case 2:
         ptrHotel = coletarDadosHotel();
         status = (tipoArquivo == 'T') ? atualizarHotelTxt(ptrHotel) : atualizarHotelBin(ptrHotel);
-        status == 1 ? printf("registros de hotel atualizados com sucesso") : printf("erro ao atualizar registros de hotel");
+        status == 1 ? printf( ANSI_GREEN "Registros de hotel atualizados com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao atualizar registros de hotel" ANSI_RESET);
         free(ptrHotel);
         break;
 
@@ -318,7 +327,7 @@ void gerenciarHotel(char tipoArquivo, char codigoPermissao)
 
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser lido.\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
             break;
         }
 
@@ -332,7 +341,7 @@ void gerenciarHotel(char tipoArquivo, char codigoPermissao)
         }
         else if (status == 0)
         {
-            printf("Hotel não encontrado ou erro de leitura.\n");
+            printf( ANSI_RED "Hotel não encontrado ou erro de leitura.\n" ANSI_RESET);
         }
 
         free(ptrHotel);
@@ -369,7 +378,7 @@ void gerenciarHospede(char tipoArquivo)
 
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser aberto!\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
             break;
         }
 
@@ -377,7 +386,7 @@ void gerenciarHospede(char tipoArquivo)
         free(ptrHospede);
         fclose(arquivo);
 
-        printf("Registrado com sucesso!\n");
+        printf( ANSI_GREEN "Registrado com sucesso!\n" ANSI_RESET);
         break;
 
     case 2:
@@ -387,7 +396,7 @@ void gerenciarHospede(char tipoArquivo)
         scanf("%d%*c", &codigoHospede);
         status = (tipoArquivo == 'T') ? atualizarHospedeTxt(codigoHospede, ptrHospede) : atualizarHospedeBin(codigoHospede, ptrHospede);
 
-        status == 1 ? printf("registro de hospede atualizado com sucesso") : printf("erro ao atualizar registro de hospede");
+        status == 1 ? printf( ANSI_GREEN "Registro de hospede atualizado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao atualizar registro de hospede" ANSI_RESET);
         free(ptrHospede);
         break;
 
@@ -397,7 +406,7 @@ void gerenciarHospede(char tipoArquivo)
 
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser lido.\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
             break;
         }
         ptrHospede = malloc(sizeof(Hospede));
@@ -455,14 +464,14 @@ void gerenciarHospede(char tipoArquivo)
                 }
                 else
                 {
-                    printf("Hospede não encontrado ou código incorreto.\n");
+                    printf( ANSI_RED "Hospede não encontrado ou código incorreto.\n" ANSI_RESET);
                     break;
                 }
             }
         }
         else
         {
-            printf("Opção inválida.\n");
+            printf( ANSI_RED "Opção inválida.\n" ANSI_RESET);
         }
 
         free(ptrHospede); // Libere a memória alocada para ptrHospede
@@ -475,11 +484,11 @@ void gerenciarHospede(char tipoArquivo)
         scanf("%d%*c", &codigoHospede);
         status = (tipoArquivo == 'T') ? deletarHospedeTxt(codigoHospede) : deletarHospedeBin(codigoHospede);
 
-        status == 1 ? printf("registro de hospede deletado com sucesso") : printf("erro ao deletar registro de hospede");
+        status == 1 ? printf( ANSI_GREEN "Registro de hospede deletado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao deletar registro de hóspede" ANSI_RESET);
         break;
 
     default:
-        printf("Erro desconhecido.\n");
+        printf( ANSI_RED "Erro desconhecido.\n" ANSI_RESET);
         break;
     }
 }
@@ -496,7 +505,7 @@ void gerenciarCategoria(char tipoArquivo, char codigoPermissao)
     {
         if (operacao != 3)
         {
-            printf("Acesso negado !!!");
+            printf( ANSI_RED "Acesso negado !!!" ANSI_RESET);
             return;
         }
     }
@@ -509,7 +518,7 @@ void gerenciarCategoria(char tipoArquivo, char codigoPermissao)
 
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser aberto!\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
             break;
         }
 
@@ -517,7 +526,7 @@ void gerenciarCategoria(char tipoArquivo, char codigoPermissao)
         free(ptrCategoria);
         fclose(arquivo);
 
-        printf("Registrado com sucesso!\n");
+        printf( ANSI_GREEN "Registrado com sucesso!\n" ANSI_RESET);
         break;
 
     case 2:
@@ -527,7 +536,7 @@ void gerenciarCategoria(char tipoArquivo, char codigoPermissao)
         scanf("%d%*c", &codigoCategoria);
         status = (tipoArquivo == 'T') ? atualizarCategoriaTxt(codigoCategoria, ptrCategoria) : atualizarCategoriaBin(codigoCategoria, ptrCategoria);
 
-        status == 1 ? printf("registro de categoria atualizado com sucesso") : printf("erro ao atualizar registro de categoria");
+        status == 1 ? printf( ANSI_GREEN "Registro de categoria atualizado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao atualizar registro de categoria" ANSI_RESET);
         free(ptrCategoria);
         break;
 
@@ -537,7 +546,7 @@ void gerenciarCategoria(char tipoArquivo, char codigoPermissao)
 
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser lido.\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
             break;
         }
         ptrCategoria = malloc(sizeof(Categoria));
@@ -595,14 +604,14 @@ void gerenciarCategoria(char tipoArquivo, char codigoPermissao)
                 }
                 else
                 {
-                    printf("Categoria não encontrada ou código incorreto.\n");
+                    printf( ANSI_RED "Categoria não encontrada ou código incorreto.\n" ANSI_RESET);
                     break;
                 }
             }
         }
         else
         {
-            printf("Opção inválida.\n");
+            printf( ANSI_RED "Opção inválida.\n" ANSI_RESET);
         }
 
         free(ptrCategoria);
@@ -615,11 +624,11 @@ void gerenciarCategoria(char tipoArquivo, char codigoPermissao)
         scanf("%d%*c", &codigoCategoria);
         status = (tipoArquivo == 'T') ? deletarCategoriaTxt(codigoCategoria) : deletarCategoriaBin(codigoCategoria);
 
-        status == 1 ? printf("registro de categoria deletado com sucesso") : printf("erro ao deletar registro de categoria");
+        status == 1 ? printf( ANSI_GREEN "Registro de categoria deletado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao deletar registro de categoria" ANSI_RESET);
         break;
 
     default:
-        printf("Erro desconhecido.\n");
+        printf( ANSI_RED "Erro desconhecido.\n" ANSI_RESET);
         break;
     }
 }
@@ -637,7 +646,7 @@ void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao)
     {
         if (operacao != 3)
         {
-            printf("Acesso negado !!!");
+            printf( ANSI_RED "Acesso negado !!!" ANSI_RESET);
             return;
         }
     }
@@ -651,7 +660,7 @@ void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao)
 
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser aberto!\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
             break;
         }
 
@@ -660,7 +669,7 @@ void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao)
 
         fclose(arquivo);
 
-        printf("Registrado com sucesso!\n");
+        printf( ANSI_GREEN "Registrado com sucesso!\n" ANSI_RESET);
         break;
 
     case 2:
@@ -670,7 +679,7 @@ void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao)
         scanf("%d%*c", &codigoAcomodacao);
         status = (tipoArquivo == 'T') ? atualizarAcomodacaoTxt(codigoAcomodacao, ptrAcomodacao) : atualizarAcomodacaoBin(codigoAcomodacao, ptrAcomodacao);
 
-        status == 1 ? printf("registro de acomodacao atualizado com sucesso") : printf("erro ao atualizar registro de acomodacao");
+        status == 1 ? printf( ANSI_GREEN "Registro de acomodacao atualizado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao atualizar registro de acomodação" ANSI_RESET);
         free(ptrAcomodacao);
         break;
 
@@ -678,14 +687,14 @@ void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao)
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/acomodacao.txt", "r") : fopen("arquivos/acomodacao.bin", "rb");
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser lido.\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
             break;
         }
         ptrAcomodacao = malloc(sizeof(Acomodacao));
 
         int codigoMenu = 0;
 
-        printf("Se você deseja fazer uma leitura de todas as acomodações, digite 1. Se você deseja fazer uma leitura de uma acomodação específica, digite 2: ");
+        printf("Se você deseja fazer uma leitura de todas as acomodações, digite" ANSI_BOLD "1." ANSI_RESET "Se você deseja fazer uma leitura de uma acomodação específica, digite" ANSI_BOLD "2" ANSI_RESET ": ");
         scanf("%d%*c", &codigoMenu);
 
         if (codigoMenu == 1)
@@ -734,14 +743,14 @@ void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao)
                 }
                 else
                 {
-                    printf("Acomodação não encontrada ou código incorreto.\n");
+                    printf( ANSI_RED "Acomodação não encontrada ou código incorreto.\n" ANSI_RESET);
                     break;
                 }
             }
         }
         else
         {
-            printf("Opção inválida.\n");
+            printf( ANSI_RED "Opção inválida.\n" ANSI_RESET);
         }
 
         free(ptrAcomodacao);
@@ -754,11 +763,11 @@ void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao)
         scanf("%d%*c", &codigoAcomodacao);
         status = (tipoArquivo == 'T') ? deletarAcomodacaoTxt(codigoAcomodacao) : deletarAcomodacaoBin(codigoAcomodacao);
 
-        status == 1 ? printf("registro de acomodacao deletado com sucesso") : printf("erro ao deletar registro de acomodacao");
+        status == 1 ? printf( ANSI_GREEN "Registro de acomodacao deletado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao deletar registro de acomodação" ANSI_RESET);
         break;
 
     default:
-        printf("Erro desconhecido.\n");
+        printf( ANSI_RED "Erro desconhecido.\n" ANSI_RESET);
         break;
     }
 }
@@ -780,14 +789,14 @@ void gerenciarConsumivel(char tipoArquivo)
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/consumivel.txt", "a") : fopen("arquivos/consumivel.bin", "ab");
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser aberto!\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
             break;
         }
         (tipoArquivo == 'T') ? adicionarConsumivelTxt(ptrConsumivel, arquivo) : adicionarConsumivelBin(ptrConsumivel, arquivo);
         free(ptrConsumivel);
         fclose(arquivo);
 
-        printf("Registrado com sucesso!\n");
+        printf( ANSI_GREEN "Registrado com sucesso!\n" ANSI_RESET);
         break;
 
     case 2:
@@ -797,7 +806,7 @@ void gerenciarConsumivel(char tipoArquivo)
         scanf("%d%*c", &codigoConsumivel);
         status = (tipoArquivo == 'T') ? atualizarConsumivelTxt(codigoConsumivel, ptrConsumivel) : atualizarConsumivelBin(codigoConsumivel, ptrConsumivel);
 
-        status == 1 ? printf("registro de consumivel atualizado com sucesso") : printf("erro ao atualizar registro de consumivel");
+        status == 1 ? printf( ANSI_GREEN "Registro de consumivel atualizado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao atualizar registro de consumível" ANSI_RESET);
         free(ptrConsumivel);
         break;
 
@@ -805,14 +814,14 @@ void gerenciarConsumivel(char tipoArquivo)
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/consumivel.txt", "r") : fopen("arquivos/consumivel.bin", "rb");
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser lido.\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
             break;
         }
         ptrConsumivel = malloc(sizeof(Consumivel));
 
         int codigoMenu = 0;
 
-        printf("Se você deseja fazer uma leitura de todos os produtos, digite 1. Se você deseja fazer uma leitura de um produto específico, digite 2: ");
+        printf("Se você deseja fazer uma leitura de todos os produtos, digite" ANSI_BOLD "1." ANSI_RESET "Se você deseja fazer uma leitura de um produto específico, digite" ANSI_BOLD "2" ANSI_RESET ": ");
         scanf("%d%*c", &codigoMenu);
 
         if (codigoMenu == 1)
@@ -860,14 +869,14 @@ void gerenciarConsumivel(char tipoArquivo)
                 }
                 else
                 {
-                    printf("Produto consumível não encontrado ou código incorreto.\n");
+                    printf( ANSI_RED "Produto consumível não encontrado ou código incorreto.\n" ANSI_RESET);
                     break;
                 }
             }
         }
         else
         {
-            printf("Opção inválida.\n");
+            printf( ANSI_RED "Opção inválida.\n" ANSI_RESET);
         }
         free(ptrConsumivel);
         fclose(arquivo);
@@ -879,11 +888,11 @@ void gerenciarConsumivel(char tipoArquivo)
         scanf("%d%*c", &codigoConsumivel);
         status = (tipoArquivo == 'T') ? deletarConsumivelTxt(codigoConsumivel) : deletarConsumivelBin(codigoConsumivel);
 
-        status == 1 ? printf("registro de consumivel deletado com sucesso") : printf("erro ao deletar registro de consumivel");
+        status == 1 ? printf( ANSI_GREEN "Registro de consumivel deletado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao deletar registro de consumivel" ANSI_RESET);
         break;
 
     default:
-        printf("Erro desconhecido.\n");
+        printf( ANSI_RED "Erro desconhecido.\n" ANSI_RESET);
         break;
     }
 }
@@ -905,7 +914,7 @@ void gerenciarFornecedor(char tipoArquivo)
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/fornecedor.txt", "a") : fopen("arquivos/fornecedor.bin", "ab");
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser aberto!\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
             break;
         }
 
@@ -913,7 +922,7 @@ void gerenciarFornecedor(char tipoArquivo)
         free(ptrFornecedor);
         fclose(arquivo);
 
-        printf("Registrado com sucesso!\n");
+        printf( ANSI_GREEN "Registrado com sucesso!\n" ANSI_RESET);
         break;
 
     case 2:
@@ -923,7 +932,7 @@ void gerenciarFornecedor(char tipoArquivo)
         scanf("%d%*c", &codigoFornecedor);
         status = (tipoArquivo == 'T') ? atualizarFornecedorTxt(codigoFornecedor, ptrFornecedor) : atualizarFornecedorBin(codigoFornecedor, ptrFornecedor);
 
-        status == 1 ? printf("registro de fornecedor atualizado com sucesso") : printf("erro ao atualizar registro de fornecedor");
+        status == 1 ? printf( ANSI_GREEN "Registro de fornecedor atualizado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao atualizar registro de fornecedor" ANSI_RESET);
         free(ptrFornecedor);
         break;
 
@@ -931,14 +940,14 @@ void gerenciarFornecedor(char tipoArquivo)
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/fornecedor.txt", "r") : fopen("arquivos/fornecedor.bin", "rb");
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser lido.\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
             break;
         }
         ptrFornecedor = malloc(sizeof(Fornecedor));
 
         int codigoMenu = 0;
 
-        printf("Se você deseja fazer uma leitura de todos os fornecedores, digite 1. Se você deseja fazer uma leitura de um fornecedor específico, digite 2: ");
+        printf("Se você deseja fazer uma leitura de todos os fornecedores, digite" ANSI_BOLD "1." ANSI_RESET "se você deseja fazer uma leitura de um fornecedor específico, digite" ANSI_BOLD "2" ANSI_RESET": ");
         scanf("%d%*c", &codigoMenu);
 
         if (codigoMenu == 1)
@@ -988,14 +997,14 @@ void gerenciarFornecedor(char tipoArquivo)
                 }
                 else
                 {
-                    printf("Fornecedor não encontrado ou código incorreto.\n");
+                    printf( ANSI_RED "Fornecedor não encontrado ou código incorreto.\n" ANSI_RESET);
                     break;
                 }
             }
         }
         else
         {
-            printf("Opção inválida.\n");
+            printf( ANSI_RED "Opção inválida.\n" ANSI_RESET);
         }
         free(ptrFornecedor); // Libere a memória alocada para ptrFornecedor
         fclose(arquivo);
@@ -1008,11 +1017,11 @@ void gerenciarFornecedor(char tipoArquivo)
         scanf("%d%*c", &codigoFornecedor);
         status = (tipoArquivo == 'T') ? deletarFornecedorTxt(codigoFornecedor) : deletarFornecedorBin(codigoFornecedor);
 
-        status == 1 ? printf("registro de fornecedor deletado com sucesso") : printf("erro ao deletar registro de fornecedor");
+        status == 1 ? printf( ANSI_GREEN "Registro de fornecedor deletado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao deletar registro de fornecedor" ANSI_RESET);
         break;
 
     default:
-        printf("Erro desconhecido.\n");
+        printf( ANSI_RED "Erro desconhecido.\n" ANSI_RESET);
         break;
     }
 }
@@ -1034,7 +1043,7 @@ void gerenciarOperador(char tipoArquivo)
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/operador.txt", "a") : fopen("arquivos/operador.bin", "ab");
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser aberto!\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
             return;
         }
 
@@ -1042,7 +1051,7 @@ void gerenciarOperador(char tipoArquivo)
         free(ptrOperador);
         fclose(arquivo);
 
-        printf("Registrado com sucesso!\n");
+        printf( ANSI_GREEN "Registrado com sucesso!\n" ANSI_RESET);
         break;
 
     case 2:
@@ -1052,7 +1061,7 @@ void gerenciarOperador(char tipoArquivo)
         scanf("%d%*c", &codigoOperador);
         status = (tipoArquivo == 'T') ? atualizarOperadorTxt(codigoOperador, ptrOperador) : atualizarOperadorBin(codigoOperador, ptrOperador);
 
-        status == 1 ? printf("registro de operador atualizado com sucesso") : printf("erro ao atualizar registro de operador");
+        status == 1 ? printf( ANSI_GREEN "Registro de operador atualizado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao atualizar registro de operador" ANSI_RESET);
         free(ptrOperador);
         break;
 
@@ -1060,14 +1069,14 @@ void gerenciarOperador(char tipoArquivo)
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/operador.txt", "r") : fopen("arquivos/operador.bin", "rb");
         if (arquivo == NULL)
         {
-            printf("Arquivo não existe ou não pode ser lido.\n");
+            printf( ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
             break;
         }
         ptrOperador = malloc(sizeof(Operador));
 
         int codigoMenu = 0;
 
-        printf("Se você deseja fazer uma leitura de todos os operadores, digite 1. Se você deseja fazer uma leitura de um operador específico, digite 2: ");
+        printf("Se você deseja fazer uma leitura de todos os operadores, digite" ANSI_BOLD "1." ANSI_RESET "Se você deseja fazer uma leitura de um operador específico, digite" ANSI_BOLD "2" ANSI_RESET ": ");
         scanf("%d%*c", &codigoMenu);
 
         if (codigoMenu == 1)
@@ -1116,14 +1125,14 @@ void gerenciarOperador(char tipoArquivo)
                 }
                 else
                 {
-                    printf("Operador não encontrado ou código incorreto.\n");
+                    printf( ANSI_RED "Operador não encontrado ou código incorreto.\n" ANSI_RESET);
                     break;
                 }
             }
         }
         else
         {
-            printf("Opção inválida.\n");
+            printf( ANSI_RED "Opção inválida.\n" ANSI_RESET);
         }
         free(ptrOperador);
         fclose(arquivo);
@@ -1135,11 +1144,11 @@ void gerenciarOperador(char tipoArquivo)
         scanf("%d%*c", &codigoOperador);
         status = (tipoArquivo == 'T') ? deletarOperadorTxt(codigoOperador) : deletarOperadorBin(codigoOperador);
 
-        status == 1 ? printf("registro de operador deletado com sucesso") : printf("erro ao deletar registro de operador");
+        status == 1 ? printf( ANSI_GREEN "Registro de operador deletado com sucesso" ANSI_RESET) : printf( ANSI_RED "Erro ao deletar registro de operador" ANSI_RESET);
         break;
 
     default:
-        printf("Erro desconhecido.\n");
+        printf( ANSI_RED "Erro desconhecido.\n" ANSI_RESET);
         break;
     }
 }

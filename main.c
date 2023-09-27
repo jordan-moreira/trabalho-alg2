@@ -78,7 +78,7 @@ void menuCadastro(char tipoArquivo, char codigoPermissao)
                 break;
 
                 default:
-                printf("\nCódigo de menu informado é inválido!\n\n");
+                printf( ANSI_RED "\nCódigo de menu informado é inválido!\n\n" ANSI_RESET);
                 break;
         }
     }
