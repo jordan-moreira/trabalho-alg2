@@ -1,6 +1,0 @@
-1{nome:luiz ,endereco:nao-sei ,cpf:34343444 ,celular:343324 ,eMail:luiz@email.com ,sexo:m ,estadoCivil:solteiro ,dataNasc:23/08/2000 ;}
-
-2{nome:joao ,endereco:dfs ,cpf:sdfsdf ,celular:dfsdf ,eMail:dfsd ,sexo:m ,estadoCivil:dfdsf ,dataNasc:ddddddd ;}
-
-3{nome:dsfad ,endereco:fdsf ,cpf:asdsfasdf ,celular:sdafd ,eMail:dfsdf ,sexo:f ,estadoCivil:dfds ,dataNasc:ddsfsdsd ;}
-

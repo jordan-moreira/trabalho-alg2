@@ -66,11 +66,11 @@ int lerHospedeBin(int codigo, FILE *arquivo, Hospede *ptrHospede)
     return 0;
 }
 
-int lerCategoriaBin(int codigo, FILE *arquivo, Categoria *ptrCategoria)
+int lerCategoriaBin(char *codigo, FILE *arquivo, Categoria *ptrCategoria)
 {
     if (fread(ptrCategoria, sizeof(Categoria), 1, arquivo))
     {
-        if (ptrCategoria->codigo == codigo || codigo == 0)
+        if (!strcmp(ptrCategoria->codigo, codigo) || !strcmp(codigo, "0"))
         {
             return 1;
         }
@@ -200,7 +200,7 @@ int atualizarHospedeBin(int codigo, Hospede *novoDados)
 }
 
 // Função para atualizar um registro de Categoria
-int atualizarCategoriaBin(int codigo, Categoria *novoDados)
+int atualizarCategoriaBin(char *codigo, Categoria *novoDados)
 {
     FILE *arquivo = fopen("arquivos/categoria.bin", "rb");
     FILE *tempFile = fopen("arquivos/temp.bin", "wb");
@@ -216,7 +216,7 @@ int atualizarCategoriaBin(int codigo, Categoria *novoDados)
 
     while (fread(&categoriaTemp, sizeof(Categoria), 1, arquivo) == 1)
     {
-        if (categoriaTemp.codigo == codigo)
+        if (!strcmp(categoriaTemp.codigo, codigo))
         {
             // Se o código foi encontrado, atualize os dados com os novos dados
             memcpy(&categoriaTemp, novoDados, sizeof(Categoria));
@@ -476,7 +476,7 @@ int deletarHospedeBin(int codigo)
 }
 
 // Função para deletar uma categoria por código
-int deletarCategoriaBin(int codigo)
+int deletarCategoriaBin(char *codigo)
 {
     FILE *arquivo = fopen("arquivos/categoria.bin", "rb");
     FILE *tempFile = fopen("arquivos/temp.bin", "wb");
@@ -492,7 +492,7 @@ int deletarCategoriaBin(int codigo)
 
     while (fread(&categoriaTemp, sizeof(Categoria), 1, arquivo) == 1)
     {
-        if (categoriaTemp.codigo == codigo)
+        if (!strcmp(categoriaTemp.codigo, codigo))
         {
             encontrado = 1;
         }

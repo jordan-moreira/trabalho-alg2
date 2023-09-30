@@ -17,29 +17,27 @@ void criarHotelTxt(Hotel *estrutura, FILE *arquivo)
 void adicionarHospedeTxt(Hospede *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{nome:%s ,endereco:%s ,cpf:%s ,celular:%s ,eMail:%s ,sexo:%s ,estadoCivil:%s ,dataNasc:%s ;}\n\n", estrutura->codigo, estrutura->nome, estrutura->endereco, estrutura->cpf, estrutura->celular, estrutura->eMail, estrutura->sexo, estrutura->estadoCivil, estrutura->dataNasc);
+    fprintf(arquivo, "%d{nome:%s ,endereco:%s ,cpf:%s ,celular:%s ,eMail:%s ,sexo:%s ,estadoCivil:%s ,dataNasc:%s ;}\n", estrutura->codigo, estrutura->nome, estrutura->endereco, estrutura->cpf, estrutura->celular, estrutura->eMail, estrutura->sexo, estrutura->estadoCivil, estrutura->dataNasc);
 }
 
 void adicionarCategoriaTxt(Categoria *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{quantPessoas:%d, valor:%f, descricao:%s ;}\n\n", estrutura->codigo, estrutura->quantPessoas, estrutura->valor, estrutura->descricao);
+    fprintf(arquivo, "%s{quantPessoas:%d, valor:%f, descricao:%s ;}\n", estrutura->codigo, estrutura->quantPessoas, estrutura->valor, estrutura->descricao);
 }
 
 void adicionarAcomodacaoTxt(Acomodacao *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{categoria:%d, ocupada:%d, dataInicial:%d/%d/%d, dataFinal:%d/%d/%d, descricao:%s ,facilidades:%s ;}\n\n",
-            estrutura->codigo, estrutura->categoria, estrutura->ocupada,
-            estrutura->data.dataInicial[0], estrutura->data.dataInicial[1], estrutura->data.dataInicial[2],
-            estrutura->data.dataFinal[0], estrutura->data.dataFinal[1], estrutura->data.dataFinal[2],
+    fprintf(arquivo, "%d{categoria:%s ,descricao:%s ,facilidades:%s ;}\n",
+            estrutura->codigo, estrutura->categoria,
             estrutura->descricao, estrutura->facilidades);
 }
 
 void adicionarConsumivelTxt(Consumivel *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{estoque:%d, estoqueMin:%d, descricao:%s , precoCusto:%f, precoVenda:%f ;}\n\n",
+    fprintf(arquivo, "%d{estoque:%d, estoqueMin:%d, descricao:%s , precoCusto:%f, precoVenda:%f ;}\n",
             estrutura->codigo, estrutura->estoque, estrutura->estoqueMin,
             estrutura->descricao, estrutura->precoCusto, estrutura->precoVenda);
 }
@@ -47,7 +45,7 @@ void adicionarConsumivelTxt(Consumivel *estrutura, FILE *arquivo)
 void adicionarFornecedorTxt(Fornecedor *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{nome:%s , razaoSocial:%s , inscricaoSocial:%s , cnpj:%s , endereco:%s , celular:%s , eMail:%s ;}\n\n",
+    fprintf(arquivo, "%d{nome:%s , razaoSocial:%s , inscricaoSocial:%s , cnpj:%s , endereco:%s , celular:%s , eMail:%s ;}\n",
             estrutura->codigo, estrutura->nome, estrutura->razaoSocial, estrutura->inscricaoSocial,
             estrutura->cnpj, estrutura->endereco, estrutura->celular, estrutura->eMail);
 }
@@ -89,11 +87,11 @@ int lerHospedeTxt(int codigo, FILE *arquivo, Hospede *ptrHospede)
     return 0;
 }
 
-int lerCategoriaTxt(int codigo, FILE *arquivo, Categoria *ptrCategoria)
+int lerCategoriaTxt(char *codigo, FILE *arquivo, Categoria *ptrCategoria)
 {
-    if (fscanf(arquivo, "%d{quantPessoas:%d, valor:%f, descricao:%s ;}", &ptrCategoria->codigo, &ptrCategoria->quantPessoas, &ptrCategoria->valor, ptrCategoria->descricao) == 4)
+    if (fscanf(arquivo, " %[^{]{quantPessoas:%d, valor:%f, descricao:%[^;] ;}", ptrCategoria->codigo, &ptrCategoria->quantPessoas, &ptrCategoria->valor, ptrCategoria->descricao) == 4)
     {
-        if (ptrCategoria->codigo == codigo || codigo == 0)
+        if (!strcmp(ptrCategoria->codigo, codigo) || !strcmp(codigo, "0"))
         {
             return 1;
         }
@@ -105,7 +103,7 @@ int lerCategoriaTxt(int codigo, FILE *arquivo, Categoria *ptrCategoria)
 int lerAcomodacaoTxt(int codigo, FILE *arquivo, Acomodacao *ptrAcomodacao)
 {
 
-    if (fscanf(arquivo, "%d{categoria:%d, ocupada:%d, dataInicial:%d/%d/%d, dataFinal:%d/%d/%d, descricao:%s ,facilidades:%s ;}", &ptrAcomodacao->codigo, &ptrAcomodacao->categoria, &ptrAcomodacao->ocupada, &ptrAcomodacao->data.dataInicial[0], &ptrAcomodacao->data.dataInicial[1], &ptrAcomodacao->data.dataInicial[2], &ptrAcomodacao->data.dataFinal[0], &ptrAcomodacao->data.dataFinal[1], &ptrAcomodacao->data.dataFinal[2], ptrAcomodacao->descricao, ptrAcomodacao->facilidades) == 11)
+    if (fscanf(arquivo, "%d{categoria:%s ,descricao:%s ,facilidades:%s ;}", &ptrAcomodacao->codigo, ptrAcomodacao->categoria, ptrAcomodacao->descricao, ptrAcomodacao->facilidades) == 4)
     {
         if (ptrAcomodacao->codigo == codigo || codigo == 0)
         {
@@ -235,7 +233,7 @@ int atualizarHospedeTxt(int codigo, Hospede *novoDados)
 }
 
 // Função para atualizar um registro de Categoria
-int atualizarCategoriaTxt(int codigo, Categoria *novoDados)
+int atualizarCategoriaTxt(char *codigo, Categoria *novoDados)
 {
     FILE *arquivo = fopen("arquivos/categoria.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
@@ -247,9 +245,10 @@ int atualizarCategoriaTxt(int codigo, Categoria *novoDados)
 
     int encontrado = 0; // Indica se o código foi encontrado
     Categoria *antigosDados = malloc(sizeof(Categoria));
+
     while (1)
     {
-        int resultadoLeitura = lerCategoriaTxt(0, arquivo, antigosDados);
+        int resultadoLeitura = lerCategoriaTxt("0", arquivo, antigosDados);
         if (resultadoLeitura == 0)
         {
             // Fim do arquivo
@@ -258,7 +257,7 @@ int atualizarCategoriaTxt(int codigo, Categoria *novoDados)
 
         if (resultadoLeitura == 1)
         {
-            if (antigosDados->codigo == codigo)
+            if (!strcmp(antigosDados->codigo, codigo))
             {
                 // Se o código foi encontrado, atualize os dados com os novos dados
                 adicionarCategoriaTxt(novoDados, tempFile);
@@ -581,54 +580,61 @@ int deletarHospedeTxt(int codigo)
 }
 
 // Função para deletar uma categoria por código
-int deletarCategoriaTxt(int codigo)
+int deletarCategoriaTxt(char *codigo)
 {
     FILE *arquivo = fopen("arquivos/categoria.txt", "r");
     FILE *tempFile = fopen("arquivos/temp.txt", "w");
 
     if (arquivo == NULL || tempFile == NULL)
     {
+        printf("arquivo");
         return 0; // Indica que a operação falhou
     }
 
     int encontrado = 0;                                    // Indica se o código foi encontrado
     Categoria *dadosOriginais = malloc(sizeof(Categoria)); // Estrutura temporária para armazenar os dados lidos
+
     while (1)
     {
-        int resultadoLeitura = lerCategoriaTxt(0, arquivo, dadosOriginais);
-        if (resultadoLeitura == 0)
-        {
-            // Fim do arquivo
-            break;
-        }
+        int resultadoLeitura = lerCategoriaTxt("0", arquivo, dadosOriginais);
 
-        if (resultadoLeitura == 1)
+        if (resultadoLeitura == 1 && !strcmp(dadosOriginais->codigo, codigo))
         {
-            if (dadosOriginais->codigo == codigo)
-            {
-                // Se o código foi encontrado, nao o escreva no novo arquivo
-                encontrado = 1;
-            }
-            else
-            {
-                adicionarCategoriaTxt(dadosOriginais, tempFile);
-            }
+
+            // Se o código foi encontrado, nao o escreva no novo arquivo
+            encontrado = 1;
+
+            continue;
+        }
+        else if (resultadoLeitura == 1 && !feof(arquivo))
+        {
+            adicionarCategoriaTxt(dadosOriginais, tempFile);
+            continue;
+        }
+        else if (resultadoLeitura == 0 && !feof(arquivo))
+        {
+
+            continue;
+        }
+        else
+        {
+            break;
         }
     }
     free(dadosOriginais);
     fclose(arquivo);
     fclose(tempFile);
 
-    // Substitua o arquivo original pelo arquivo temporário
-    remove("arquivos/categoria.txt");
-    rename("arquivos/temp.txt", "arquivos/categoria.txt");
-
     if (encontrado)
     {
+        // Substitua o arquivo original pelo arquivo temporário
+        remove("arquivos/categoria.txt");
+        rename("arquivos/temp.txt", "arquivos/categoria.txt");
         return 1; // Indica que a operação foi bem-sucedida
     }
     else
     {
+        remove("arquivos/temp.txt");
         return 0; // Indica que o código não foi encontrado
     }
 }

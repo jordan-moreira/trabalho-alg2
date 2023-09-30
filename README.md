@@ -1,8 +1,8 @@
 # implementacoes a serem feitas
 
 - [x] criar uma funcao responsavel por clonar os arquivos no tipo de armazanemento selecionado(txt ou bin) para todas as 7 estruturas 
-- [ ] alterar o tipo das variaveis de Categoria.codigo e Acomodacao.categoria para q elas aceitem texto
-- [ ] criar um menu de categorias disponiveis para serem selecionas na funcao coletarDadosAcomodacao (coo na funcao coletarDadosOperador na selecao de cargos)
+- [x] alterar o tipo das variaveis de Categoria.codigo e Acomodacao.categoria para q elas aceitem texto
+- [x] criar um menu de categorias disponiveis para serem selecionas na funcao coletarDadosAcomodacao (coo na funcao coletarDadosOperador na selecao de cargos)
 
 ## implementacoes de cadastro e gerenciamento de dados
 

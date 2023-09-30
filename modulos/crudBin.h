@@ -32,7 +32,7 @@ int lerHotelBin(FILE *arquivo, Hotel *ptrHotel);
 // Função responsavel por ler os registros de hóspede em um arquivo .bin
 int lerHospedeBin(int codigo, FILE *arquivo, Hospede *ptrHospede);
 // Função responsavel por ler os registros de categoria em um arquivo .bin
-int lerCategoriaBin(int codigo, FILE *arquivo, Categoria *ptrCategoria);
+int lerCategoriaBin(char *codigo, FILE *arquivo, Categoria *ptrCategoria);
 
 // Função responsavel por ler os registros de acomodação em um arquivo .bin
 int lerAcomodacaoBin(int codigo, FILE *arquivo, Acomodacao *ptrAcomodacao);
@@ -51,7 +51,7 @@ int atualizarHotelBin(Hotel *novosDados);
 // Função responsável por atualizar os registros de hóspede em um arquivo .bin
 int atualizarHospedeBin(int codigo, Hospede *novoDados);
 // Função responsável por atualizar os registros de categoria em um arquivo .bin
-int atualizarCategoriaBin(int codigo, Categoria *novoDados);
+int atualizarCategoriaBin(char *codigo, Categoria *novoDados);
 
 // Função responsável por atualizar os registros de acomodação em um arquivo .bin
 int atualizarAcomodacaoBin(int codigo, Acomodacao *novoDados);
@@ -70,7 +70,7 @@ int deletarHotelBin();
 // Função responsável por deletar os registros de hóspede em um arquivo .bin
 int deletarHospedeBin(int codigo);
 // Função responsável por deletar os registros de categoria em um arquivo .bin
-int deletarCategoriaBin(int codigo);
+int deletarCategoriaBin(char *codigo);
 
 // Função responsável por deletar os registros de acomodação em um arquivo .bin
 int deletarAcomodacaoBin(int codigo);

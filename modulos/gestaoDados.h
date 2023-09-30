@@ -39,8 +39,8 @@ typedef struct
 // estrutura que inclui os dados de categorizacao dos quartos
 typedef struct
 {
-    int codigo,
-        quantPessoas;
+    char codigo[50];
+    int quantPessoas;
 
     char descricao[100];
 
@@ -51,18 +51,17 @@ typedef struct
 typedef struct
 {
     int dataInicial[3],
-        dataFinal[3];
+        dataFinal[3],
+        codigoHospede,
+        codigoAcomodacao;
 
 } Reserva;
 
 // estrutura que inclui os dados dos quartos
 typedef struct
 {
-    int codigo,
-        categoria, // armazena o codigo da categoria pre cadastrada
-        ocupada;
-
-    Reserva data;
+    int codigo;
+    char categoria[50]; // armazena o codigo da categoria pre cadastrada
 
     char descricao[100],
         facilidades[100];
@@ -148,7 +147,7 @@ Hospede *coletarDadosHospede();
 Categoria *coletarDadosCategoria();
 
 // funcao responsvel por coletar e armazenar em uma struct os dados de uma acomodacao e retornar o ponteiro da memoria onde a struct esta alocada
-Acomodacao *coletarDadosAcomodacao();
+Acomodacao *coletarDadosAcomodacao(char tipoArquivo);
 
 // funcao responsvel por coletar e armazenar em uma struct os dados de um consumivel e retornar o ponteiro da memoria onde a struct esta alocada
 Consumivel *coletarDadosConsumivel();

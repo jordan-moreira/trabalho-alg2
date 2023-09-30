@@ -1,0 +1,1 @@
+23{estoque:3, estoqueMin:1, descricao:doce , precoCusto:1.000000, precoVenda:5.000000 ;}

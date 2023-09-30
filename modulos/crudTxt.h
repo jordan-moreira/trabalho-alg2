@@ -32,7 +32,7 @@ int lerHotelTxt(FILE *arquivo, Hotel *ptrHotel);
 // Função responsavel por ler os registros de hóspede em um arquivo .txt
 int lerHospedeTxt(int codigo, FILE *arquivo, Hospede *ptrHospede);
 // Função responsavel por ler os registros de categoria em um arquivo .txt
-int lerCategoriaTxt(int codigo, FILE *arquivo, Categoria *ptrCategoria);
+int lerCategoriaTxt(char *codigo, FILE *arquivo, Categoria *ptrCategoria);
 
 // Função responsavel por ler os registros de acomodação em um arquivo .txt
 int lerAcomodacaoTxt(int codigo, FILE *arquivo, Acomodacao *ptrAcomodacao);
@@ -51,7 +51,7 @@ int atualizarHotelTxt(Hotel *novosDados);
 // Função responsável por atualizar os registros de hóspede em um arquivo .txt
 int atualizarHospedeTxt(int codigo, Hospede *novoDados);
 // Função responsável por atualizar os registros de categoria em um arquivo .txt
-int atualizarCategoriaTxt(int codigo, Categoria *novoDados);
+int atualizarCategoriaTxt(char *codigo, Categoria *novoDados);
 
 // Função responsável por atualizar os registros de acomodação em um arquivo .txt
 int atualizarAcomodacaoTxt(int codigo, Acomodacao *novoDados);
@@ -70,7 +70,7 @@ int deletarHotelTxt();
 // Função responsável por deletar os registros de hóspede em um arquivo .txt
 int deletarHospedeTxt(int codigo);
 // Função responsável por deletar os registros de categoria em um arquivo .txt
-int deletarCategoriaTxt(int codigo);
+int deletarCategoriaTxt(char *codigo);
 
 // Função responsável por deletar os registros de acomodação em um arquivo .txt
 int deletarAcomodacaoTxt(int codigo);
