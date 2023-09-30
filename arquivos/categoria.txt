@@ -1,2 +1,2 @@
-3{quantPessoas:5, valor:4.00, descricao:fgsfgsgf }
-2{quantPessoas:5, valor:4.00, descricao:fgsfgsgf }
+3{quantPessoas:5, valor:4.000000, descricao:fgsfgsgf ;}
+

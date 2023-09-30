@@ -114,6 +114,9 @@ typedef struct
 // funcao responsavel por coletar o tipo de operacao CRUD a ser realizada retornando-a
 int selecionarOperacao(char *tipoDoDado);
 
+// funcao usada para alterar o tipo de armazenamento de .txt para .bin ou .bin para .txt
+void converterArquivos(char tipoArquivo);
+
 // funcao responsavel por gerenciar dados do hotel
 void gerenciarHotel(char tipoArquivo, char codigoPermissao);
 
