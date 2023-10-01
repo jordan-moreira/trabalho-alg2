@@ -88,6 +88,8 @@ void menuCadastro(char tipoArquivo, char codigoPermissao)
 
 void menuAdm(char tipoArquivo, char codigoPermissao)
 {
+    int codigoMenu;
+
     printf(ANSI_BOLD ANSI_GREEN "Menu Administrativo Selecionado (Tipo de Arquivo: %c)\n" ANSI_RESET, tipoArquivo);
     if (codigoPermissao == 'e')
     {
@@ -95,37 +97,36 @@ void menuAdm(char tipoArquivo, char codigoPermissao)
     }
     else
     {
-        // Menu para consumiveis,fornecedores, operadore e informações sobre o hotel.Usado ifelse para checar se usuario tem permissão e switch para a escolha das opções.
-        int codigoMenu;
-        printf("--- MENU ---\n");
-        printf(" 1 - " ANSI_BOLD "Tabela de consumíveis.\n" ANSI_RESET);
-        printf(" 2 - " ANSI_BOLD "Lista de fornecedores.\n" ANSI_RESET);
-        printf(" 3 - " ANSI_BOLD "Lista de operadores do sistema.\n" ANSI_RESET);
-        printf(" 4 - " ANSI_BOLD "Voltar à tela principal.\n" ANSI_RESET);
-        printf(" 5 - " ANSI_BOLD "Informações sobre o Hotel.\n" ANSI_RESET);
-
-        printf("\nDigite um código referente ao item que você deseja gerenciar: ");
-        scanf("%d", &codigoMenu);
-
-        if (codigoPermissao == 'e')
-        {
-            if (codigoMenu == 3)
-            {
-                printf(ANSI_RED "Acesso bloqueado!!!\n" ANSI_RESET);
-                return;
-            }
-        }
-        else if (codigoPermissao == 'r')
-        {
-
-            if (codigoMenu != 4 && codigoMenu != 5)
-            {
-                printf(ANSI_RED "Acesso bloqueado!!!\n" ANSI_RESET);
-                return;
-            }
-        }
         while (codigoMenu != 4)
         {
+            // Menu para consumiveis,fornecedores, operadore e informações sobre o hotel.Usado ifelse para checar se usuario tem permissão e switch para a escolha das opções.
+            printf("--- MENU ---\n");
+            printf(" 1 - " ANSI_BOLD "Tabela de consumíveis.\n" ANSI_RESET);
+            printf(" 2 - " ANSI_BOLD "Lista de fornecedores.\n" ANSI_RESET);
+            printf(" 3 - " ANSI_BOLD "Lista de operadores do sistema.\n" ANSI_RESET);
+            printf(" 4 - " ANSI_BOLD "Voltar à tela principal.\n" ANSI_RESET);
+            printf(" 5 - " ANSI_BOLD "Informações sobre o Hotel.\n" ANSI_RESET);
+
+            printf("\nDigite um código referente ao item que você deseja gerenciar: ");
+            scanf("%d", &codigoMenu);
+
+            if (codigoPermissao == 'e')
+            {
+                if (codigoMenu == 3)
+                {
+                    printf(ANSI_RED "Acesso bloqueado!!!\n" ANSI_RESET);
+                    return;
+                }
+            }
+            else if (codigoPermissao == 'r')
+            {
+
+                if (codigoMenu != 4 && codigoMenu != 5)
+                {
+                    printf(ANSI_RED "Acesso bloqueado!!!\n" ANSI_RESET);
+                    return;
+                }
+            }
 
             switch (codigoMenu)
             {

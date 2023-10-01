@@ -42,3 +42,59 @@ codigo de acesso: E
 #### para cancelar uma reserva
 - [ ] criar uma funcao para coletar o codigo da acomodacao a ser cancelada e apagar a data da reserva (dataInicial e dataFinal)apenas atribuir "" para as datas
  
+
+<h2>anotacoes ignore</h2>
+
+
+corrigir
+
+Digite o código único do produto consumível que você deseja ler: 2
+2 {
+ Estoque: 32,
+ Estoque Mínimo: 3,
+ Descrição: sdfdfs ,
+ Preço de Custo: 434.00,
+ Preço de Venda: 344.00;}
+Produto consumível não encontrado ou código incorreto.
+>faz a leitura e acusa um erro
+msm erro em fornecedor,operador,acomodacao
+
+Digite o código do operador: 56
+Digite o nome do operador: adsfs
+Digite o nome de usuário do operador: sfd
+Digite a senha do operador: sdfdf
+>falto a permissao
+Digite o código único do operador que você deseja atualizar: 56
+Registro de operador atualizado com sucesso
+
+>corrigir apagao de arquivos categoria e operador na conversao de tipo arquivo
+>e ver pq os espacos entre o valor e a virgula aumenta a cada conversao
+
+>falha na escrita de arquivo bin para fornecedor
+780206112 {
+ Nome: □♥,
+ Razão Social: ,
+ Inscrição Social: d,
+ CNPJ: □,
+ Endereço: Vt□*,́.□♥,
+ Celular: □♥,
+ E-mail: §;}
+
+ >erro de delecao
+ Digite um código referente ao item que você deseja gerenciar: 2
+Digite o código referente à operação a ser realizada:
+1 -Adicionar fornecedor.
+2 -Atualizar informações de fornecedor.
+3 -Ler informações de fornecedor.
+4 -Deletar fornecedor.
+4
+Digite o código único do fornecedor que você deseja deletar: 780206112
+Erro ao deletar registro de fornecedor--- MENU ---
+
+3
+Se você deseja fazer uma leitura de todos os operadores, digite1.Se você deseja fazer uma leitura de um operador específico, digite2: 1
+Fim do arquivo alcançado.
+
+>arquivo operador.bin n e legivel ou n foi escrito erro eh apenas na funcao de gerenciamento pois a de delecao aparentemente funciona
+
+criar um arquivo de config para armazenar tipo arquivo ou entao criar uma logica pra isso

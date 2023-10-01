@@ -47,37 +47,37 @@ Hotel *coletarDadosHotel() // Funcao para retornar um ponteiro de memoria onde e
     }
     //  printf e scanf para adicionar e salvar e coletar dados do hotem em memoria.
     printf("Digite o nome do hotel: ");
-    scanf("%s", ptrHotel->nome);
+    scanf("%99[^\n]%*c", ptrHotel->nome);
 
     printf("\nDigite a razão social do hotel: ");
-    scanf("%s", ptrHotel->razaoSocial);
+    scanf("%99[^\n]%*c", ptrHotel->razaoSocial);
 
     printf("\nDigite a inscrição estadual do hotel: ");
-    scanf("%s", ptrHotel->inscricaoEstadual);
+    scanf("%14[^\n]%*c", ptrHotel->inscricaoEstadual);
 
     printf("\nDigite o CNPJ do hotel: ");
-    scanf("%s", ptrHotel->cnpj);
+    scanf("%s%*c", ptrHotel->cnpj);
 
     printf("\nDigite o endereço do hotel: ");
-    scanf("%s", ptrHotel->endereco);
+    scanf("%99[^\n]%*c", ptrHotel->endereco);
 
     printf("\nDigite o número de celular do hotel: ");
-    scanf("%s", ptrHotel->celular);
+    scanf("%s%*c", ptrHotel->celular);
 
     printf("\nDigite o e-mail do hotel: ");
-    scanf("%s", ptrHotel->eMail);
+    scanf("%s%*c", ptrHotel->eMail);
 
     printf("\nDigite o nome do responsável (ou gerente) pelo hotel: ");
-    scanf("%s", ptrHotel->responsavel);
+    scanf("%99[^\n]%*c", ptrHotel->responsavel);
 
     printf("\nDigite o número de celular do responsável (ou gerente) pelo hotel: ");
-    scanf("%s", ptrHotel->celularResponsavel);
+    scanf("%s%*c", ptrHotel->celularResponsavel);
 
     printf("\nDigite o horário de Check-in do hotel: ");
-    scanf("%s", ptrHotel->horarioCheckIn);
+    scanf("%s%*c", ptrHotel->horarioCheckIn);
 
     printf("\nDigite o horário de Check-out do hotel: ");
-    scanf("%s", ptrHotel->horarioCheckOut);
+    scanf("%s%*c", ptrHotel->horarioCheckOut);
 
     return ptrHotel;
 }
@@ -93,31 +93,31 @@ Hospede *coletarDadosHospede() // Funcao para retornar um ponteiro de memoria on
     }
     // Criado printf e scanf para coletar e armazenar dados de hospedes.
     printf("Digite o código do hóspede: ");
-    scanf("%d", &ptrHospede->codigo);
+    scanf("%d%*c", &ptrHospede->codigo);
 
     printf("Digite o nome do hóspede: ");
-    scanf("%s", ptrHospede->nome);
+    scanf("%99[^\n]%*c", ptrHospede->nome);
 
     printf("Digite o endereço do hóspede: ");
-    scanf("%s", ptrHospede->endereco);
+    scanf("%99[^\n]%*c", ptrHospede->endereco);
 
     printf("Digite o CPF do hóspede: ");
-    scanf("%s", ptrHospede->cpf);
+    scanf("%s%*c", ptrHospede->cpf);
 
     printf("Digite o número de celular do hóspede: ");
-    scanf("%s", ptrHospede->celular);
+    scanf("%s%*c", ptrHospede->celular);
 
     printf("Digite o e-mail do hóspede: ");
-    scanf("%s", ptrHospede->eMail);
+    scanf("%s%*c", ptrHospede->eMail);
 
     printf("Digite o sexo do hóspede (M ou F): ");
-    scanf("%s", ptrHospede->sexo);
+    scanf("%s%*c", ptrHospede->sexo);
 
     printf("Digite o estado civil do hóspede: ");
-    scanf("%s", ptrHospede->estadoCivil);
+    scanf("%s%*c", ptrHospede->estadoCivil);
 
     printf("Digite a data de nascimento do hóspede (formato dd/mm/aaaa): ");
-    scanf("%s", ptrHospede->dataNasc);
+    scanf("%s%*c", ptrHospede->dataNasc);
 
     return ptrHospede;
 }
@@ -134,16 +134,16 @@ Categoria *coletarDadosCategoria() // Funcao para retornar um ponteiro de memori
     }
     //  Logica criada para hospede decidir qual categoria lhe-convem.
     printf("Digite o código da categoria(luxo,dormitório,...): ");
-    scanf("%s", ptrCategoria->codigo);
+    scanf("%s%*c", ptrCategoria->codigo);
 
     printf("Digite a quantidade de pessoas da categoria: ");
     scanf("%d%*c", &ptrCategoria->quantPessoas);
 
     printf("Digite a descrição da categoria: ");
-    scanf("%[^\n]", ptrCategoria->descricao);
+    scanf("%[^\n]%*c", ptrCategoria->descricao);
 
     printf("Digite o valor da categoria: ");
-    scanf("%*c%f", &ptrCategoria->valor);
+    scanf("%f%*c", &ptrCategoria->valor);
 
     return ptrCategoria;
 }
@@ -161,49 +161,16 @@ Acomodacao *coletarDadosAcomodacao(char tipoArquivo) // Funcao para retornar um 
     // Criado logica para informar acmodacoes fornecidas pelo hotel e com  facilidades. Tambem a possivel data de entrada do hospede e saida(dataInicial e dataFinal).
 
     printf("Digite o código da acomodação: ");
-    scanf("%d", &ptrAcomodacao->codigo);
+    scanf("%d%*c", &ptrAcomodacao->codigo);
 
-    printf("Digite o código da categoria da acomodação: ");
-    scanf("%d", &ptrAcomodacao->categoria);
+    printf("informe a descrição da acomodação: ");
+    scanf("%99[^\n]%*c", &ptrAcomodacao->descricao);
 
-    FILE *arquivo = (tipoArquivo == 'T') ? fopen("arquivos/categoria.txt", "a") : fopen("arquivos/categoria.bin", "ab");
-    int status,
-        quantCategorias = 1;
-    char **listaDeCategorias;
-    Categoria *ptrCategoria;
-    listaDeCategorias = (char **)realloc(listaDeCategorias, quantCategorias * sizeof(char *));
-    while (1)
-    {
-        status = (tipoArquivo == 'T') ? lerCategoriaTxt(0, arquivo, ptrCategoria) : lerCategoriaBin(0, arquivo, ptrCategoria);
-        if (status == 1)
-        {
-            listaDeCategorias[quantCategorias - 1] = (char *)malloc(50 * sizeof(char));
-            snprintf(listaDeCategorias[quantCategorias - 1], 50, "%s", ptrCategoria->codigo);
-            quantCategorias++;
-
-            continue;
-        }
-        else if (status == 0 && !feof(arquivo))
-        {
-
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    }
-    for (int i = 1; i < quantCategorias; i++)
-    {
-        printf("%d- %s\n", i, listaDeCategorias[i - 1]);
-    }
-    int categoriaSelecionada;
-    printf("Selecione a descrição da acomodação: ");
-    scanf("%d", categoriaSelecionada);
-    strcpy(ptrAcomodacao->categoria, listaDeCategorias[categoriaSelecionada - 1]);
+    printf("informe a categoria da acomodação: ");
+    scanf("%49[^\n]%*c", ptrAcomodacao->categoria);
 
     printf("Digite as facilidades da acomodação: ");
-    scanf("%s", ptrAcomodacao->facilidades);
+    scanf("%99[^\n]%*c", ptrAcomodacao->facilidades);
 
     return ptrAcomodacao;
 }
@@ -219,22 +186,22 @@ Consumivel *coletarDadosConsumivel() // Funcao para retornar um ponteiro de memo
     }
     // Logica para coleta de dados de consumiveis e informar preço e tamanho do estoque de tal produto.
     printf("Digite o código do consumível: ");
-    scanf("%d", &ptrConsumivel->codigo);
+    scanf("%d%*c", &ptrConsumivel->codigo);
 
     printf("Digite a descrição do consumível: ");
-    scanf("%s", ptrConsumivel->descricao);
+    scanf("%99[^\n]%*c", ptrConsumivel->descricao);
 
-    printf("Digite o estoque do consumível: ");
-    scanf("%d", &ptrConsumivel->estoque);
+    printf("Digite a quantidade de unidades em estoque: ");
+    scanf("%d%*c", &ptrConsumivel->estoque);
 
     printf("Digite o estoque mínimo do consumível: ");
-    scanf("%d", &ptrConsumivel->estoqueMin);
+    scanf("%d%*c", &ptrConsumivel->estoqueMin);
 
     printf("Digite o preço de custo do consumível: ");
-    scanf("%f", &ptrConsumivel->precoCusto);
+    scanf("%f%*c", &ptrConsumivel->precoCusto);
 
     printf("Digite o preço de venda do consumível: ");
-    scanf("%f", &ptrConsumivel->precoVenda);
+    scanf("%f%*c", &ptrConsumivel->precoVenda);
 
     return ptrConsumivel;
 }
@@ -250,28 +217,28 @@ Fornecedor *coletarDadosFornecedor() // Funcao para retornar um ponteiro de memo
     }
     // Logica para coleta de dados de fornecedores.
     printf("Digite o código do fornecedor: ");
-    scanf("%d", &ptrFornecedor->codigo);
+    scanf("%d%*c", &ptrFornecedor->codigo);
 
     printf("Digite o nome do fornecedor: ");
-    scanf("%s", ptrFornecedor->nome);
+    scanf("%99[^\n]%*c", ptrFornecedor->nome);
 
     printf("Digite a razão social do fornecedor: ");
-    scanf("%s", ptrFornecedor->razaoSocial);
+    scanf("%99[^\n]%*c", ptrFornecedor->razaoSocial);
 
     printf("Digite a inscrição social do fornecedor: ");
-    scanf("%s", ptrFornecedor->inscricaoSocial);
+    scanf("%19[^\n]%*c", ptrFornecedor->inscricaoSocial);
 
     printf("Digite o CNPJ do fornecedor: ");
-    scanf("%s", ptrFornecedor->cnpj);
+    scanf("%s%*c", ptrFornecedor->cnpj);
 
     printf("Digite o endereço do fornecedor: ");
-    scanf("%s", ptrFornecedor->endereco);
+    scanf("%99[^\n]%*c", ptrFornecedor->endereco);
 
     printf("Digite o número de celular do fornecedor: ");
-    scanf("%s", ptrFornecedor->celular);
+    scanf("%s%*c", ptrFornecedor->celular);
 
     printf("Digite o e-mail do fornecedor: ");
-    scanf("%s", ptrFornecedor->eMail);
+    scanf("%s%*c", ptrFornecedor->eMail);
 
     return ptrFornecedor;
 }
@@ -287,23 +254,23 @@ Operador *coletarDadosOperador() // Funcao para retornar um ponteiro de memoria 
     }
     // Logica criada para adicionar operadores ao sistema.
     printf("Digite o código do operador: ");
-    scanf("%d", &ptrOperador->codigo);
+    scanf("%d%*c", &ptrOperador->codigo);
 
     printf("Digite o nome do operador: ");
-    scanf("%s", ptrOperador->nome);
+    scanf("%99[^\n]%*c", ptrOperador->nome);
 
     printf("Digite o nome de usuário do operador: ");
-    scanf("%s", ptrOperador->usuario);
+    scanf("%s%*c", ptrOperador->usuario);
 
     printf("Digite a senha do operador: ");
-    scanf("%s", ptrOperador->senha);
+    scanf("%s%*c", ptrOperador->senha);
 
     while (ptrOperador->permissao != 'g' && ptrOperador->permissao != 'r' && ptrOperador->permissao != 'e') // Logica para coletar o cargo do operador de sistema.
     {
         printf("||||| Menu de Cargos |||||\ng-Gernte geral.\nr-Recepcionista.\ne-Gerente de estoque\n");
 
         printf("Digite a permissão do operador: ");
-        scanf(" %c", &ptrOperador->permissao);
+        scanf(" %c%*c", &ptrOperador->permissao);
     }
     return ptrOperador;
 }

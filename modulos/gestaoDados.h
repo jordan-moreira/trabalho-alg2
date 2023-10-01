@@ -103,8 +103,8 @@ typedef struct
     int codigo;
 
     char nome[100],
-        usuario[100],
-        senha[100],
+        usuario[50],
+        senha[50],
         permissao;
 } Operador;
 
