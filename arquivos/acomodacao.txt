@@ -1,1 +1,1 @@
-34{categoria:dormitorio   ,descricao:quarto grande   ,facilidades:todo mobiliado   ;}
+34{categoria:dormitorio, descricao:quarto grande, facilidades:todo mobiliado;}

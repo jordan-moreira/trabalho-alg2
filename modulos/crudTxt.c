@@ -11,25 +11,25 @@
 void criarHotelTxt(Hotel *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "Nome:%s ;Razão Social:%s ;Inscrição Estadual:%s ;CNPJ:%s ;Endereço:%s ;Número de Celular:%s ;E-mail:%s ;Responsável:%s ;Número de Celular do Responsável:%s ;Horário de Check-In:%s ;Horário de Check-Out:%s ;", estrutura->nome, estrutura->razaoSocial, estrutura->inscricaoEstadual, estrutura->cnpj, estrutura->endereco, estrutura->celular, estrutura->eMail, estrutura->responsavel, estrutura->celularResponsavel, estrutura->horarioCheckIn, estrutura->horarioCheckOut);
+    fprintf(arquivo, "Nome:%s; Razão Social:%s; Inscrição Estadual:%s; CNPJ:%s; Endereço:%s; Número de Celular:%s; E-mail:%s; Responsável:%s; Celular do Responsável:%s; Horário de Check-In:%s; Horário de Check-Out:%s;", estrutura->nome, estrutura->razaoSocial, estrutura->inscricaoEstadual, estrutura->cnpj, estrutura->endereco, estrutura->celular, estrutura->eMail, estrutura->responsavel, estrutura->celularResponsavel, estrutura->horarioCheckIn, estrutura->horarioCheckOut);
 }
 
 void adicionarHospedeTxt(Hospede *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{nome:%s ,endereco:%s ,cpf:%s ,celular:%s ,eMail:%s ,sexo:%s ,estadoCivil:%s ,dataNasc:%s ;}\n", estrutura->codigo, estrutura->nome, estrutura->endereco, estrutura->cpf, estrutura->celular, estrutura->eMail, estrutura->sexo, estrutura->estadoCivil, estrutura->dataNasc);
+    fprintf(arquivo, "%d{nome:%s, endereco:%s, cpf:%s, celular:%s, eMail:%s, sexo:%s, estadoCivil:%s, dataNasc:%s;}\n", estrutura->codigo, estrutura->nome, estrutura->endereco, estrutura->cpf, estrutura->celular, estrutura->eMail, estrutura->sexo, estrutura->estadoCivil, estrutura->dataNasc);
 }
 
 void adicionarCategoriaTxt(Categoria *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%s{quantPessoas:%d, valor:%f, descricao:%s ;}\n", estrutura->codigo, estrutura->quantPessoas, estrutura->valor, estrutura->descricao);
+    fprintf(arquivo, "%s{quantPessoas:%d, valor:%f, descricao:%s;}\n", estrutura->codigo, estrutura->quantPessoas, estrutura->valor, estrutura->descricao);
 }
 
 void adicionarAcomodacaoTxt(Acomodacao *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{categoria:%s ,descricao:%s ,facilidades:%s ;}\n",
+    fprintf(arquivo, "%d{categoria:%s, descricao:%s, facilidades:%s;}\n",
             estrutura->codigo, estrutura->categoria,
             estrutura->descricao, estrutura->facilidades);
 }
@@ -37,7 +37,7 @@ void adicionarAcomodacaoTxt(Acomodacao *estrutura, FILE *arquivo)
 void adicionarConsumivelTxt(Consumivel *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{estoque:%d, estoqueMin:%d, descricao:%s , precoCusto:%f, precoVenda:%f ;}\n",
+    fprintf(arquivo, "%d{estoque:%d, estoqueMin:%d, descricao:%s, precoCusto:%f, precoVenda:%f;}\n",
             estrutura->codigo, estrutura->estoque, estrutura->estoqueMin,
             estrutura->descricao, estrutura->precoCusto, estrutura->precoVenda);
 }
@@ -45,7 +45,7 @@ void adicionarConsumivelTxt(Consumivel *estrutura, FILE *arquivo)
 void adicionarFornecedorTxt(Fornecedor *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{nome:%s , razaoSocial:%s , inscricaoSocial:%s , cnpj:%s , endereco:%s , celular:%s , eMail:%s ;}\n",
+    fprintf(arquivo, "%d{nome:%s, razaoSocial:%s, inscricaoSocial:%s, cnpj:%s, endereco:%s, celular:%s, eMail:%s;}\n",
             estrutura->codigo, estrutura->nome, estrutura->razaoSocial, estrutura->inscricaoSocial,
             estrutura->cnpj, estrutura->endereco, estrutura->celular, estrutura->eMail);
 }
@@ -53,7 +53,7 @@ void adicionarFornecedorTxt(Fornecedor *estrutura, FILE *arquivo)
 void adicionarOperadorTxt(Operador *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{nome:%s , usuario:%s , senha:%s , permissao:%c ;}\n",
+    fprintf(arquivo, "%d{nome:%s, usuario:%s, senha:%s, permissao:%c;}\n",
             estrutura->codigo, estrutura->nome, estrutura->usuario, estrutura->senha, estrutura->permissao);
 }
 
@@ -63,7 +63,7 @@ int lerHotelTxt(FILE *arquivo, Hotel *ptrHotel)
 {
 
     if (
-        fscanf(arquivo, "Nome:%[^;] ;Razão Social:%[^;] ;Inscrição Estadual:%[^;] ;CNPJ:%[^;] ;Endereço:%[^;] ;Número de Celular:%[^;] ;E-mail:%[^;] ;Responsável:%[^;] ;Número de Celular do Responsável:%[^;] ;Horário de Check-In:%[^;] ;Horário de Check-Out:%[^;] ;", ptrHotel->nome, ptrHotel->razaoSocial, ptrHotel->inscricaoEstadual, ptrHotel->cnpj, ptrHotel->endereco, ptrHotel->celular, ptrHotel->eMail, ptrHotel->responsavel, ptrHotel->celularResponsavel, ptrHotel->horarioCheckIn, ptrHotel->horarioCheckOut))
+        fscanf(arquivo, "Nome:%[^;]; Razão Social:%[^;]; Inscrição Estadual:%[^;]; CNPJ:%[^;]; Endereço:%[^;]; Número de Celular:%[^;]; E-mail:%[^;]; Responsável:%[^;]; Celular do Responsável:%[^;]; Horário de Check-In:%[^;]; Horário de Check-Out:%[^;]; ", ptrHotel->nome, ptrHotel->razaoSocial, ptrHotel->inscricaoEstadual, ptrHotel->cnpj, ptrHotel->endereco, ptrHotel->celular, ptrHotel->eMail, ptrHotel->responsavel, ptrHotel->celularResponsavel, ptrHotel->horarioCheckIn, ptrHotel->horarioCheckOut))
     {
 
         return 1;
@@ -76,7 +76,7 @@ int lerHotelTxt(FILE *arquivo, Hotel *ptrHotel)
 
 int lerHospedeTxt(int codigo, FILE *arquivo, Hospede *ptrHospede)
 {
-    if (fscanf(arquivo, "%d{nome:%[^,] ,endereco:%[^,] ,cpf:%[^,] ,celular:%[^,] ,eMail:%[^,] ,sexo:%[^,] ,estadoCivil:%[^,] ,dataNasc:%[^;] ;}", &ptrHospede->codigo, ptrHospede->nome, ptrHospede->endereco, ptrHospede->cpf, ptrHospede->celular, ptrHospede->eMail, ptrHospede->sexo, ptrHospede->estadoCivil, ptrHospede->dataNasc) == 9)
+    if (fscanf(arquivo, "%d{nome:%[^,], endereco:%[^,], cpf:%[^,], celular:%[^,], eMail:%[^,], sexo:%[^,], estadoCivil:%[^,], dataNasc:%[^;];}", &ptrHospede->codigo, ptrHospede->nome, ptrHospede->endereco, ptrHospede->cpf, ptrHospede->celular, ptrHospede->eMail, ptrHospede->sexo, ptrHospede->estadoCivil, ptrHospede->dataNasc) == 9)
     {
         printf("acho");
         if (ptrHospede->codigo == codigo || codigo == 0)
@@ -91,7 +91,7 @@ int lerHospedeTxt(int codigo, FILE *arquivo, Hospede *ptrHospede)
 
 int lerCategoriaTxt(char *codigo, FILE *arquivo, Categoria *ptrCategoria)
 {
-    if (fscanf(arquivo, " %[^{]{quantPessoas:%d, valor:%f, descricao:%[^;] ;}", ptrCategoria->codigo, &ptrCategoria->quantPessoas, &ptrCategoria->valor, ptrCategoria->descricao) == 4)
+    if (fscanf(arquivo, " %[^{]{quantPessoas:%d, valor:%f, descricao:%[^;];}", ptrCategoria->codigo, &ptrCategoria->quantPessoas, &ptrCategoria->valor, ptrCategoria->descricao) == 4)
     {
         if (!strcmp(ptrCategoria->codigo, codigo) || !strcmp(codigo, "0"))
         {
@@ -105,7 +105,7 @@ int lerCategoriaTxt(char *codigo, FILE *arquivo, Categoria *ptrCategoria)
 int lerAcomodacaoTxt(int codigo, FILE *arquivo, Acomodacao *ptrAcomodacao)
 {
 
-    if (fscanf(arquivo, "%d{categoria:%[^,] ,descricao:%[^,] ,facilidades:%[^;] ;}", &ptrAcomodacao->codigo, ptrAcomodacao->categoria, ptrAcomodacao->descricao, ptrAcomodacao->facilidades) == 4)
+    if (fscanf(arquivo, "%d{categoria:%[^,], descricao:%[^,], facilidades:%[^;];}", &ptrAcomodacao->codigo, ptrAcomodacao->categoria, ptrAcomodacao->descricao, ptrAcomodacao->facilidades) == 4)
     {
         if (ptrAcomodacao->codigo == codigo || codigo == 0)
         {
@@ -118,7 +118,7 @@ int lerAcomodacaoTxt(int codigo, FILE *arquivo, Acomodacao *ptrAcomodacao)
 
 int lerConsumivelTxt(int codigo, FILE *arquivo, Consumivel *ptrConsumivel)
 {
-    if (fscanf(arquivo, "%d{estoque:%d, estoqueMin:%d, descricao:%[^,] , precoCusto:%f, precoVenda:%f ;}", &ptrConsumivel->codigo, &ptrConsumivel->estoque, &ptrConsumivel->estoqueMin, ptrConsumivel->descricao, &ptrConsumivel->precoCusto, &ptrConsumivel->precoVenda) == 6)
+    if (fscanf(arquivo, "%d{estoque:%d, estoqueMin:%d, descricao:%[^,], precoCusto:%f, precoVenda:%f;}", &ptrConsumivel->codigo, &ptrConsumivel->estoque, &ptrConsumivel->estoqueMin, ptrConsumivel->descricao, &ptrConsumivel->precoCusto, &ptrConsumivel->precoVenda) == 6)
     {
         if (ptrConsumivel->codigo == codigo || codigo == 0)
         {
@@ -131,7 +131,7 @@ int lerConsumivelTxt(int codigo, FILE *arquivo, Consumivel *ptrConsumivel)
 
 int lerFornecedorTxt(int codigo, FILE *arquivo, Fornecedor *ptrFornecedor)
 {
-    if (fscanf(arquivo, "%d{nome:%[^,] , razaoSocial:%[^,] , inscricaoSocial:%[^,] , cnpj:%[^,] , endereco:%[^,] , celular:%[^,] , eMail:%[^;] ;}", &ptrFornecedor->codigo, &ptrFornecedor->nome, &ptrFornecedor->razaoSocial, &ptrFornecedor->inscricaoSocial, &ptrFornecedor->cnpj, &ptrFornecedor->endereco, &ptrFornecedor->celular, &ptrFornecedor->eMail) == 8)
+    if (fscanf(arquivo, "%d{nome:%[^,], razaoSocial:%[^,], inscricaoSocial:%[^,], cnpj:%[^,], endereco:%[^,], celular:%[^,], eMail:%[^;];}", &ptrFornecedor->codigo, &ptrFornecedor->nome, &ptrFornecedor->razaoSocial, &ptrFornecedor->inscricaoSocial, &ptrFornecedor->cnpj, &ptrFornecedor->endereco, &ptrFornecedor->celular, &ptrFornecedor->eMail) == 8)
     {
         if (ptrFornecedor->codigo == codigo || codigo == 0)
         {
@@ -144,8 +144,9 @@ int lerFornecedorTxt(int codigo, FILE *arquivo, Fornecedor *ptrFornecedor)
 
 int lerOperadorTxt(int codigo, FILE *arquivo, Operador *ptrOperador)
 {
-    if (fscanf(arquivo, "%d{nome:%[^,] , usuario:%[^,] , senha:%[^,] , permissao:%c ;}", &ptrOperador->codigo, &ptrOperador->nome, &ptrOperador->usuario, &ptrOperador->senha, &ptrOperador->permissao) == 5)
+    if (fscanf(arquivo, "%d{nome:%[^,], usuario:%[^,], senha:%[^,], permissao:%c;}", &ptrOperador->codigo, &ptrOperador->nome, &ptrOperador->usuario, &ptrOperador->senha, &ptrOperador->permissao) == 5)
     {
+        printf("leu");
         if (ptrOperador->codigo == codigo || codigo == 0)
         {
 

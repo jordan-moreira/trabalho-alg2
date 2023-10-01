@@ -1,1 +1,1 @@
-dormitorio{quantPessoas:8, valor:400.000000, descricao:possui quatro beliches ;}
+dormitorio{quantPessoas:8, valor:400.000000, descricao:possui quatro beliches;}

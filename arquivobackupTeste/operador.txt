@@ -1,1 +1,1 @@
-4{nome:jordan   , usuario:reiDelas   , senha:12345   , permissao:g ;}
+4{nome:jordan, usuario:doido, senha:1234, permissao:r;}

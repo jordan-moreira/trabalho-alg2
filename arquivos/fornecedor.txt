@@ -1,1 +1,1 @@
-23{nome:luiz  , razaoSocial:vender paiero  , inscricaoSocial:45544  , cnpj:53454335  , endereco:casa dele  , celular:234324  , eMail:4234324  ;}
+23{nome:luiz, razaoSocial:vender paiero, inscricaoSocial:45544, cnpj:53454335, endereco:casa dele, celular:234324, eMail:4234324;}

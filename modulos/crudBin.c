@@ -108,7 +108,7 @@ int lerConsumivelBin(int codigo, FILE *arquivo, Consumivel *ptrConsumivel)
 
 int lerFornecedorBin(int codigo, FILE *arquivo, Fornecedor *ptrFornecedor)
 {
-    if (fread(ptrFornecedor, sizeof(Hospede), 1, arquivo))
+    if (fread(ptrFornecedor, sizeof(Fornecedor), 1, arquivo))
     {
         if (ptrFornecedor->codigo == codigo || codigo == 0)
         {
@@ -121,7 +121,7 @@ int lerFornecedorBin(int codigo, FILE *arquivo, Fornecedor *ptrFornecedor)
 
 int lerOperadorBin(int codigo, FILE *arquivo, Operador *ptrOperador)
 {
-    if (fread(ptrOperador, sizeof(Hospede), 1, arquivo))
+    if (fread(ptrOperador, sizeof(Operador), 1, arquivo))
     {
         if (ptrOperador->codigo == codigo || codigo == 0)
         {

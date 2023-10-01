@@ -1,2 +1,2 @@
-3{nome:jordan   ,endereco:pra que   ,cpf:12345678900   ,celular:233456789   ,eMail:jordan@email.com   ,sexo:m soltero   ,estadoCivil:soltero   ,dataNasc:25345968   ;}
-5{nome:fooi  ,endereco:sdff  ,cpf:sdfsd  ,celular:dsff  ,eMail:sdf  ,sexo:d sdfds  ,estadoCivil:sdfds  ,dataNasc:ddddd  ;}
+3{nome:jordan, endereco:pra que, cpf:12345678900, celular:233456789, eMail:jordan@email.com, sexo:m, estadoCivil:soltero, dataNasc:25345968;}
+5{nome:fooi, endereco:sdff, cpf:sdfsd, celular:dsff, eMail:sdf, sexo:m, estadoCivil:sdfds, dataNasc:ddddd;}

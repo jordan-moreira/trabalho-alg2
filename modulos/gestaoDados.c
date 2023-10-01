@@ -73,10 +73,10 @@ Hotel *coletarDadosHotel() // Funcao para retornar um ponteiro de memoria onde e
     printf("\nDigite o número de celular do responsável (ou gerente) pelo hotel: ");
     scanf("%s%*c", ptrHotel->celularResponsavel);
 
-    printf("\nDigite o horário de Check-in do hotel: ");
+    printf("\nDigite o horário de Check-in do hotel(hh.mm): ");
     scanf("%s%*c", ptrHotel->horarioCheckIn);
 
-    printf("\nDigite o horário de Check-out do hotel: ");
+    printf("\nDigite o horário de Check-out do hotel(hh.mm): ");
     scanf("%s%*c", ptrHotel->horarioCheckOut);
 
     return ptrHotel;
@@ -265,12 +265,16 @@ Operador *coletarDadosOperador() // Funcao para retornar um ponteiro de memoria 
     printf("Digite a senha do operador: ");
     scanf("%s%*c", ptrOperador->senha);
 
-    while (ptrOperador->permissao != 'g' && ptrOperador->permissao != 'r' && ptrOperador->permissao != 'e') // Logica para coletar o cargo do operador de sistema.
+    while (1) // Logica para coletar o cargo do operador de sistema.
     {
         printf("||||| Menu de Cargos |||||\ng-Gernte geral.\nr-Recepcionista.\ne-Gerente de estoque\n");
 
         printf("Digite a permissão do operador: ");
         scanf(" %c%*c", &ptrOperador->permissao);
+        if (ptrOperador->permissao == 'g' || ptrOperador->permissao == 'r' || ptrOperador->permissao == 'e')
+        {
+            break;
+        }
     }
     return ptrOperador;
 }
@@ -729,7 +733,7 @@ void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao)
                 {
                     printf("%d {\n Categoria: %s,\n Descrição: %s,\n Facilidades: %s;}\n",
                            ptrAcomodacao->codigo, ptrAcomodacao->categoria, ptrAcomodacao->descricao, ptrAcomodacao->facilidades);
-                    continue;
+                    break;
                 }
                 else if (status == 0 && !feof(arquivo))
                 {
@@ -983,7 +987,7 @@ void gerenciarFornecedor(char tipoArquivo)
                     printf("%d {\n Nome: %s,\n Razão Social: %s,\n Inscrição Social: %s,\n CNPJ: %s,\n Endereço: %s,\n Celular: %s,\n E-mail: %s;}\n",
                            ptrFornecedor->codigo, ptrFornecedor->nome, ptrFornecedor->razaoSocial, ptrFornecedor->inscricaoSocial, ptrFornecedor->cnpj, ptrFornecedor->endereco, ptrFornecedor->celular, ptrFornecedor->eMail);
 
-                    continue;
+                    break;
                 }
                 else if (status == 0 && !feof(arquivo))
                 {
@@ -1111,7 +1115,7 @@ void gerenciarOperador(char tipoArquivo)
                 {
                     printf("%d {\n Nome: %s,\n Usuário: %s,\n Senha: %s,\n Permissão: %c;}\n",
                            ptrOperador->codigo, ptrOperador->nome, ptrOperador->usuario, ptrOperador->senha, ptrOperador->permissao);
-                    continue;
+                    break;
                 }
                 else if (status == 0 && !feof(arquivo))
                 {
@@ -1257,7 +1261,7 @@ void converterArquivos(char tipoArquivo)
                     while (1)
                     {
 
-                        status = lerCategoriaTxt("0", arquivoLeitura, ptrCategoria);
+                        status = lerCategoriaBin("0", arquivoLeitura, ptrCategoria);
                         if (status)
                         {
                             adicionarCategoriaTxt(ptrCategoria, arquivoEscrita);
@@ -1729,6 +1733,7 @@ void converterArquivos(char tipoArquivo)
                         status = lerOperadorTxt(0, arquivoLeitura, ptrOperador);
                         if (status)
                         {
+                            printf("escreveu");
                             adicionarOperadorBin(ptrOperador, arquivoEscrita);
                             continue;
                         }
