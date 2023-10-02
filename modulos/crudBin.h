@@ -24,6 +24,9 @@ void adicionarFornecedorBin(Fornecedor *estrutura, FILE *arquivo);
 // funcao responsavel pelo registro de um operador de sistema em um arquivo .bin
 void adicionarOperadorBin(Operador *estrutura, FILE *arquivo);
 
+// funcao responsavel pelo registro de uma reserva de quarto em um arquivo .bin
+void adicionarReservaBin(Reserva *estrutura, FILE *arquivo);
+
 // ------------Read-----------
 
 // Função responsavel por ler os registros do hotel em um arquivo .bin
@@ -42,6 +45,8 @@ int lerConsumivelBin(int codigo, FILE *arquivo, Consumivel *ptrConsumivel);
 int lerFornecedorBin(int codigo, FILE *arquivo, Fornecedor *ptrFornecedor);
 // Função responsavel por ler os registros de operador em um arquivo .bin
 int lerOperadorBin(int codigo, FILE *arquivo, Operador *ptrOperador);
+// Função responsavel por ler as reservas em um arquivo .bin
+int lerReservaBin(int codigo, FILE *arquivo, Reserva *ptrReserva);
 
 // ------------Updtate-----------
 
@@ -61,6 +66,8 @@ int atualizarConsumivelBin(int codigo, Consumivel *novoDados);
 int atualizarFornecedorBin(int codigo, Fornecedor *novoDados);
 // Função responsavel por atualizar os registros de operador em um arquivo .bin
 int atualizarOperadorBin(int codigo, Operador *novoDados);
+// Função responsavel por atualizar os registros de reserva em um arquivo .bin
+int atualizarReservaBin(int codigo, Reserva *novoDados);
 
 // ------------Delete-----------
 
@@ -80,5 +87,7 @@ int deletarConsumivelBin(int codigo);
 int deletarFornecedorBin(int codigo);
 // Função responsável por deletar os registros de operador em um arquivo .bin
 int deletarOperadorBin(int codigo);
+// Função responsável por deletar os registros de reserva em um arquivo .bin
+int deletarReservaBin(int codigo);
 
 #endif

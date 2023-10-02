@@ -1,16 +1,14 @@
-#ifndef RESERVA_H
-#define RESERVA_H
+#ifndef RESERVAS_H
+#define RESERVAS_H
 
-typedef struct {
-    char nome[50];
-    int quarto;
-    char entrada[11];
-    char saida[11];
-} Reserva;
+int operarReserva();
 
-typedef struct node {
-    Reserva reserva;
-    struct node *prox;
-} Node;
+void mostrarCorrespondentes(Acomodacao *dadosBusca, char tipoArquivo);
+
+void coletarDadosReserva(Reserva *ptrReserva);
+
+void gerenciarReserva(char tipoArquivo, char codigoPermissao);
+
+void checarDatasDisponiveis(int codigoAcomodacao, char tipoArquivo, Reserva *ptrReserva, int codigoReserva);
 
 #endif

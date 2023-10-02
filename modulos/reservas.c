@@ -1,163 +1,313 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "gestaoDados.h"
+#include "crudTxt.h"
+#include "crudBin.h"
 #include "reservas.h"
 
-Node *lista = NULL;
+// Define códigos de escape ANSI para cores de texto
+#define ANSI_RESET "\x1b[0m"
+#define ANSI_BOLD "\x1b[1m"
+#define ANSI_GREEN "\x1b[32m"
+#define ANSI_RED "\x1b[31m"
 
-void adicionar_reserva(Reserva reserva) {
-    Node *novo = (Node*) malloc(sizeof(Node));
-    novo->reserva = reserva;
-    novo->prox = lista;
-    lista = novo;
+int operarReserva()
+{
+    int codigoMenu = 0;
+    printf("Digite o código referente à operação a ser realizada:\n"); // codMenu para administrar operações do hotel.
 
-    // Abrir o arquivo para escrita
-    FILE *arquivo = fopen("arquivos/reservas.txt", "a");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo!\n");
+    while (codigoMenu < 1 || codigoMenu > 4)
+    {
+        printf("1 -" ANSI_BOLD "Fazer reserva.\n" ANSI_RESET);
+        printf("2 -" ANSI_BOLD "Atualizar informações de reserva.\n" ANSI_RESET);
+        printf("3 -" ANSI_BOLD "Ler informações de reserva.\n" ANSI_RESET);
+        printf("4 -" ANSI_BOLD "Cancelar reserva.\n" ANSI_RESET);
+        scanf("%d%*c", &codigoMenu);
+
+        if (codigoMenu >= 1 && codigoMenu <= 4)
+        {
+            return codigoMenu;
+        }
+        else
+        {
+            printf(ANSI_RED "Opção inválida.\n" ANSI_RESET);
+        }
+    }
+}
+
+void mostrarCorrespondentes(Acomodacao *dadosBusca, char tipoArquivo)
+{
+    int status;
+    FILE *arquivo;
+    Acomodacao *ptrAcomodacao = malloc(sizeof(Acomodacao));
+    printf("Acomodações compatíveis");
+    while (1)
+    {
+        status = (tipoArquivo == 'T') ? lerAcomodacaoTxt(0, arquivo, ptrAcomodacao) : lerAcomodacaoBin(0, arquivo, ptrAcomodacao);
+        if (status == 1)
+        {
+            if (dadosBusca->codigo == ptrAcomodacao->codigo || strcmp(dadosBusca->categoria, ptrAcomodacao->categoria) || strcmp(dadosBusca->descricao, ptrAcomodacao->descricao) || strcmp(dadosBusca->facilidades, ptrAcomodacao->facilidades))
+            {
+
+                printf("%d {\n Categoria: %s,\n Descrição: %s,\n Facilidades: %s;}\n",
+                       ptrAcomodacao->codigo, ptrAcomodacao->categoria, ptrAcomodacao->descricao, ptrAcomodacao->facilidades);
+            }
+            continue;
+        }
+        else if (status == 0 && !feof(arquivo))
+        {
+
+            continue;
+        }
+        else
+        {
+            printf("Fim do arquivo alcançado.\n");
+            return;
+        }
+    }
+}
+
+void coletarDadosReserva(Reserva *ptrReserva) // Funcao para retornar um ponteiro de memoria onde estao os dados.
+
+{
+
+    printf("Digite o codigo do reserva responsavel pela reserva: ");
+    scanf("%d%*c", ptrReserva->hospede);
+
+    printf("Digite o codigo da acomodacao a ser reservada: ");
+    scanf("%d%*c", ptrReserva->acomodacao);
+
+    printf("informe a data inicial da reserva: ");
+    scanf("%10[^\n]%*c", &ptrReserva->dataInicial);
+
+    printf("informe a data final da resesrva: ");
+    scanf("%10[^\n]%*c", ptrReserva->dataFinal);
+
+    return;
+}
+
+void checarDatasDisponiveis(int codigoAcomodacao, char tipoArquivo, Reserva *ptrReserva, int codigoReserva)
+{
+
+    int status;
+    FILE *arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reserva.txt", "r") : fopen("arquivos/reserva.bin", "rb");
+    if (arquivo == NULL)
+    {
+        printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+
         return;
     }
 
-    // Escrever a reserva no arquivo
-    fprintf(arquivo, "%s;%d;%s;%s\n", reserva.nome, reserva.quarto, reserva.entrada, reserva.saida);
+    printf("Qualquer data disponível.\n");
 
-    // Fechar o arquivo
+    while (1)
+    {
+        status = (tipoArquivo == 'T') ? lerReservaTxt(0, arquivo, ptrReserva) : lerReservaBin(0, arquivo, ptrReserva);
+        if (status == 1)
+        {
+            if (ptrReserva->acomodacao == codigoAcomodacao && (codigoReserva == 0 || codigoReserva != ptrReserva->codigo))
+            {
+                printf("exceto %s a %s\n", ptrReserva->dataInicial, ptrReserva->dataFinal);
+            }
+            continue;
+        }
+        else if (status == 0 && !feof(arquivo))
+        {
+
+            continue;
+        }
+        else
+        {
+            printf("Fim do arquivo alcançado.\n");
+            break;
+        }
+    }
     fclose(arquivo);
 }
 
+void gerenciarReserva(char tipoArquivo, char codigoPermissao)
+{
 
-void remover_reserva(char *nome) {
-    Node *atual = lista;
-    Node *anterior = NULL;
+    int operacao = operarReserva();
+    FILE *arquivo;
+    Reserva *ptrReserva;
+    int status;
 
-    // Procurar a reserva na lista
-    while (atual != NULL) {
-        if (strcmp(atual->reserva.nome, nome) == 0) {
-            // Remover a reserva da lista
-            if (anterior == NULL) {
-                lista = atual->prox;
-            } else {
-                anterior->prox = atual->prox;
-            }
-            free(atual);
+    switch (operacao)
+    {
+    case 1:
+        Acomodacao *filtroReserva;
+        int codigoAcomodacao;
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reserva.txt", "a") : fopen("arquivos/reserva.bin", "ab");
+        if (arquivo == NULL)
+        {
+            printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+            break;
+        }
 
-            // Atualizar o arquivo de reservas
-            FILE *arquivo = fopen("arquivos/reservas.txt", "w");
-            if (arquivo == NULL) {
-                printf("Erro ao abrir o arquivo!\n");
-                return;
-            }
-            Node *atual_arquivo = lista;
-            while (atual_arquivo != NULL) {
-                fprintf(arquivo, "%s;%d;%s;%s\n", atual_arquivo->reserva.nome, atual_arquivo->reserva.quarto, atual_arquivo->reserva.entrada, atual_arquivo->reserva.saida);
-                atual_arquivo = atual_arquivo->prox;
-            }
-            fclose(arquivo);
+        filtroReserva = coletarDadosAcomodacao(tipoArquivo);
+        mostrarCorrespondentes(filtroReserva, tipoArquivo);
 
-            printf("Reserva removida com sucesso!\n");
+        ptrReserva = malloc(sizeof(Reserva));
+        if (ptrReserva == NULL)
+        {
+            printf(ANSI_RED "Erro na alocação de memória.\n" ANSI_RESET);
             return;
         }
-        anterior = atual;
-        atual = atual->prox;
-    }
 
-    printf("Reserva nao encontrada!\n");
-}
+        printf("Informe o código da Acomodação que você deseja reservar");
+        scanf("%d%*c", codigoAcomodacao);
 
-void atualizar_reserva(char *nome, Reserva nova_reserva) {
-    Node *atual = lista;
+        checarDatasDisponiveis(codigoAcomodacao, tipoArquivo, ptrReserva, 0);
 
-    // Procurar a reserva na lista
-    while (atual != NULL) {
-        if (strcmp(atual->reserva.nome, nome) == 0) {
-            // Atualizar a reserva na lista
-            atual->reserva = nova_reserva;
+        coletarDadosReserva(ptrReserva);
 
-            // Atualizar o arquivo de reservas
-            FILE *arquivo = fopen("arquivos/reservas.txt", "w");
-            if (arquivo == NULL) {
-                printf("Erro ao abrir o arquivo!\n");
-                return;
-            }
-            Node *atual_arquivo = lista;
-            while (atual_arquivo != NULL) {
-                fprintf(arquivo, "%s;%d;%s;%s\n", atual_arquivo->reserva.nome, atual_arquivo->reserva.quarto, atual_arquivo->reserva.entrada, atual_arquivo->reserva.saida);
-                atual_arquivo = atual_arquivo->prox;
-            }
-            fclose(arquivo);
+        (tipoArquivo == 'T') ? adicionarReservaTxt(ptrReserva, arquivo) : adicionarReservaBin(ptrReserva, arquivo);
 
-            printf("Reserva atualizada com sucesso!\n");
-            return;
+        printf(ANSI_GREEN "Registrado com sucesso!\n" ANSI_RESET);
+
+        fclose(arquivo);
+
+        break;
+
+    case 2:
+        int codigoReserva = 0;
+        printf("Digite o código único da reserva  que você deseja atualizar as datas: ");
+        scanf("%d%*c", &codigoReserva);
+
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reserva.txt", "r") : fopen("arquivos/reserva.bin", "rb");
+        if (arquivo == NULL)
+        {
+            printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+
+            break;
         }
-        atual = atual->prox;
-    }
 
-    printf("Reserva nao encontrada!\n");
-}
+        ptrReserva = malloc(sizeof(Reserva));
 
-void listar_reservas() {
-    // Abrir o arquivo de reservas para leitura
-    FILE *arquivo = fopen("arquivos/reservas.txt", "r");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo!\n");
-        return;
-    }
+        while (1)
+        {
+            status = (tipoArquivo == 'T') ? lerReservaTxt(codigoReserva, arquivo, ptrReserva) : lerReservaBin(codigoReserva, arquivo, ptrReserva);
 
-    // Ler as reservas do arquivo e imprimir na tela
-    char linha[100];
-    printf("Reservas:\n");
-    while (fgets(linha, 100, arquivo) != NULL) {
-        char nome[50], entrada[11], saida[11];
-        int quarto;
-        sscanf(linha, "%[^;];%d;%[^;];%s", nome, &quarto, entrada, saida);
-        printf("Nome: %s, Quarto: %d, Entrada: %s, Saida: %s\n", nome, quarto, entrada, saida);
-    }
-
-    // Fechar o arquivo
-    fclose(arquivo);
-}
-
-void buscar_reserva(char *nome) {
-    Node *atual = lista;
-
-    // Procurar a reserva na lista
-    while (atual != NULL) {
-        if (strcmp(atual->reserva.nome, nome) == 0) {
-            printf("Reserva encontrada:\n");
-            printf("Nome: %s, Quarto: %d, Entrada: %s, Saida: %s\n", atual->reserva.nome, atual->reserva.quarto, atual->reserva.entrada, atual->reserva.saida);
-
-            // Pedir as novas informacoes da reserva
-            Reserva nova_reserva;
-            printf("Digite o novo nome: ");
-            scanf("%s", nova_reserva.nome);
-            printf("Digite o novo quarto: ");
-            scanf("%d", &nova_reserva.quarto);
-            printf("Digite a nova data de entrada (DD/MM/AAAA): ");
-            scanf("%s", nova_reserva.entrada);
-            printf("Digite a nova data de saida (DD/MM/AAAA): ");
-            scanf("%s", nova_reserva.saida);
-
-            // Atualizar a reserva na lista
-            atual->reserva = nova_reserva;
-
-            // Atualizar o arquivo de reservas
-            FILE *arquivo = fopen("arquivos/reservas.txt", "w");
-            if (arquivo == NULL) {
-                printf("Erro ao abrir o arquivo!\n");
-                return;
+            if (status == 1)
+            {
+                codigoAcomodacao = ptrReserva->acomodacao;
+                break;
             }
-            Node *atual_arquivo = lista;
-            while (atual_arquivo != NULL) {
-                fprintf(arquivo, "%s;%d;%s;%s\n", atual_arquivo->reserva.nome, atual_arquivo->reserva.quarto, atual_arquivo->reserva.entrada, atual_arquivo->reserva.saida);
-                atual_arquivo = atual_arquivo->prox;
-            }
-            fclose(arquivo);
+            else if (status == 0 && !feof(arquivo))
+            {
 
-            printf("Reserva atualizada com sucesso!\n");
-            return;
+                continue;
+            }
+            else
+            {
+                printf(ANSI_RED "Reserva não encontrado ou código incorreto.\n" ANSI_RESET);
+                break;
+            }
         }
-        atual = atual->prox;
-    }
+        fclose(arquivo);
 
-    printf("Reserva nao encontrada!\n");
+        checarDatasDisponiveis(codigoAcomodacao, tipoArquivo, ptrReserva, codigoReserva);
+
+        printf("informe a data inicial da reserva: ");
+        scanf("%10[^\n]%*c", &ptrReserva->dataInicial);
+
+        printf("informe a data final da resesrva: ");
+        scanf("%10[^\n]%*c", ptrReserva->dataFinal);
+
+        status = (tipoArquivo == 'T') ? atualizarReservaTxt(codigoReserva, ptrReserva) : atualizarReservaBin(codigoReserva, ptrReserva);
+
+        status == 1 ? printf(ANSI_GREEN "Datas de reserva atualizado com sucesso" ANSI_RESET) : printf(ANSI_RED "Erro ao atualizar datas de reserva" ANSI_RESET);
+        free(ptrReserva);
+        break;
+
+    case 3:
+
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reserva.txt", "r") : fopen("arquivos/reserva.bin", "rb");
+
+        if (arquivo == NULL)
+        {
+            printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+            break;
+        }
+        ptrReserva = malloc(sizeof(Reserva));
+
+        int codigoMenu = 0;
+
+        printf("Se você deseja fazer uma leitura de todos as reservas, digite 1. Se você deseja fazer uma leitura de uma reserva específica, digite 2: ");
+        scanf("%d%*c", &codigoMenu);
+
+        if (codigoMenu == 1)
+        {
+            while (1)
+            {
+                status = (tipoArquivo == 'T') ? lerReservaTxt(0, arquivo, ptrReserva) : lerReservaBin(0, arquivo, ptrReserva);
+
+                if (status == 1)
+                {
+                    printf("%d {\n Codigo do hospede responsavel: %d,\n Codigo da acomodacao reservada: %d,\n data inicial da reserva: %s,\n data final da reserva: %s;\n }\n", ptrReserva->codigo, ptrReserva->hospede, ptrReserva->acomodacao, ptrReserva->dataInicial, ptrReserva->dataFinal);
+                    continue;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf("Fim do arquivo alcançado.\n");
+                    break;
+                }
+            }
+        }
+        else if (codigoMenu == 2)
+        {
+            codigoReserva = 0;
+            printf("Digite o código único da reserva que você deseja ler: ");
+            scanf("%d%*c", &codigoReserva);
+
+            while (1)
+            {
+                status = (tipoArquivo == 'T') ? lerReservaTxt(codigoReserva, arquivo, ptrReserva) : lerReservaBin(codigoReserva, arquivo, ptrReserva);
+
+                if (status == 1)
+                {
+                    printf("%d {\n Codigo do hospede responsavel: %d,\n Codigo da acomodacao reservada: %d,\n data inicial da reserva: %s,\n data final da reserva: %s;\n }\n", ptrReserva->codigo, ptrReserva->hospede, ptrReserva->acomodacao, ptrReserva->dataInicial, ptrReserva->dataFinal);
+                    break;
+                }
+                else if (status == 0 && !feof(arquivo))
+                {
+
+                    continue;
+                }
+                else
+                {
+                    printf(ANSI_RED "Reserva não encontrado ou código incorreto.\n" ANSI_RESET);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            printf(ANSI_RED "Opção inválida.\n" ANSI_RESET);
+        }
+
+        free(ptrReserva); // Libere a memória alocada para ptrReserva
+        fclose(arquivo);
+        break;
+
+    case 4:
+        codigoReserva = 0;
+        printf("Digite o código único da reserva que você deseja deletar: ");
+        scanf("%d%*c", &codigoReserva);
+        status = (tipoArquivo == 'T') ? deletarReservaTxt(codigoReserva) : deletarReservaBin(codigoReserva);
+
+        status == 1 ? printf(ANSI_GREEN "Registro de reserva deletado com sucesso" ANSI_RESET) : printf(ANSI_RED "Erro ao deletar registro de reserva" ANSI_RESET);
+        break;
+
+    default:
+        printf(ANSI_RED "Erro desconhecido.\n" ANSI_RESET);
+        break;
+    }
 }

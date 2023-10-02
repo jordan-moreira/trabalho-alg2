@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "gestaoDados.h"
+#include "reservas.h"
 #include "crudTxt.h"
 
 // Gravar no arquivo;
@@ -57,6 +58,12 @@ void adicionarOperadorTxt(Operador *estrutura, FILE *arquivo)
             estrutura->codigo, estrutura->nome, estrutura->usuario, estrutura->senha, estrutura->permissao);
 }
 
+void adicionarReservaTxt(Reserva *estrutura, FILE *arquivo)
+{
+
+    fprintf(arquivo, "%d{data inicial:%[^,], data final:%[^,], hospede:%d, acomodacao:%d;}\n", estrutura->codigo, estrutura->dataInicial, estrutura->dataFinal, estrutura->hospede, estrutura->acomodacao);
+}
+
 // ------------Read-----------
 
 int lerHotelTxt(FILE *arquivo, Hotel *ptrHotel)
@@ -78,14 +85,14 @@ int lerHospedeTxt(int codigo, FILE *arquivo, Hospede *ptrHospede)
 {
     if (fscanf(arquivo, "%d{nome:%[^,], endereco:%[^,], cpf:%[^,], celular:%[^,], eMail:%[^,], sexo:%[^,], estadoCivil:%[^,], dataNasc:%[^;];}", &ptrHospede->codigo, ptrHospede->nome, ptrHospede->endereco, ptrHospede->cpf, ptrHospede->celular, ptrHospede->eMail, ptrHospede->sexo, ptrHospede->estadoCivil, ptrHospede->dataNasc) == 9)
     {
-        printf("acho");
+
         if (ptrHospede->codigo == codigo || codigo == 0)
         {
 
             return 1;
         }
     }
-    printf("%s", ptrHospede->nome);
+
     return 0;
 }
 
@@ -146,8 +153,21 @@ int lerOperadorTxt(int codigo, FILE *arquivo, Operador *ptrOperador)
 {
     if (fscanf(arquivo, "%d{nome:%[^,], usuario:%[^,], senha:%[^,], permissao:%c;}", &ptrOperador->codigo, &ptrOperador->nome, &ptrOperador->usuario, &ptrOperador->senha, &ptrOperador->permissao) == 5)
     {
-        printf("leu");
+
         if (ptrOperador->codigo == codigo || codigo == 0)
+        {
+
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int lerReservaTxt(int codigo, FILE *arquivo, Reserva *ptrReserva)
+{
+    if (fscanf(arquivo, "%d{data inicial:%[^,], data final:%[^,], hospede:%d, acomodacao:%d;}", &ptrReserva->codigo, &ptrReserva->dataInicial, &ptrReserva->dataFinal, &ptrReserva->hospede, &ptrReserva->acomodacao) == 5)
+    {
+        if (ptrReserva->codigo == codigo || codigo == 0)
         {
 
             return 1;
@@ -193,11 +213,11 @@ int atualizarHospedeTxt(int codigo, Hospede *novoDados)
 
     int encontrado = 0; // Indica se o código foi encontrado
     Hospede *antigosDados = malloc(sizeof(Hospede));
-    printf("ola");
+
     while (1)
     {
         int resultadoLeitura = lerHospedeTxt(0, arquivo, antigosDados);
-        printf("chamo a funcao %d", resultadoLeitura);
+
         if (resultadoLeitura == 1)
         {
             if (antigosDados->codigo == codigo)
@@ -511,6 +531,61 @@ int atualizarOperadorTxt(int codigo, Operador *novoDados)
     }
 }
 
+// Função para atualizar a data de uma reserva
+int atualizarReservaTxt(int codigo, Reserva *novoDados)
+{
+    FILE *arquivo = fopen("arquivos/reserva.txt", "r");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
+
+    if (arquivo == NULL || tempFile == NULL)
+    {
+        return 0; // Indica que a operação falhou
+    }
+
+    int encontrado = 0; // Indica se o código foi encontrado
+    Reserva *antigosDados = malloc(sizeof(Reserva));
+
+    while (1)
+    {
+        int resultadoLeitura = lerReservaTxt(0, arquivo, antigosDados);
+        if (resultadoLeitura == 1)
+        {
+            if (antigosDados->codigo == codigo)
+            {
+                // Se o código foi encontrado, atualize os dados com os novos dados
+                adicionarReservaTxt(novoDados, tempFile);
+                encontrado = 1;
+                continue;
+            }
+            else
+            {
+                // Se não for o código que estamos procurando, escreva o registro original de volta no arquivo temporário
+                adicionarReservaTxt(antigosDados, tempFile);
+            }
+        }
+        else if (feof(arquivo))
+        {
+            break;
+        }
+    }
+    free(antigosDados);
+    fclose(arquivo);
+    fclose(tempFile);
+
+    if (encontrado)
+    {
+        // Substitua o arquivo original pelo arquivo temporário
+        remove("arquivos/reserva.txt");
+        rename("arquivos/temp.txt", "arquivos/reserva.txt");
+        return 1; // Indica que a operação foi bem-sucedida
+    }
+    else
+    {
+        remove("arquivos/temp.txt");
+        return 0; // Indica que o código não foi encontrado
+    }
+}
+
 //------------Delete---------
 
 // Função para deletar todos os registros de Hotel
@@ -537,7 +612,7 @@ int deletarHospedeTxt(int codigo)
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("arquivo");
+
         return 0; // Indica que a operação falhou
     }
 
@@ -597,7 +672,7 @@ int deletarCategoriaTxt(char *codigo)
 
     if (arquivo == NULL || tempFile == NULL)
     {
-        printf("arquivo");
+
         return 0; // Indica que a operação falhou
     }
 
@@ -850,6 +925,59 @@ int deletarOperadorTxt(int codigo)
     // Substitua o arquivo original pelo arquivo temporário
     remove("arquivos/operador.txt");
     rename("arquivos/temp.txt", "arquivos/operador.txt");
+
+    if (encontrado)
+    {
+        return 1; // Indica que a operação foi bem-sucedida
+    }
+    else
+    {
+        return 0; // Indica que o código não foi encontrado
+    }
+}
+
+// Função para deletar uma reserva por código
+int deletarReservaTxt(int codigo)
+{
+    FILE *arquivo = fopen("arquivos/reserva.txt", "r");
+    FILE *tempFile = fopen("arquivos/temp.txt", "w");
+
+    if (arquivo == NULL || tempFile == NULL)
+    {
+        return 0; // Indica que a operação falhou
+    }
+
+    int encontrado = 0;                                // Indica se o código foi encontrado
+    Reserva *dadosOriginais = malloc(sizeof(Reserva)); // Estrutura temporária para armazenar os dados lidos
+    while (1)
+    {
+        int resultadoLeitura = lerReservaTxt(0, arquivo, dadosOriginais);
+        if (resultadoLeitura == 0)
+        {
+            // Fim do arquivo
+            break;
+        }
+
+        if (resultadoLeitura == 1)
+        {
+            if (dadosOriginais->codigo == codigo)
+            {
+                // Se o código foi encontrado, nao o escreva no novo arquivo
+                encontrado = 1;
+            }
+            else
+            {
+                adicionarReservaTxt(dadosOriginais, tempFile);
+            }
+        }
+    }
+    free(dadosOriginais);
+    fclose(arquivo);
+    fclose(tempFile);
+
+    // Substitua o arquivo original pelo arquivo temporário
+    remove("arquivos/reserva.txt");
+    rename("arquivos/temp.txt", "arquivos/reserva.txt");
 
     if (encontrado)
     {

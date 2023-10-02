@@ -429,7 +429,6 @@ void gerenciarHospede(char tipoArquivo)
                 }
                 else if (status == 0 && !feof(arquivo))
                 {
-                    printf("a");
 
                     continue;
                 }
@@ -1452,6 +1451,49 @@ void converterArquivos(char tipoArquivo)
                 }
             }
         }
+
+        {
+            Reserva *ptrReserva = malloc(sizeof(Reserva));
+            arquivoLeitura = fopen("arquivos/reserva.bin", "rb");
+            if (arquivoLeitura == NULL)
+            {
+                printf(ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
+                fclose(arquivoLeitura);
+                free(ptrReserva);
+            }
+            else
+            {
+                arquivoEscrita = fopen("arquivos/reserva.txt", "w");
+                if (arquivoEscrita == NULL)
+                {
+                    printf(ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
+                    fclose(arquivoLeitura);
+                    fclose(arquivoEscrita);
+                    free(ptrReserva);
+                }
+                else
+                {
+                    while (1)
+                    {
+
+                        status = lerReservaBin(0, arquivoLeitura, ptrReserva);
+                        if (status)
+                        {
+                            adicionarReservaTxt(ptrReserva, arquivoEscrita);
+                            continue;
+                        }
+                        else if (feof(arquivoLeitura))
+                        {
+                            break;
+                        }
+                    }
+                    fclose(arquivoLeitura);
+                    fclose(arquivoEscrita);
+                    free(ptrReserva);
+                    remove("arquivos/reserva.bin");
+                }
+            }
+        }
     }
     else if (tipoArquivo == 'B')
     {
@@ -1733,7 +1775,7 @@ void converterArquivos(char tipoArquivo)
                         status = lerOperadorTxt(0, arquivoLeitura, ptrOperador);
                         if (status)
                         {
-                            printf("escreveu");
+
                             adicionarOperadorBin(ptrOperador, arquivoEscrita);
                             continue;
                         }
@@ -1746,6 +1788,50 @@ void converterArquivos(char tipoArquivo)
                     fclose(arquivoEscrita);
                     free(ptrOperador);
                     remove("arquivos/operador.txt");
+                }
+            }
+        }
+
+        {
+            Reserva *ptrReserva = malloc(sizeof(Reserva));
+            arquivoLeitura = fopen("arquivos/reserva.txt", "r");
+            if (arquivoLeitura == NULL)
+            {
+                printf(ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
+                fclose(arquivoLeitura);
+                free(ptrReserva);
+            }
+            else
+            {
+                arquivoEscrita = fopen("arquivos/reserva.bin", "wb");
+                if (arquivoEscrita == NULL)
+                {
+                    printf(ANSI_RED "Arquivo não existe ou não pode ser aberto!\n" ANSI_RESET);
+                    fclose(arquivoLeitura);
+                    fclose(arquivoEscrita);
+                    free(ptrReserva);
+                }
+                else
+                {
+                    while (1)
+                    {
+
+                        status = lerReservaTxt(0, arquivoLeitura, ptrReserva);
+                        if (status)
+                        {
+
+                            adicionarReservaBin(ptrReserva, arquivoEscrita);
+                            continue;
+                        }
+                        else if (feof(arquivoLeitura))
+                        {
+                            break;
+                        }
+                    }
+                    fclose(arquivoLeitura);
+                    fclose(arquivoEscrita);
+                    free(ptrReserva);
+                    remove("arquivos/reserva.txt");
                 }
             }
         }

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "modulos/gestaoDados.h"
+#include "modulos/reservas.h"
 
 // Define códigos de escape ANSI para cores de texto
 #define ANSI_RESET "\x1b[0m"
@@ -164,10 +165,35 @@ int main()
     //  alguma opção, printf com Acesso boqueado.
     printf("|||||BEM-VINDO AO SISTEMA DE GERENCIAMENTO DE HÓTEIS|||||\n");
 
-    int codigoMenu = 0;
-    char tipoArquivo = 'T',
-         codigoPermissao = 'g';
+    int codigoMenu = 0,
+        configSetada = 0;
+    FILE *arquivo;
+    char tipoArquivo,
+        codigoPermissao;
+    arquivo = fopen("arquivos/operador.txt", "r");
+    if (arquivo != NULL)
+    {
+        tipoArquivo = 'T';
+        codigoPermissao = 'n';
+        configSetada = 1;
+        fclose(arquivo);
+    }
+    arquivo = fopen("arquivos/operador.bin", "rb");
+    if (arquivo != NULL && configSetada == 0)
+    {
+        tipoArquivo = 'B';
+        codigoPermissao = 'n';
+        configSetada = 1;
+        fclose(arquivo);
+    }
+    else if (configSetada == 0)
+    {
+        tipoArquivo = 'T';
+        codigoPermissao = 'g';
+        configSetada = 1;
+    }
 
+    printf("%c", codigoPermissao);
     while (codigoMenu != 7)
     {
         printf("--- MENU ---\n");
@@ -196,6 +222,18 @@ int main()
         case 1:
             menuCadastro(tipoArquivo, codigoPermissao);
             break;
+
+        case 2:
+            if (codigoPermissao == 'e')
+            {
+                printf(ANSI_RED "Acesso negado !!!" ANSI_RESET);
+                break;
+            }
+            else
+            {
+                gerenciarReserva(tipoArquivo, codigoPermissao);
+                break;
+            }
 
         case 3:
             menuAdm(tipoArquivo, codigoPermissao);

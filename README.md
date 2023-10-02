@@ -32,17 +32,13 @@ codigo de acesso: E
 
 ## implementacoes de cancelamento e reserva de acomodacoes
 
-- [ ] criar uma funcao responsavel por gerir as reservas das acomodacoes questionando se o usuario pretende reservar uma acomodacao ou cancelar uma reserva
+- [x] criar uma funcao responsavel por gerir as reservas das acomodacoes questionando se o usuario pretende reservar uma acomodacao ou cancelar uma reserva
 
 #### para fazer uma reserva
-- [ ] criar uma funcao para coletar os dados de filtragem como na funcao coletarDadosAcomodacao
-- [ ] criar um funcao para comparar os dados informados com os dados salvos no arquivo printar as estruturas compativeis e seus codigos de identificacao
-- [ ] criar uma funcao para coletar o codigo da acomodacao a ser reservada e salvar a data da reserva (dataInicial e dataFinal)
+- [x] criar uma funcao para coletar os dados de filtragem como na funcao coletarDadosAcomodacao
+- [x] criar um funcao para comparar os dados informados com os dados salvos no arquivo printar as estruturas compativeis e seus codigos de identificacao
+- [x] criar uma funcao para coletar o codigo da acomodacao a ser reservada e salvar a data da reserva (dataInicial e dataFinal)
 
 #### para cancelar uma reserva
-- [ ] criar uma funcao para coletar o codigo da acomodacao a ser cancelada e apagar a data da reserva (dataInicial e dataFinal)apenas atribuir "" para as datas
+- [x] criar uma funcao para coletar o codigo da acomodacao a ser cancelada e apagar a data da reserva (dataInicial e dataFinal)apenas atribuir "" para as datas
  
-
-<h2>anotacoes ignore</h2>
-
-criar um arquivo de config para armazenar tipo arquivo ou entao criar uma logica pra isso

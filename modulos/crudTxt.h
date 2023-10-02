@@ -24,6 +24,9 @@ void adicionarFornecedorTxt(Fornecedor *estrutura, FILE *arquivo);
 // funcao responsavel pelo registro de um operador de sistema em um arquivo .txt
 void adicionarOperadorTxt(Operador *estrutura, FILE *arquivo);
 
+// funcao responsavel pelo registro de uma reserva de quarto em um arquivo .txt
+void adicionarReservaTxt(Reserva *estrutura, FILE *arquivo);
+
 // ------------Read-----------
 
 // Função responsavel por ler os registros do hotel em um arquivo .txt
@@ -42,6 +45,8 @@ int lerConsumivelTxt(int codigo, FILE *arquivo, Consumivel *ptrConsumivel);
 int lerFornecedorTxt(int codigo, FILE *arquivo, Fornecedor *ptrFornecedor);
 // Função responsavel por ler os registros de operador em um arquivo .txt
 int lerOperadorTxt(int codigo, FILE *arquivo, Operador *ptrOperador);
+// Função responsavel por ler as reservas em um arquivo .txt
+int lerReservaTxt(int codigo, FILE *arquivo, Reserva *ptrReserva);
 
 // ------------Updtate-----------
 
@@ -61,6 +66,8 @@ int atualizarConsumivelTxt(int codigo, Consumivel *novoDados);
 int atualizarFornecedorTxt(int codigo, Fornecedor *novoDados);
 // Função responsavel por atualizar os registros de operador em um arquivo .txt
 int atualizarOperadorTxt(int codigo, Operador *novoDados);
+// Função responsavel por atualizar os registros de reserva em um arquivo .txt
+int atualizarReservaTxt(int codigo, Reserva *novoDados);
 
 // ------------Delete-----------
 
@@ -80,5 +87,7 @@ int deletarConsumivelTxt(int codigo);
 int deletarFornecedorTxt(int codigo);
 // Função responsável por deletar os registros de operador em um arquivo .txt
 int deletarOperadorTxt(int codigo);
+// Função responsável por deletar os registros de reserva em um arquivo .txt
+int deletarReservaTxt(int codigo);
 
 #endif

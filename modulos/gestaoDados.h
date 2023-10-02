@@ -47,16 +47,6 @@ typedef struct
     float valor;
 } Categoria;
 
-// estrutura que inclui os dados das datas inicias e finais de uma reserva no formato int data[3]={dia,mes,ano}
-typedef struct
-{
-    int dataInicial[3],
-        dataFinal[3],
-        codigoHospede,
-        codigoAcomodacao;
-
-} Reserva;
-
 // estrutura que inclui os dados dos quartos
 typedef struct
 {
@@ -107,6 +97,17 @@ typedef struct
         senha[50],
         permissao;
 } Operador;
+
+// estrutura que inclui os dados das datas inicias e finais de uma reserva no formato char data="dd/mm/aaaa"
+typedef struct
+{
+    int codigo,
+        hospede,
+        acomodacao;
+    char dataInicial[11],
+        dataFinal[11];
+
+} Reserva;
 
 // -------------------FUNÇÕES-------------
 

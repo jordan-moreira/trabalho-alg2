@@ -45,6 +45,11 @@ void adicionarOperadorBin(Operador *estrutura, FILE *arquivo)
     fwrite(estrutura, sizeof(Operador), 1, arquivo);
 }
 
+void adicionarReservaBin(Reserva *estrutura, FILE *arquivo)
+{
+    fwrite(estrutura, sizeof(Reserva), 1, arquivo);
+}
+
 // ------------Read-----------
 
 int lerHotelBin(FILE *arquivo, Hotel *ptrHotel)
@@ -124,6 +129,19 @@ int lerOperadorBin(int codigo, FILE *arquivo, Operador *ptrOperador)
     if (fread(ptrOperador, sizeof(Operador), 1, arquivo))
     {
         if (ptrOperador->codigo == codigo || codigo == 0)
+        {
+
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int lerReservaBin(int codigo, FILE *arquivo, Reserva *ptrReserva)
+{
+    if (fread(ptrReserva, sizeof(Reserva), 1, arquivo))
+    {
+        if (ptrReserva->codigo == codigo || codigo == 0)
         {
 
             return 1;
@@ -414,6 +432,49 @@ int atualizarOperadorBin(int codigo, Operador *novoDados)
     }
 }
 
+// Função para atualizar um registro de reserva
+int atualizarReservaBin(int codigo, Reserva *novoDados)
+{
+    FILE *arquivo = fopen("arquivos/reserva.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
+
+    if (arquivo == NULL || tempFile == NULL)
+    {
+        return 0; // Indica que a operação falhou
+    }
+
+    int encontrado = 0; // Indica se o código foi encontrado
+
+    Reserva reservaTemp; // Estrutura temporária para armazenar os dados lidos
+
+    while (fread(&reservaTemp, sizeof(Reserva), 1, arquivo) == 1)
+    {
+        if (reservaTemp.codigo == codigo)
+        {
+            // Se o código foi encontrado, atualize os dados com os novos dados
+            memcpy(&reservaTemp, novoDados, sizeof(Reserva));
+            encontrado = 1;
+        }
+        fwrite(&reservaTemp, sizeof(Reserva), 1, tempFile);
+    }
+
+    fclose(arquivo);
+    fclose(tempFile);
+
+    // Substitua o arquivo original pelo arquivo temporário
+    remove("arquivos/reserva.bin");
+    rename("arquivos/temp.bin", "arquivos/reserva.bin");
+
+    if (encontrado)
+    {
+        return 1; // Indica que a operação foi bem-sucedida
+    }
+    else
+    {
+        return 0; // Indica que o código não foi encontrado
+    }
+}
+
 //------------Delete---------
 
 // Função para deletar todos os registros de Hotel
@@ -684,6 +745,50 @@ int deletarOperadorBin(int codigo)
     // Substitua o arquivo original pelo arquivo temporário
     remove("arquivos/operador.bin");
     rename("arquivos/temp.bin", "arquivos/operador.bin");
+
+    if (encontrado)
+    {
+        return 1; // Indica que a operação foi bem-sucedida
+    }
+    else
+    {
+        return 0; // Indica que o código não foi encontrado
+    }
+}
+
+// Função para deletar ua reserva por código
+int deletarReservaBin(int codigo)
+{
+    FILE *arquivo = fopen("arquivos/reserva.bin", "rb");
+    FILE *tempFile = fopen("arquivos/temp.bin", "wb");
+
+    if (arquivo == NULL || tempFile == NULL)
+    {
+        return 0; // Indica que a operação falhou
+    }
+
+    int encontrado = 0; // Indica se o código foi encontrado
+
+    Reserva reservaTemp; // Estrutura temporária para armazenar os dados lidos
+
+    while (fread(&reservaTemp, sizeof(Reserva), 1, arquivo) == 1)
+    {
+        if (reservaTemp.codigo == codigo)
+        {
+            encontrado = 1;
+        }
+        else
+        {
+            fwrite(&reservaTemp, sizeof(Reserva), 1, tempFile);
+        }
+    }
+
+    fclose(arquivo);
+    fclose(tempFile);
+
+    // Substitua o arquivo original pelo arquivo temporário
+    remove("arquivos/reserva.bin");
+    rename("arquivos/temp.bin", "arquivos/reserva.bin");
 
     if (encontrado)
     {
