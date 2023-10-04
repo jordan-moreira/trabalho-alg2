@@ -105,7 +105,8 @@ typedef struct
         hospede,
         acomodacao;
     char dataInicial[11],
-        dataFinal[11];
+        dataFinal[11],
+        checkIn;
 
 } Reserva;
 
