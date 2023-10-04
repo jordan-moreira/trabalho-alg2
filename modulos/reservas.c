@@ -84,6 +84,9 @@ void coletarDadosReserva(Reserva *ptrReserva) // Funcao para retornar um ponteir
     printf("informe a data final da resesrva: ");
     scanf("%10[^\n]%*c", ptrReserva->dataFinal);
 
+    printf("o check-in foi realizado? (S/N): ");
+    scanf("%c%*c", ptrReserva->checkIn);
+
     return;
 }
 
