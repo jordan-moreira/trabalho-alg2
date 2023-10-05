@@ -106,7 +106,8 @@ typedef struct
         acomodacao;
     char dataInicial[11],
         dataFinal[11],
-        checkIn;
+        checkIn,
+        checkOut;
 
 } Reserva;
 

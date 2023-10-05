@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "gestaoDados.h"
 #include "crudTxt.h"
 #include "crudBin.h"
@@ -13,82 +14,239 @@
 #define ANSI_GREEN "\x1b[32m"
 #define ANSI_RED "\x1b[31m"
 
-void realizarCheckIn(char* nomeResponsavel, char* nomeArquivo, char codigoPermissao)
+int diferencaDatas(char data1[], char data2[])
 {
-    if (codigoPermissao == 'N' || codigoPermissao == 'E') {
-        printf(ANSI_RED "Permissão negada.\n" ANSI_RESET);
+    struct tm tm1 = {0}, tm2 = {0};
+    time_t time1, time2;
+
+    strptime(data1, "%d/%m/%Y", &tm1);
+    strptime(data2, "%d/%m/%Y", &tm2);
+
+    time1 = mktime(&tm1);
+    time2 = mktime(&tm2);
+
+    return (int) difftime(time1, time2) / 86400;  
+}
+
+float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
+{
+    FILE *arquivo;
+    Acomodacao *ptrAcomodacao;
+    Categoria *ptrCategoria;
+    int status;
+
+    arquivo = (tipoArquivo == 'T') ? fopen("arquivos/acomodacoes.txt", "r") : fopen("arquivos/acomodacoes.bin", "rb");
+    if (arquivo == NULL)
+    {
+        printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+        return -1;
+    }
+
+    ptrAcomodacao = malloc(sizeof(Acomodacao)); 
+
+    while (1)
+    {
+        status = (tipoArquivo == 'T') ? lerAcomodacaoTxt(codigoAcomodacao, arquivo, ptrAcomodacao) : lerAcomodacaoBin(codigoAcomodacao, arquivo, ptrAcomodacao);
+
+        if (status == 1)
+        {
+            break;
+        }
+        else if (status == 0 && !feof(arquivo))
+        {
+            continue;
+        }
+        else
+        {
+            printf(ANSI_RED "Acomodação não encontrada ou código incorreto.\n" ANSI_RESET);
+            return -1;
+        }
+    }
+    fclose(arquivo);
+
+    char Cateogira[50] = ptrAcomodacao->categoria;
+
+    arquivo = (tipoArquivo == 'T') ? fopen("arquivos/categorias.txt", "r") : fopen("arquivos/categorias.bin", "rb");
+    if (arquivo == NULL)
+    {
+        printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+        return -1;
+    }
+
+    ptrCategoria = malloc(sizeof(Categoria));
+
+    while (1)
+    {
+        status = (tipoArquivo == 'T') ? lerCategoriaTxt(Cateogira, arquivo, ptrCategoria) : lerCategoriaBin(Cateogira, arquivo, ptrCategoria);
+
+        if (status == 1)
+        {
+            break;
+        }
+        else if (status == 0 && !feof(arquivo))
+        {
+            continue;
+        }
+        else
+        {
+            printf(ANSI_RED "Categoria não encontrada ou código incorreto.\n" ANSI_RESET);
+            return -1;
+        }
+    }
+
+    float valorDiaria = ptrCategoria->valor;
+
+    free(ptrAcomodacao);
+
+    return valorDiaria;
+}
+
+void realizarCheckIn(char tipoArquivo, char codigoPermissao)
+{
+    if (codigoPermissao == 'N' || codigoPermissao == 'E')
+    {
+        printf(ANSI_RED "Acesso Negado!" ANSI_RESET);
         return;
     }
     
-    FILE* arquivoReservas;
+    FILE *arquivo;
+    Reserva *ptrReserva;
+    int status,
+        codigoReserva = 0,
+        codigoAcomodacao;
 
-    // Verificar a extensão do arquivo para determinar o tipo de arquivo
-    char* extensao = strrchr(nomeArquivo, '.');
-    if (extensao == NULL) {
-        printf(ANSI_RED "Arquivo de reservas inválido.\n" ANSI_RESET);
-        return;
-    }
-    if (strcmp(extensao, ".txt") == 0) {
-        arquivoReservas = fopen(nomeArquivo, "r");
-    } else if (strcmp(extensao, ".bin") == 0) {
-        arquivoReservas = fopen(nomeArquivo, "rb");
-    } else {
-        printf(ANSI_RED "Tipo de arquivo de reservas inválido.\n" ANSI_RESET);
-        return;
-    }
+    printf("Digite o código único da reserva que você deseja realizar o check-in: ");
+    scanf("%d%*c", &codigoReserva);
 
-    if (arquivoReservas == NULL)
+    arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reservas.txt", "r") : fopen("arquivos/reservas.bin", "rb");
+    if (arquivo == NULL)
     {
         printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
         return;
     }
 
-    char linha[100];
-    int encontrouReserva = 0;
-    while (fgets(linha, 100, arquivoReservas) != NULL) 
+    ptrReserva = malloc(sizeof(Reserva));
+
+    while (1)
     {
-        char* token = strtok(linha, ",");
-        if (strcmp(token, nomeResponsavel) == 0) 
+        status = (tipoArquivo == 'T') ? lerReservaTxt(codigoReserva, arquivo, ptrReserva) : lerReservaBin(codigoReserva, arquivo, ptrReserva);
+
+        if (status == 1)
         {
-            encontrouReserva = 1;
-            char opcao;
-            printf(ANSI_GREEN "Reserva encontrada para o responsavel %s\n" ANSI_RESET, nomeResponsavel);
-            printf("Deseja realizar o check-in? (S/N)\n");
-            scanf("%c", &opcao);
-            if (opcao == 'S' || opcao == 's') 
-            {
-                // Atualizar o arquivo de reservas para indicar que o check-in foi realizado
-                FILE* arquivoTemp = fopen("reservas_temp.txt", "w");
-                while (fgets(linha, 100, arquivoReservas) != NULL) 
-                {
-                    char* tokenTemp = strtok(linha, ",");
-                    if (strcmp(tokenTemp, nomeResponsavel) == 0) {
-                        // Atualizar o campo que indica se o check-in foi realizado
-                        char* tokenTemp2 = strtok(NULL, ",");
-                        fprintf(arquivoTemp, "%s,%s,%s,%s,%s\n", token, tokenTemp2, "S", strtok(NULL, ","), strtok(NULL, ","));
-                    } else 
-                    {
-                        fprintf(arquivoTemp, "%s", linha);
-                    }
-                }
-                fclose(arquivoReservas);
-                fclose(arquivoTemp);
-                remove(nomeArquivo);
-                rename("reservas_temp.txt", nomeArquivo);
-                printf(ANSI_GREEN "Check-in realizado com sucesso para o responsavel %s\n" ANSI_RESET, nomeResponsavel);
-                //Ainda a implementar módulo de pagamento
-                //...
-            }
+            codigoAcomodacao = ptrReserva->acomodacao;
             break;
         }
-    }
-    if (!encontrouReserva) {
-        printf("Reserva nao encontrada para o responsavel %s\n", nomeResponsavel);
-        printf("Deseja gerenciar as reservas? (S/N)\n");
-        char opcao;
-        scanf("%c", &opcao);
-        if (opcao == 'S' || opcao == 's') {
-            gerenciarReservas(nomeArquivo, codigoPermissao);
+        else if (status == 0 && !feof(arquivo))
+        {
+            continue;
+        }
+        else
+        {
+            printf(ANSI_RED "Reserva não encontrada ou código incorreto.\n" ANSI_RESET);
+            return;
         }
     }
+    fclose(arquivo);
+
+    ptrReserva->checkIn = 'S';
+
+    status = (tipoArquivo == 'T') ? atualizarReservaTxt(codigoReserva, ptrReserva) : atualizarReservaBin(codigoReserva, ptrReserva);
+    status == 1 ? printf(ANSI_GREEN "Check-in realizado com sucesso.\n" ANSI_RESET) : printf(ANSI_RED "Erro ao realizar check-in.\n" ANSI_RESET);
+
+    printf("Deseja realizar o pagamento agora? (S/N): ");
+    char opcao;
+    scanf("%c%*c", &opcao);
+    
+    if (opcao == 'S' || opcao == 's')
+    {
+        int diferenca = diferencaDatas(ptrReserva->dataInicial, ptrReserva->dataFinal);
+        float valorDiaria = buscarValorDiaria(codigoAcomodacao, tipoArquivo);
+    
+        if (valorDiaria != -1)
+        {
+            float valorTotal = diferenca * valorDiaria;
+            printf("Valor total a ser pago: R$ %.2f\n", valorTotal);
+        }
+        else
+        {
+            printf(ANSI_RED "Erro ao calcular valor total.\n" ANSI_RESET);
+        }
+    }
+
+    free(ptrReserva);
+}
+
+void realizarCheckOut(char tipoArquivo, char codigoPermissao)
+{
+    if (codigoPermissao == 'N' || codigoPermissao == 'E')
+    {
+        printf(ANSI_RED "Acesso Negado!" ANSI_RESET);
+        return;
+    }
+
+    FILE *arquivo;
+    Reserva *ptrReserva;
+    int status,
+        codigoReserva = 0,
+        codigoAcomodacao;
+
+    printf("Digite o código único da reserva que você deseja realizar o check-out: ");
+    scanf("%d%*c", &codigoReserva);
+
+    arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reservas.txt", "r") : fopen("arquivos/reservas.bin", "rb");
+    if (arquivo == NULL)
+    {
+        printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+        return;
+    }
+
+    ptrReserva = malloc(sizeof(Reserva));
+
+    while (1)
+    {
+        status = (tipoArquivo == 'T') ? lerReservaTxt(codigoReserva, arquivo, ptrReserva) : lerReservaBin(codigoReserva, arquivo, ptrReserva);
+
+        if (status == 1)
+        {
+            codigoAcomodacao = ptrReserva->acomodacao;
+            break;
+        }
+        else if (status == 0 && !feof(arquivo))
+        {
+            continue;
+        }
+        else
+        {
+            printf(ANSI_RED "Reserva não encontrada ou código incorreto.\n" ANSI_RESET);
+            return;
+        }
+    }
+    fclose(arquivo);
+
+    ptrReserva->checkOut = 'S';
+
+    status = (tipoArquivo == 'T') ? atualizarReservaTxt(codigoReserva, ptrReserva) : atualizarReservaBin(codigoReserva, ptrReserva);
+    status == 1 ? printf(ANSI_GREEN "Check-out realizado com sucesso.\n" ANSI_RESET) : printf(ANSI_RED "Erro ao realizar check-out.\n" ANSI_RESET);
+
+    printf("Deseja realizar o pagamento agora? (S/N): ");
+    char opcao;
+    scanf("%c%*c", &opcao);
+
+    if (opcao == 'S' || opcao == 's')
+    {
+        int diferenca = diferencaDatas(ptrReserva->dataInicial, ptrReserva->dataFinal);
+        float valorDiaria = buscarValorDiaria(codigoAcomodacao, tipoArquivo);
+    
+        if (valorDiaria != -1)
+        {
+            float valorTotal = diferenca * valorDiaria;
+            printf("Valor total a ser pago: R$ %.2f\n", valorTotal);
+        }
+        else
+        {
+            printf(ANSI_RED "Erro ao calcular valor total.\n" ANSI_RESET);
+        }
+    }
+
+    free(ptrReserva);
 }

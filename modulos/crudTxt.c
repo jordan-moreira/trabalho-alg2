@@ -165,7 +165,7 @@ int lerOperadorTxt(int codigo, FILE *arquivo, Operador *ptrOperador)
 
 int lerReservaTxt(int codigo, FILE *arquivo, Reserva *ptrReserva)
 {
-    if (fscanf(arquivo, "%d{data inicial:%[^,], data final:%[^,], hospede:%d, acomodacao:%d, check-in:%c;}", &ptrReserva->codigo, &ptrReserva->dataInicial, &ptrReserva->dataFinal, &ptrReserva->hospede, &ptrReserva->acomodacao, &ptrReserva->checkIn) == 6)
+    if (fscanf(arquivo, "%d{data inicial:%[^,], data final:%[^,], hospede:%d, acomodacao:%d, check-in:%c, check-out:%c;}", &ptrReserva->codigo, &ptrReserva->dataInicial, &ptrReserva->dataFinal, &ptrReserva->hospede, &ptrReserva->acomodacao, &ptrReserva->checkIn, &ptrReserva->checkOut) == 7)
     {
         if (ptrReserva->codigo == codigo || codigo == 0)
         {
