@@ -250,3 +250,95 @@ void realizarCheckOut(char tipoArquivo, char codigoPermissao)
 
     free(ptrReserva);
 }
+
+void adicionarConsumivel(char tipoArquivo, char codigoPermissao)
+{
+    if (codigoPermissao == 'N' || codigoPermissao == 'E')
+    {
+        printf(ANSI_RED "Acesso Negado!" ANSI_RESET);
+        return;
+    }
+
+    FILE *arquivo;
+    Reserva *ptrReserva;
+    int status,
+        codigoReserva = 0;
+
+    printf("Digite o código único da reserva do hóspede: ");
+    scanf("%d%*c", &codigoReserva);
+
+    arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reservas.txt", "r") : fopen("arquivos/reservas.bin", "rb");
+    if (arquivo == NULL)
+    {
+        printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+        return;
+    }
+
+    ptrReserva = malloc(sizeof(Reserva));
+
+    while (1)
+    {
+        status = (tipoArquivo == 'T') ? lerReservaTxt(codigoReserva, arquivo, ptrReserva) : lerReservaBin(codigoReserva, arquivo, ptrReserva);
+
+        if (status == 1)
+        {
+            break;
+        }
+        else if (status == 0 && !feof(arquivo))
+        {
+            continue;
+        }
+        else
+        {
+            printf(ANSI_RED "Reserva não encontrada ou código incorreto.\n" ANSI_RESET);
+            return;
+        }
+    }
+    fclose(arquivo);
+
+    int codigoConsumivel, quantidade;
+    float valorVenda;
+    FILE *arquivoConsumivel;
+    Consumivel *ptrConsumivel;
+
+    printf("Digite o código único do consumível a ser adicionado: ");
+    scanf("%d%*c", &codigoConsumivel);
+
+    arquivoConsumivel = (tipoArquivo == 'T') ? fopen("arquivos/consumivel.txt", "r") : fopen("arquivos/consumivel.bin", "rb");
+    if (arquivoConsumivel == NULL)
+    {
+        printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+        return;
+    }
+
+    ptrConsumivel = malloc(sizeof(Consumivel));
+
+    while (1)
+    {
+        status = (tipoArquivo == 'T') ? lerConsumivelTxt(codigoConsumivel, arquivoConsumivel, ptrConsumivel) : lerConsumivelBin(codigoConsumivel, arquivoConsumivel, ptrConsumivel);
+    
+        if (status == 1)
+        {
+            break;
+        }
+        else if (status == 0 && !feof(arquivoConsumivel))
+        {
+            continue;
+        }
+        else
+        {
+            printf(ANSI_RED "Consumível não encontrado ou código incorreto.\n" ANSI_RESET);
+            return;
+        }
+    }
+    fclose(arquivoConsumivel);
+    
+    printf("Digite a quantidade a ser adicionada: ");
+    scanf("%d%*c", &quantidade);
+
+    valorVenda = ptrConsumivel->precoVenda * quantidade;
+    ptrReserva->valorTotal += valorVenda;
+
+    status = (tipoArquivo == 'T') ? atualizarReservaTxt(codigoReserva, ptrReserva) : atualizarReservaBin(codigoReserva, ptrReserva);
+    status == 1 ? printf(ANSI_GREEN "Consumível adicionado com sucesso.\n" ANSI_RESET) : printf(ANSI_RED "Erro ao adicionar consumível.\n" ANSI_RESET);
+}
