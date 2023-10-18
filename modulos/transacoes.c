@@ -251,7 +251,7 @@ void realizarCheckOut(char tipoArquivo, char codigoPermissao)
     free(ptrReserva);
 }
 
-void adicionarConsumivel(char tipoArquivo, char codigoPermissao)
+void registrarConsumivel(char tipoArquivo, char codigoPermissao)
 {
     if (codigoPermissao == 'N' || codigoPermissao == 'E')
     {
