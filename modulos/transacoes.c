@@ -25,7 +25,7 @@ int diferencaDatas(char data1[], char data2[])
     time1 = mktime(&tm1);
     time2 = mktime(&tm2);
 
-    return (int) difftime(time1, time2) / 86400;  
+    return (int)difftime(time1, time2) / 86400; // se data1 for menor retorna um valor negativo se data2 for menor retorna um valor positivo
 }
 
 float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
@@ -42,7 +42,7 @@ float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
         return -1;
     }
 
-    ptrAcomodacao = malloc(sizeof(Acomodacao)); 
+    ptrAcomodacao = malloc(sizeof(Acomodacao));
 
     while (1)
     {
@@ -64,7 +64,7 @@ float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
     }
     fclose(arquivo);
 
-    char Cateogira[50] = ptrAcomodacao->categoria;
+    char categoria[50] = ptrAcomodacao->categoria;
 
     arquivo = (tipoArquivo == 'T') ? fopen("arquivos/categorias.txt", "r") : fopen("arquivos/categorias.bin", "rb");
     if (arquivo == NULL)
@@ -77,7 +77,7 @@ float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
 
     while (1)
     {
-        status = (tipoArquivo == 'T') ? lerCategoriaTxt(Cateogira, arquivo, ptrCategoria) : lerCategoriaBin(Cateogira, arquivo, ptrCategoria);
+        status = (tipoArquivo == 'T') ? lerCategoriaTxt(categoria, arquivo, ptrCategoria) : lerCategoriaBin(categoria, arquivo, ptrCategoria);
 
         if (status == 1)
         {
@@ -108,7 +108,7 @@ void realizarCheckIn(char tipoArquivo, char codigoPermissao)
         printf(ANSI_RED "Acesso Negado!" ANSI_RESET);
         return;
     }
-    
+
     FILE *arquivo;
     Reserva *ptrReserva;
     int status,
@@ -156,12 +156,12 @@ void realizarCheckIn(char tipoArquivo, char codigoPermissao)
     printf("Deseja realizar o pagamento agora? (S/N): ");
     char opcao;
     scanf("%c%*c", &opcao);
-    
+
     if (opcao == 'S' || opcao == 's')
     {
         int diferenca = diferencaDatas(ptrReserva->dataInicial, ptrReserva->dataFinal);
         float valorDiaria = buscarValorDiaria(codigoAcomodacao, tipoArquivo);
-    
+
         if (valorDiaria != -1)
         {
             float valorTotal = diferenca * valorDiaria;
@@ -236,7 +236,7 @@ void realizarCheckOut(char tipoArquivo, char codigoPermissao)
     {
         int diferenca = diferencaDatas(ptrReserva->dataInicial, ptrReserva->dataFinal);
         float valorDiaria = buscarValorDiaria(codigoAcomodacao, tipoArquivo);
-    
+
         if (valorDiaria != -1)
         {
             float valorTotal = diferenca * valorDiaria;
