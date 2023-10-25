@@ -108,6 +108,7 @@ typedef struct
         dataFinal[11],
         checkIn,
         checkOut;
+    float valorTotal;
 
 } Reserva;
 

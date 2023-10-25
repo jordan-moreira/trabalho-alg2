@@ -70,7 +70,6 @@ void mostrarCorrespondentes(Acomodacao *dadosBusca, char tipoArquivo)
 }
 
 void coletarDadosReserva(Reserva *ptrReserva) // Funcao para retornar um ponteiro de memoria onde estao os dados.
-
 {
     printf("Digite o codigo da reserva: ");
     scanf("%d%*c",&ptrReserva->codigo);
