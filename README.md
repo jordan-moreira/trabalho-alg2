@@ -29,6 +29,9 @@ codigo de acesso: E
 
 - [x] criar a funcao de login e relacionados a checagem do nivel de acesso permitido (luiz)
 
+## implementacoes modulo de armazenamento
+- [ ] criar arquivo crud.mem onde estaram as funcao q armazenam os dados em memoria (para quando fechado o sistema os dados serem descartados)
+- [ ] criar logica de selecao para esse tipo de armazenamento tbm
 
 ## implementacoes de cancelamento e reserva de acomodacoes
 
