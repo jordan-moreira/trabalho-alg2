@@ -101,13 +101,8 @@ float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
     return valorDiaria;
 }
 
-void realizarCheckIn(char tipoArquivo, char codigoPermissao)
+void realizarCheckIn(char tipoArquivo)
 {
-    if (codigoPermissao == 'N' || codigoPermissao == 'E')
-    {
-        printf(ANSI_RED "Acesso Negado!" ANSI_RESET);
-        return;
-    }
 
     FILE *arquivo;
     Reserva *ptrReserva;
@@ -176,13 +171,8 @@ void realizarCheckIn(char tipoArquivo, char codigoPermissao)
     free(ptrReserva);
 }
 
-void realizarCheckOut(char tipoArquivo, char codigoPermissao)
+void realizarCheckOut(char tipoArquivo)
 {
-    if (codigoPermissao == 'N' || codigoPermissao == 'E')
-    {
-        printf(ANSI_RED "Acesso Negado!" ANSI_RESET);
-        return;
-    }
 
     FILE *arquivo;
     Reserva *ptrReserva;
@@ -251,13 +241,8 @@ void realizarCheckOut(char tipoArquivo, char codigoPermissao)
     free(ptrReserva);
 }
 
-void registrarConsumivel(char tipoArquivo, char codigoPermissao)
+void registrarVendaConsumivel(char tipoArquivo)
 {
-    if (codigoPermissao == 'N' || codigoPermissao == 'E')
-    {
-        printf(ANSI_RED "Acesso Negado!" ANSI_RESET);
-        return;
-    }
 
     FILE *arquivo;
     Reserva *ptrReserva;
@@ -316,7 +301,7 @@ void registrarConsumivel(char tipoArquivo, char codigoPermissao)
     while (1)
     {
         status = (tipoArquivo == 'T') ? lerConsumivelTxt(codigoConsumivel, arquivoConsumivel, ptrConsumivel) : lerConsumivelBin(codigoConsumivel, arquivoConsumivel, ptrConsumivel);
-    
+
         if (status == 1)
         {
             break;
@@ -332,7 +317,7 @@ void registrarConsumivel(char tipoArquivo, char codigoPermissao)
         }
     }
     fclose(arquivoConsumivel);
-    
+
     printf("Digite a quantidade a ser adicionada: ");
     scanf("%d%*c", &quantidade);
 
@@ -341,4 +326,8 @@ void registrarConsumivel(char tipoArquivo, char codigoPermissao)
 
     status = (tipoArquivo == 'T') ? atualizarReservaTxt(codigoReserva, ptrReserva) : atualizarReservaBin(codigoReserva, ptrReserva);
     status == 1 ? printf(ANSI_GREEN "Consumível adicionado com sucesso.\n" ANSI_RESET) : printf(ANSI_RED "Erro ao adicionar consumível.\n" ANSI_RESET);
+}
+
+void gerirCaixa(char tipoArquivo)
+{
 }

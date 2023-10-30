@@ -50,6 +50,10 @@ codigo de acesso: E
     - [ ] criar uma logica  e funcao para questionar a forma de pagamento: a vista ou a prazo
     - [ ] a vista: adicionar o valor da compra ao caixa e subtrair a quantidade de produtos do estoque
     - [ ] a prazo: adicionar o valor da compra a conta do hospede, gerar uma nota para o cliente assinar e subtrair a quantidade de produtos do estoque
+- [ ] criar logica e funcao de entrada de produtos
+    - [ ] criar funcao responsavel por lancamento de notas fiscais de entrada 
+    - [ ] funcao responsvel por atualizar o estoque e preco de venda do produto em questao
+        > checar calculo de preco venda no arquivo enunciado.pdf pagina 4
 - [ ] criar logica e funcao de controle de caixa
     - [ ] criar uma logica para saber a forma de pagamento: dinheiro ou cartao(credito/debito)
     - [ ] funcao para adicionar o valo da venda no caixa se a venda for em dinheiro
@@ -57,10 +61,7 @@ codigo de acesso: E
     - [ ] criar logica e funcoes necessarias para consulta de lancamentos e retiradas feitas no caixa(como um extrato bancario)
 - [ ] criar logica e funcao de contas a receber
     > responsavel por lancar no caixa o valor das contas a receber relativas a venda por cartao(credito/debito) no dia de seus vencimentos e indicar no extrato o valor recebido e a data 
-- [ ] criar logica e funcao de entrada de produtos
-    - [ ] criar funcao responsavel por lancamento de notas fiscais de entrada 
-    - [ ] funcao responsvel por atualizar o estoque e preco de venda do produto em questao
-        > checar calculo de preco venda no arquivo enunciado.pdf pagina 4
+
     - [ ] funcao responsavel pelo pagamento de produtos se a vista debitar o valor do caixa e lancar no extrato se a prazo retirar o valor de entrada se houver e lancar o restante e parcelas no contas a pagar
 - [ ] criar logica e funcao de contas a pagar
     - [ ] funcao de registro de notas pagas 
@@ -70,6 +71,6 @@ codigo de acesso: E
 
 #### anotacoes
  
-alterar menu inicial para conter uma opcao de gerir transacoes  que sera responsavel pelo gerenciamento de check-in check-out vendas etc
+revisar a logica de permissao de acesso
 
 sera necessario a criacao de um arquivo de caixa  ou config onde serao armazenados os dados sensiveis do hotel()

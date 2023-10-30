@@ -3,6 +3,7 @@
 #include <string.h>
 #include "modulos/gestaoDados.h"
 #include "modulos/reservas.h"
+#include "modulos/transacoes.h"
 
 // Define códigos de escape ANSI para cores de texto
 #define ANSI_RESET "\x1b[0m"
@@ -159,6 +160,70 @@ void menuAdm(char tipoArquivo, char codigoPermissao)
     }
 }
 
+void menuTransacao(char tipoArquivo, char codigoPermissao)
+{
+
+    int codigoMenu;
+
+    printf(ANSI_BOLD ANSI_GREEN "Menu de Transações Selecionado (Tipo de Arquivo: %c)\n" ANSI_RESET, tipoArquivo);
+
+    while (codigoMenu != 8)
+    {
+        // Menu para check-in, check-out, entrada de produtos, saida de produtos, controle de caixa, contas a receber e contas a pagar
+        printf("--- MENU ---\n");
+        printf(" 1 - " ANSI_BOLD "Realizar Check-in.\n" ANSI_RESET);
+        printf(" 2 - " ANSI_BOLD "Realizar Check-out.\n" ANSI_RESET);
+        printf(" 3 - " ANSI_BOLD "Venda de produtos.\n" ANSI_RESET);
+        printf(" 4 - " ANSI_BOLD "Controle de caixa.\n" ANSI_RESET);
+        printf(" 5 - " ANSI_BOLD "Contas a receber.\n" ANSI_RESET);
+        printf(" 6 - " ANSI_BOLD "Contas a pagar.\n" ANSI_RESET);
+        printf(" 7 - " ANSI_BOLD "Entrada de produtos.\n" ANSI_RESET);
+        printf(" 8 - " ANSI_BOLD "Voltar à tela principal.\n" ANSI_RESET);
+
+        printf("\nDigite um código referente ao item que você deseja gerenciar: ");
+        scanf("%d", &codigoMenu);
+
+        switch (codigoMenu)
+        {
+        case 1:
+            realizarCheckIn(tipoArquivo);
+            break;
+
+        case 2:
+            realizarCheckOut(tipoArquivo);
+            break;
+
+        case 3:
+            registrarVendaConsumivel(tipoArquivo);
+            break;
+
+        case 4:
+            gerirCaixa(tipoArquivo);
+            break;
+
+        case 5:
+            gerirContasReceber(tipoArquivo);
+            break;
+
+        case 6:
+            gerirContasPagar(tipoArquivo);
+            break;
+
+        case 7:
+            registrarCompraConsumivel(tipoArquivo);
+            break;
+
+        case 8:
+            printf("Voltando à tela inicial\n\n");
+            break;
+
+        default:
+            printf("Código de menu informado inválido!!\n\n");
+            break;
+        }
+    }
+}
+
 int main()
 {
     // Criado menu para o ferenciamento do hotel usando while para percorrer as opçoes do usauario e casa o proprio nao tiver permissao para acessar
@@ -203,8 +268,9 @@ int main()
         printf(" 4 - " ANSI_BOLD "Relatórios do sistema.\n" ANSI_RESET);   // Ainda nao implementado no switch.
         printf(" 5 - " ANSI_BOLD "Importar/Exportar dados.\n" ANSI_RESET); // Ainda nao implementado no switch.
         printf(" 6 - " ANSI_BOLD "Alterar configuração de armazenamento.\n" ANSI_RESET);
-        printf(" 7 - " ANSI_BOLD "Encerrar o programa.\n" ANSI_RESET);
-        printf(" 8 - " ANSI_BOLD "Fazer login.\n" ANSI_RESET);
+        printf(" 7 - " ANSI_BOLD "Gerir transações.\n" ANSI_RESET);
+        printf(" 8 - " ANSI_BOLD "Encerrar o programa.\n" ANSI_RESET);
+        printf(" 9 - " ANSI_BOLD "Fazer login.\n" ANSI_RESET);
         printf("\nDigite um código referente à operação que você deseja fazer: ");
         scanf(" %d%*c", &codigoMenu);
 
@@ -269,10 +335,14 @@ int main()
             break;
 
         case 7:
-            printf("\nEncerrando o programa...\n");
+            menuTransacao(tipoArquivo, codigoPermissao);
             break;
 
         case 8:
+            printf("\nEncerrando o programa...\n");
+            break;
+
+        case 9:
             // Criado logica para fazer login de usuarios cadastrados.
             struct LoginSenha operador;
 
