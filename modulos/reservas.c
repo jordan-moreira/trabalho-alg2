@@ -39,9 +39,9 @@ int operarReserva()
 void mostrarCorrespondentes(Acomodacao *dadosBusca, char tipoArquivo)
 {
     int status;
-    FILE *arquivo;
+    FILE *arquivo = (tipoArquivo == 'T') ? fopen("arquivos/acomodacao.txt", "r") : fopen("arquivos/acomodacao.bin", "rb");
     Acomodacao *ptrAcomodacao = malloc(sizeof(Acomodacao));
-    printf("Acomodações compatíveis");
+    printf("\nAcomodações compatíveis:\n\n");
     while (1)
     {
         status = (tipoArquivo == 'T') ? lerAcomodacaoTxt(0, arquivo, ptrAcomodacao) : lerAcomodacaoBin(0, arquivo, ptrAcomodacao);
@@ -63,20 +63,22 @@ void mostrarCorrespondentes(Acomodacao *dadosBusca, char tipoArquivo)
         else
         {
             printf("Fim do arquivo alcançado.\n");
+            fclose(arquivo);
             return;
         }
     }
 }
 
 void coletarDadosReserva(Reserva *ptrReserva) // Funcao para retornar um ponteiro de memoria onde estao os dados.
-
 {
+    printf("Digite o codigo da reserva: ");
+    scanf("%d%*c",&ptrReserva->codigo);
 
-    printf("Digite o codigo do reserva responsavel pela reserva: ");
-    scanf("%d%*c", ptrReserva->hospede);
+    printf("Digite o codigo do hospede responsavel pela reserva: ");
+    scanf("%d%*c", &ptrReserva->hospede);
 
     printf("Digite o codigo da acomodacao a ser reservada: ");
-    scanf("%d%*c", ptrReserva->acomodacao);
+    scanf("%d%*c", &ptrReserva->acomodacao);
 
     printf("informe a data inicial da reserva: ");
     scanf("%10[^\n]%*c", &ptrReserva->dataInicial);
@@ -85,14 +87,16 @@ void coletarDadosReserva(Reserva *ptrReserva) // Funcao para retornar um ponteir
     scanf("%10[^\n]%*c", ptrReserva->dataFinal);
 
     printf("o check-in foi realizado? (S/N): ");
-    scanf("%c%*c", ptrReserva->checkIn);
+    scanf("%c%*c", &ptrReserva->checkIn);
+
+    printf("o check-out foi realizado? (S/N): ");
+    scanf("%c%*c", ptrReserva->checkOut);
 
     return;
 }
 
 void checarDatasDisponiveis(int codigoAcomodacao, char tipoArquivo, Reserva *ptrReserva, int codigoReserva)
 {
-
     int status;
     FILE *arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reserva.txt", "r") : fopen("arquivos/reserva.bin", "rb");
     if (arquivo == NULL)
@@ -117,7 +121,7 @@ void checarDatasDisponiveis(int codigoAcomodacao, char tipoArquivo, Reserva *ptr
         }
         else if (status == 0 && !feof(arquivo))
         {
-
+           
             continue;
         }
         else
@@ -142,15 +146,11 @@ void gerenciarReserva(char tipoArquivo, char codigoPermissao)
     case 1:
         Acomodacao *filtroReserva;
         int codigoAcomodacao;
-        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reserva.txt", "a") : fopen("arquivos/reserva.bin", "ab");
-        if (arquivo == NULL)
-        {
-            printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
-            break;
-        }
-
+        
+        printf("digite os dados de filtragem para buscar uma acomodacao:\n");
         filtroReserva = coletarDadosAcomodacao(tipoArquivo);
         mostrarCorrespondentes(filtroReserva, tipoArquivo);
+        free(filtroReserva);
 
         ptrReserva = malloc(sizeof(Reserva));
         if (ptrReserva == NULL)
@@ -159,17 +159,28 @@ void gerenciarReserva(char tipoArquivo, char codigoPermissao)
             return;
         }
 
-        printf("Informe o código da Acomodação que você deseja reservar");
-        scanf("%d%*c", codigoAcomodacao);
+        printf("Informe o código da Acomodação que você deseja reservar: ");
+        scanf("%*c%d%*c", &codigoAcomodacao);
 
         checarDatasDisponiveis(codigoAcomodacao, tipoArquivo, ptrReserva, 0);
 
         coletarDadosReserva(ptrReserva);
+        
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reserva.txt", "a") : fopen("arquivos/reserva.bin", "ab");
+        if (arquivo == NULL)
+        {
+            printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+            free(ptrReserva);
+            break;
+        }
 
         (tipoArquivo == 'T') ? adicionarReservaTxt(ptrReserva, arquivo) : adicionarReservaBin(ptrReserva, arquivo);
 
         printf(ANSI_GREEN "Registrado com sucesso!\n" ANSI_RESET);
 
+        
+        free(ptrReserva);
+        
         fclose(arquivo);
 
         break;

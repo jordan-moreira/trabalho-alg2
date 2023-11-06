@@ -95,6 +95,37 @@ int main(int argc, char *argv[])
     gtk_grid_attach(GTK_GRID(grid), labelSenha, 0, 1, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), login.senhaEntry, 1, 1, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), button, 1, 2, 1, 1);
+if (resultado == 1)
+{
+    // Login bem-sucedido, exiba o menu
+    GtkWidget *menuWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(menuWindow), "Menu");
+    gtk_container_set_border_width(GTK_CONTAINER(menuWindow), 10);
+    gtk_widget_set_size_request(menuWindow, 300, 300);
+
+    GtkWidget *grid = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(menuWindow), grid);
+
+    GtkWidget *button1 = gtk_button_new_with_label("Cadastrar e gerir dados armazenados");
+    GtkWidget *button2 = gtk_button_new_with_label("Gerenciar reservas de quartos");
+    GtkWidget *button3 = gtk_button_new_with_label("Gerir dados administrativos");
+    GtkWidget *button4 = gtk_button_new_with_label("Relatórios do sistema");
+    GtkWidget *button5 = gtk_button_new_with_label("Importar/Exportar dados");
+    GtkWidget *button6 = gtk_button_new_with_label("Alterar configuração de armazenamento");
+    GtkWidget *button7 = gtk_button_new_with_label("Encerrar o programa");
+    GtkWidget *button8 = gtk_button_new_with_label("Fazer login");
+
+    gtk_grid_attach(GTK_GRID(grid), button1, 0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), button2, 0, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), button3, 0, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), button4, 0, 3, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), button5, 0, 4, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), button6, 0, 5, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), button7, 0, 6, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), button8, 0, 7, 1, 1);
+
+    gtk_widget_show_all(menuWindow);
+}
 
     gtk_widget_show_all(window);
 
