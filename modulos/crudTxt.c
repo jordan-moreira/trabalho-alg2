@@ -61,7 +61,7 @@ void adicionarOperadorTxt(Operador *estrutura, FILE *arquivo)
 void adicionarReservaTxt(Reserva *estrutura, FILE *arquivo)
 {
 
-    fprintf(arquivo, "%d{data inicial:%[^,], data final:%[^,], hospede:%d, acomodacao:%d;}\n", estrutura->codigo, estrutura->dataInicial, estrutura->dataFinal, estrutura->hospede, estrutura->acomodacao);
+    fprintf(arquivo, "%d{data inicial:%s, data final:%s, hospede:%d, acomodacao:%d, check-in:%c;}\n", estrutura->codigo, estrutura->dataInicial, estrutura->dataFinal, estrutura->hospede, estrutura->acomodacao);
 }
 
 // ------------Read-----------
@@ -165,7 +165,7 @@ int lerOperadorTxt(int codigo, FILE *arquivo, Operador *ptrOperador)
 
 int lerReservaTxt(int codigo, FILE *arquivo, Reserva *ptrReserva)
 {
-    if (fscanf(arquivo, "%d{data inicial:%[^,], data final:%[^,], hospede:%d, acomodacao:%d;}", &ptrReserva->codigo, &ptrReserva->dataInicial, &ptrReserva->dataFinal, &ptrReserva->hospede, &ptrReserva->acomodacao) == 5)
+    if (fscanf(arquivo, "%d{data inicial:%[^,], data final:%[^,], hospede:%d, acomodacao:%d, check-in:%c;}", &ptrReserva->codigo, &ptrReserva->dataInicial, &ptrReserva->dataFinal, &ptrReserva->hospede, &ptrReserva->acomodacao) == 5)
     {
         if (ptrReserva->codigo == codigo || codigo == 0)
         {

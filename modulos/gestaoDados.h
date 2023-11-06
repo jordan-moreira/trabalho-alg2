@@ -105,10 +105,29 @@ typedef struct
         hospede,
         acomodacao;
     char dataInicial[11],
-        dataFinal[11],
-        checkIn;
+        dataFinal[11];
 
 } Reserva;
+
+// estrutura responsavel por armazenar o ponteiro dos dados quando armazenados em memoria
+typedef struct
+{
+    Hotel *hotel;
+    Hospede **hospede;
+    int tamHospede;
+    Categoria **categoria;
+    int tamCategoria;
+    Acomodacao **acomodacao;
+    int tamAcomodacao;
+    Consumivel **consumivel;
+    int tamConsumivel;
+    Fornecedor **fornecedor;
+    int tamFornecedor;
+    Operador **operador;
+    int tamOperador;
+    Reserva **reserva;
+    int tamReserva;
+} PtrMemoria;
 
 // -------------------FUNÇÕES-------------
 
@@ -119,25 +138,25 @@ int selecionarOperacao(char *tipoDoDado);
 void converterArquivos(char tipoArquivo);
 
 // funcao responsavel por gerenciar dados do hotel
-void gerenciarHotel(char tipoArquivo, char codigoPermissao);
+void gerenciarHotel(char tipoArquivo, char codigoPermissao, PtrMemoria *ptrMemoria);
 
 // funcao responsavel por gerenciar dados dos hospedes
-void gerenciarHospede(char tipoArquivo);
+void gerenciarHospede(char tipoArquivo, PtrMemoria *ptrMemoria);
 
 // funcao responsavel por gerenciar dados das categorias dos quartos
-void gerenciarCategoria(char tipoArquivo, char codigoPermissao);
+void gerenciarCategoria(char tipoArquivo, char codigoPermissao, PtrMemoria *ptrMemoria);
 
 // funcao responsavel por gerenciar dados dos quartos
-void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao);
+void gerenciarAcomodacao(char tipoArquivo, char codigoPermissao, PtrMemoria *ptrMemoria);
 
 // funcao responsavel por gerenciar dados dos consumiveis
-void gerenciarConsumivel(char tipoArquivo);
+void gerenciarConsumivel(char tipoArquivo, PtrMemoria *ptrMemoria);
 
 // funcao responsavel por gerenciar dados dos fornecedores
-void gerenciarFornecedor(char tipoArquivo);
+void gerenciarFornecedor(char tipoArquivo, PtrMemoria *ptrMemoria);
 
 // funcao responsavel por gerenciar dados dos operadores
-void gerenciarOperador(char tipoArquivo);
+void gerenciarOperador(char tipoArquivo, PtrMemoria *ptrMemoria);
 
 // funcao responsvel por coletar e armazenar em uma struct os dados do hotel e retornar o ponteiro da memoria onde a struct esta alocada
 Hotel *coletarDadosHotel();

@@ -38,7 +38,7 @@ int fazerLogin(struct LoginSenha *operador, char *codigoPermissao) // Logica cri
     }
 }
 
-void menuCadastro(char tipoArquivo, char codigoPermissao)
+void menuCadastro(char tipoArquivo, char codigoPermissao, PtrMemoria *ptrMemoria)
 {
     int codigoMenu;
 
@@ -64,15 +64,42 @@ void menuCadastro(char tipoArquivo, char codigoPermissao)
             {
 
             case 1:
-                gerenciarHospede(tipoArquivo); // Para receber informaçes de hospedes.
+                if (tipoArquivo == 'M')
+                {
+                    if (ptrMemoria->hospede == 0)
+                    {
+                        ptrMemoria->tamHospede = 0;
+                        ptrMemoria->hospede = malloc(ptrMemoria->tamHospede * sizeof(Hospede *));
+                    }
+                    gerenciarHospede(tipoArquivo, ptrMemoria);
+                }
+                gerenciarHospede(tipoArquivo, 0); // Para receber informaçes de hospedes.
                 break;
 
             case 2:
-                gerenciarCategoria(tipoArquivo, codigoPermissao); // Lista das acomodacoes.
+                if (tipoArquivo == 'M')
+                {
+                    if (ptrMemoria->categoria == 0)
+                    {
+                        ptrMemoria->tamCategoria = 0;
+                        ptrMemoria->categoria = malloc(ptrMemoria->tamCategoria * sizeof(Categoria *));
+                    }
+                    gerenciarCategoria(tipoArquivo, codigoPermissao, ptrMemoria);
+                }
+                gerenciarCategoria(tipoArquivo, codigoPermissao, 0); // Lista das acomodacoes.
                 break;
 
             case 3:
-                gerenciarAcomodacao(tipoArquivo, codigoPermissao); // Informacoes sobre acomodacoes
+                if (tipoArquivo == 'M')
+                {
+                    if (ptrMemoria->acomodacao == 0)
+                    {
+                        ptrMemoria->tamAcomodacao = 0;
+                        ptrMemoria->acomodacao = malloc(ptrMemoria->tamAcomodacao * sizeof(Acomodacao *));
+                    }
+                    gerenciarAcomodacao(tipoArquivo, codigoPermissao, ptrMemoria);
+                }
+                gerenciarAcomodacao(tipoArquivo, codigoPermissao, 0); // Informacoes sobre acomodacoes
                 break;
 
             case 4:
@@ -87,7 +114,7 @@ void menuCadastro(char tipoArquivo, char codigoPermissao)
     }
 }
 
-void menuAdm(char tipoArquivo, char codigoPermissao)
+void menuAdm(char tipoArquivo, char codigoPermissao, PtrMemoria *ptrMemoria)
 {
     int codigoMenu;
 
@@ -132,15 +159,42 @@ void menuAdm(char tipoArquivo, char codigoPermissao)
             switch (codigoMenu)
             {
             case 1:
-                gerenciarConsumivel(tipoArquivo);
+                if (tipoArquivo == 'M')
+                {
+                    if (ptrMemoria->consumivel == 0)
+                    {
+                        ptrMemoria->tamConsumivel = 0;
+                        ptrMemoria->consumivel = malloc(ptrMemoria->tamConsumivel * sizeof(Consumivel *));
+                    }
+                    gerenciarConsumivel(tipoArquivo, ptrMemoria);
+                }
+                gerenciarConsumivel(tipoArquivo, 0);
                 break;
 
             case 2:
-                gerenciarFornecedor(tipoArquivo);
+                if (tipoArquivo == 'M')
+                {
+                    if (ptrMemoria->fornecedor == 0)
+                    {
+                        ptrMemoria->tamFornecedor = 0;
+                        ptrMemoria->fornecedor = malloc(ptrMemoria->tamFornecedor * sizeof(Fornecedor *));
+                    }
+                    gerenciarFornecedor(tipoArquivo, ptrMemoria);
+                }
+                gerenciarFornecedor(tipoArquivo, 0);
                 break;
 
             case 3:
-                gerenciarOperador(tipoArquivo);
+                if (tipoArquivo == 'M')
+                {
+                    if (ptrMemoria->operador == 0)
+                    {
+                        ptrMemoria->tamOperador = 0;
+                        ptrMemoria->operador = malloc(ptrMemoria->tamOperador * sizeof(Operador *));
+                    }
+                    gerenciarOperador(tipoArquivo, ptrMemoria);
+                }
+                gerenciarOperador(tipoArquivo, 0);
                 break;
 
             case 4:
@@ -148,7 +202,15 @@ void menuAdm(char tipoArquivo, char codigoPermissao)
                 break;
 
             case 5:
-                gerenciarHotel(tipoArquivo, codigoPermissao);
+                if (tipoArquivo == 'M')
+                {
+                    if (ptrMemoria->hotel == 0)
+                    {
+                        ptrMemoria->hotel = malloc(sizeof(Hotel));
+                    }
+                    gerenciarOperador(tipoArquivo, ptrMemoria);
+                }
+                gerenciarHotel(tipoArquivo, codigoPermissao, 0);
                 break;
 
             default:
@@ -168,6 +230,7 @@ int main()
     int codigoMenu = 0,
         configSetada = 0;
     FILE *arquivo;
+    PtrMemoria *ptrMemoria;
     char tipoArquivo,
         codigoPermissao;
     arquivo = fopen("arquivos/operador.txt", "r");
@@ -220,7 +283,7 @@ int main()
         switch (codigoMenu)
         {
         case 1:
-            menuCadastro(tipoArquivo, codigoPermissao);
+            menuCadastro(tipoArquivo, codigoPermissao, tipoArquivo == 'M' ? ptrMemoria : 0);
             break;
 
         case 2:
@@ -231,12 +294,12 @@ int main()
             }
             else
             {
-                gerenciarReserva(tipoArquivo, codigoPermissao);
+                gerenciarReserva(tipoArquivo, codigoPermissao, tipoArquivo == 'M' ? ptrMemoria : 0);
                 break;
             }
 
         case 3:
-            menuAdm(tipoArquivo, codigoPermissao);
+            menuAdm(tipoArquivo, codigoPermissao, tipoArquivo == 'M' ? ptrMemoria : 0);
             break;
 
         case 6:
@@ -244,6 +307,7 @@ int main()
             printf("\nEscolha o tipo de armazenamento (txt ou binário):\n");
             printf("1 - Texto (txt)\n");
             printf("2 - Binário (bin)\n");
+            printf("3 - Memoria (mem)\n");
 
             int escolhaArmazenamento;
             scanf("%d", &escolhaArmazenamento);
@@ -261,6 +325,15 @@ int main()
 
                 converterArquivos(tipoArquivo);
                 printf("\nArmazenamento configurado para binário (bin).\n");
+            }
+            else if (escolhaArmazenamento == 3)
+            {
+                if (tipoArquivo != 'M')
+                {
+                    tipoArquivo = 'M';
+                    ptrMemoria = malloc(sizeof(PtrMemoria));
+                    memset(&ptrMemoria, 0, sizeof(PtrMemoria));
+                }
             }
             else
             {
