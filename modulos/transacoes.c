@@ -361,7 +361,6 @@ NotaFiscalEntrada *coletarNotaFiscal()
 {
 
     NotaFiscalEntrada *notaFiscal = malloc(sizeof(NotaFiscalEntrada));
-    int quantidadeProdutos;
 
     printf("digite a razao social do fornecedor: ");
     scanf("%49[^\n]%*c", notaFiscal->fornecedor);
@@ -372,10 +371,10 @@ NotaFiscalEntrada *coletarNotaFiscal()
     printf("digite o valor dos impostos: ");
     scanf("%f%*c", notaFiscal->imposto);
     printf("informe a quantidade de produtos a serem adicionados: ");
-    scanf("%d%*c", &quantidadeProdutos);
+    scanf("%d%*c", notaFiscal->quantidadeProdutos);
 
-    notaFiscal->produtos = malloc(quantidadeProdutos * sizeof(Produto));
-    for (int i = 0; i < quantidadeProdutos; i++)
+    notaFiscal->produtos = malloc(notaFiscal->quantidadeProdutos * sizeof(Produto));
+    for (int i = 0; i < notaFiscal->quantidadeProdutos; i++)
     {
         printf("digite a descricao do produto(Ex:bala, refrigerante, ...): ");
         scanf("%99[^\n]%*c", notaFiscal->produtos[i].descricao);
@@ -394,11 +393,13 @@ NotaFiscalEntrada *coletarNotaFiscal()
 void registrarCompraConsumivel(char tipoArquivo)
 {
     NotaFiscalEntrada *notaFiscal = coletarNotaFiscal();
+    FILE *arquivo;
+    int status;
     float margemLucro,
         fretePorProduto = notaFiscal->frete / notaFiscal->quantidadeItens,
         impostoPorProduto = notaFiscal->imposto / notaFiscal->quantidadeItens;
 
-    FILE *arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hotel.txt", "r") : fopen("arquivos/hotel.bin", "rb");
+    arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hotel.txt", "r") : fopen("arquivos/hotel.bin", "rb");
 
     if (arquivo == NULL)
     {
@@ -407,7 +408,7 @@ void registrarCompraConsumivel(char tipoArquivo)
     }
 
     Hotel *ptrHotel = malloc(sizeof(Hotel));
-    int status = (tipoArquivo == 'T') ? lerHotelTxt(arquivo, ptrHotel) : lerHotelBin(arquivo, ptrHotel);
+    status = (tipoArquivo == 'T') ? lerHotelTxt(arquivo, ptrHotel) : lerHotelBin(arquivo, ptrHotel);
     fclose(arquivo);
 
     if (status == 1)
@@ -419,6 +420,56 @@ void registrarCompraConsumivel(char tipoArquivo)
     {
         printf(ANSI_RED "Hotel não encontrado ou erro de leitura.\n" ANSI_RESET);
     }
+
+//atualizacao do estoque dos consumiveis
+
+    arquivo = (tipoArquivo == 'T') ? fopen("arquivos/consumivel.txt", "r") : fopen("arquivos/consumivel.bin", "rb");
+            if (arquivo == NULL)
+            {
+                printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+                break;
+            }
+
+            Consumivel *ptrConsumivel=malloc(sizeof(Consumivel));
+    for(int i=0;i<notaFiscal->quantidadeProdutos;i++)
+    {
+
+    
+while (1)
+                {
+                    status = (tipoArquivo == 'T') ? lerConsumivelTxt(0, arquivo, ptrConsumivel) : lerConsumivelBin(0, arquivo, ptrConsumivel);
+                    if (status == 1)
+                    {
+                        if(!strcmp(ptrConsumivel->descricao,notaFiscal->produtos[i].descricao)){
+                            ptrConsumivel->estoque+=notaFiscal->produtos[i].quantidade;
+                            ptrConsumivel->precoCusto=notaFiscal->produtos[i].precoCusto;
+                            ptrConsumivel->precoVenda=notaFiscal->produtos[i].precoCusto*margemLucro+ptrConsumivel->precoCusto+fretePorProduto+impostoPorProduto;
+                        }else{
+
+                        continue;
+                        }
+                    }
+                    else if (status == 0 && !feof(arquivo))
+                    {
+
+                        continue;
+                    }
+                    else
+                    {
+                        printf("Fim do arquivo alcançado.\n");
+                        break;
+                    }
+
+    int codigoConsumivel = ptrConsumivel->codigo;
+       
+        status = (tipoArquivo == 'T') ? atualizarConsumivelTxt(codigoConsumivel, ptrConsumivel) : atualizarConsumivelBin(codigoConsumivel, ptrConsumivel);
+
+        status == 1 ? printf(ANSI_GREEN "Registro de consumivel atualizado com sucesso" ANSI_RESET) : printf(ANSI_RED "Erro ao atualizar registro de consumível" ANSI_RESET);
+        break;
+                }
+}
+        free(ptrConsumivel);
+
 }
 
 void gerirCaixa(char tipoArquivo)

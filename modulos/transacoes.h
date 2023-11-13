@@ -15,7 +15,8 @@ typedef struct
     float frete,
         imposto,
         total;
-    int quantidadeItens;
+    int quantidadeItens,
+    quantidadeProdutos;
 
     Produto *produtos;
 } NotaFiscalEntrada;

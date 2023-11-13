@@ -56,9 +56,9 @@ codigo de acesso: E
         - [ ] <span style="color:lime;">gerar uma nota para o cliente assinar</span>
 - [ ] criar logica e funcao de entrada de produtos
     - [ ] criar funcao responsavel por lancamento de notas fiscais de entrada 
-    - [ ] funcao responsvel por atualizar o estoque e preco de venda do produto em questao
+    - [x] funcao responsvel por atualizar o estoque e preco de venda do produto em questao
         > checar calculo de preco venda no arquivo enunciado.pdf pagina 4
-- [ ] criar logica e funcao de controle de caixa
+- [ ] criar logica e funcao de gestao de caixa
     - [ ] criar uma logica para saber a forma de pagamento: dinheiro ou cartao(credito/debito)
     - [ ] funcao para adicionar o valo da venda no caixa se a venda for em dinheiro
     - [ ] funcao para adicionar ao contas a receber o valor da venda e o dia do vencimento do cartao para registrar quando o hotel ecebera o valor 
