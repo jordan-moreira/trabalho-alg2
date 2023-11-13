@@ -244,44 +244,9 @@ void realizarCheckOut(char tipoArquivo)
 void registrarVendaConsumivel(char tipoArquivo)
 {
 
-    FILE *arquivo;
-    Reserva *ptrReserva;
-    int status,
-        codigoReserva = 0;
-
-    printf("Digite o código único da reserva do hóspede: ");
-    scanf("%d%*c", &codigoReserva);
-
-    arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reservas.txt", "r") : fopen("arquivos/reservas.bin", "rb");
-    if (arquivo == NULL)
-    {
-        printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
-        return;
-    }
-
-    ptrReserva = malloc(sizeof(Reserva));
-
-    while (1)
-    {
-        status = (tipoArquivo == 'T') ? lerReservaTxt(codigoReserva, arquivo, ptrReserva) : lerReservaBin(codigoReserva, arquivo, ptrReserva);
-
-        if (status == 1)
-        {
-            break;
-        }
-        else if (status == 0 && !feof(arquivo))
-        {
-            continue;
-        }
-        else
-        {
-            printf(ANSI_RED "Reserva não encontrada ou código incorreto.\n" ANSI_RESET);
-            return;
-        }
-    }
-    fclose(arquivo);
-
-    int codigoConsumivel, quantidade;
+    int codigoConsumivel,
+        quantidade,
+        status;
     float valorVenda;
     FILE *arquivoConsumivel;
     Consumivel *ptrConsumivel;
@@ -322,10 +287,138 @@ void registrarVendaConsumivel(char tipoArquivo)
     scanf("%d%*c", &quantidade);
 
     valorVenda = ptrConsumivel->precoVenda * quantidade;
-    ptrReserva->valorTotal += valorVenda;
 
-    status = (tipoArquivo == 'T') ? atualizarReservaTxt(codigoReserva, ptrReserva) : atualizarReservaBin(codigoReserva, ptrReserva);
-    status == 1 ? printf(ANSI_GREEN "Consumível adicionado com sucesso.\n" ANSI_RESET) : printf(ANSI_RED "Erro ao adicionar consumível.\n" ANSI_RESET);
+    int formaPagamento;
+    printf("Selecione a forma de pagamento:\n1- a vista\n2- a prazo\n");
+    scanf("%d%*c", &formaPagamento);
+
+    if (formaPagamento == 1)
+    {
+        atualizarCaixa(valorVenda);
+        ptrConsumivel->estoque -= quantidade;
+
+        tipoArquivo == 'T' ? atualizarConsumivelTxt(codigoConsumivel, ptrConsumivel) : atualizarConsumivelBin(codigoConsumivel, ptrConsumivel);
+        free(ptrConsumivel);
+    }
+    else if (formaPagamento == 2)
+    {
+
+        FILE *arquivo;
+        Reserva *ptrReserva;
+
+        int codigoReserva = 0;
+
+        printf("Digite o código único da reserva do hóspede: ");
+        scanf("%d%*c", &codigoReserva);
+
+        arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reservas.txt", "r") : fopen("arquivos/reservas.bin", "rb");
+        if (arquivo == NULL)
+        {
+            printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+            return;
+        }
+
+        ptrReserva = malloc(sizeof(Reserva));
+
+        while (1)
+        {
+            status = (tipoArquivo == 'T') ? lerReservaTxt(codigoReserva, arquivo, ptrReserva) : lerReservaBin(codigoReserva, arquivo, ptrReserva);
+
+            if (status == 1)
+            {
+                break;
+            }
+            else if (status == 0 && !feof(arquivo))
+            {
+                continue;
+            }
+            else
+            {
+                printf(ANSI_RED "Reserva não encontrada ou código incorreto.\n" ANSI_RESET);
+                return;
+            }
+        }
+        fclose(arquivo);
+
+        ptrReserva->valorTotal += valorVenda;
+
+        status = (tipoArquivo == 'T') ? atualizarReservaTxt(codigoReserva, ptrReserva) : atualizarReservaBin(codigoReserva, ptrReserva);
+
+        ptrConsumivel->estoque -= quantidade;
+
+        tipoArquivo == 'T' ? atualizarConsumivelTxt(codigoConsumivel, ptrConsumivel) : atualizarConsumivelBin(codigoConsumivel, ptrConsumivel);
+        free(ptrConsumivel);
+
+        status == 1 ? printf(ANSI_GREEN "Consumível adicionado com sucesso.\n" ANSI_RESET) : printf(ANSI_RED "Erro ao adicionar consumível.\n" ANSI_RESET);
+    }
+    else
+    {
+        printf("codigo invalido");
+    }
+}
+
+NotaFiscalEntrada *coletarNotaFiscal()
+{
+
+    NotaFiscalEntrada *notaFiscal = malloc(sizeof(NotaFiscalEntrada));
+    int quantidadeProdutos;
+
+    printf("digite a razao social do fornecedor: ");
+    scanf("%49[^\n]%*c", notaFiscal->fornecedor);
+    printf("digite o CNPJ do fornecedor: ");
+    scanf("%19[^\n]%*c", notaFiscal->cnpj);
+    printf("digite o valor do frete: ");
+    scanf("%f%*c", notaFiscal->frete);
+    printf("digite o valor dos impostos: ");
+    scanf("%f%*c", notaFiscal->imposto);
+    printf("informe a quantidade de produtos a serem adicionados: ");
+    scanf("%d%*c", &quantidadeProdutos);
+
+    notaFiscal->produtos = malloc(quantidadeProdutos * sizeof(Produto));
+    for (int i = 0; i < quantidadeProdutos; i++)
+    {
+        printf("digite a descricao do produto(Ex:bala, refrigerante, ...): ");
+        scanf("%99[^\n]%*c", notaFiscal->produtos[i].descricao);
+        printf("digite o preco de custo do produto: ");
+        scanf("%f%*c", notaFiscal->produtos[i].precoCusto);
+        printf("digite a quantidade de unidades desse produto: ");
+        scanf("%f%*c", notaFiscal->produtos[i].quantidade);
+        notaFiscal->quantidadeItens += notaFiscal->produtos[i].quantidade;
+    }
+    printf("informe o valor total da compra: ");
+    scanf("%f%*c", notaFiscal->total);
+
+    return notaFiscal;
+}
+
+void registrarCompraConsumivel(char tipoArquivo)
+{
+    NotaFiscalEntrada *notaFiscal = coletarNotaFiscal();
+    float margemLucro,
+        fretePorProduto = notaFiscal->frete / notaFiscal->quantidadeItens,
+        impostoPorProduto = notaFiscal->imposto / notaFiscal->quantidadeItens;
+
+    FILE *arquivo = (tipoArquivo == 'T') ? fopen("arquivos/hotel.txt", "r") : fopen("arquivos/hotel.bin", "rb");
+
+    if (arquivo == NULL)
+    {
+        printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+        return;
+    }
+
+    Hotel *ptrHotel = malloc(sizeof(Hotel));
+    int status = (tipoArquivo == 'T') ? lerHotelTxt(arquivo, ptrHotel) : lerHotelBin(arquivo, ptrHotel);
+    fclose(arquivo);
+
+    if (status == 1)
+    {
+        margemLucro = ptrHotel->margemLucro;
+        free(ptrHotel);
+    }
+    else if (status == 0)
+    {
+        printf(ANSI_RED "Hotel não encontrado ou erro de leitura.\n" ANSI_RESET);
+    }
 }
 
 void gerirCaixa(char tipoArquivo)

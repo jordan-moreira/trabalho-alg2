@@ -80,6 +80,9 @@ Hotel *coletarDadosHotel() // Funcao para retornar um ponteiro de memoria onde e
     printf("\nDigite o horário de Check-out do hotel(hh.mm): ");
     scanf("%s%*c", ptrHotel->horarioCheckOut);
 
+    printf("digite a margem de lucro do hotel(20%%=0.2): ");
+    scanf("%f%*c", ptrHotel->margemLucro);
+
     return ptrHotel;
 }
 
@@ -352,8 +355,8 @@ void gerenciarHotel(char tipoArquivo, char codigoPermissao, PtrMemoria *ptrMemor
 
         if (status == 1)
         {
-            printf("\n Nome do Hotel: %s,\n Razão Social: %s,\n Inscrição Estadual: %s,\n CNPJ: %s,\n Endereço: %s,\n Número de Celular: %s,\n E-mail: %s,\n Nome do Responsável: %s,\n Número de Celular do Responsável: %s,\n Horário de Check-in: %s,\n Horário de Check-out: %s;\n}\n",
-                   ptrHotel->nome, ptrHotel->razaoSocial, ptrHotel->inscricaoEstadual, ptrHotel->cnpj, ptrHotel->endereco, ptrHotel->celular, ptrHotel->eMail, ptrHotel->responsavel, ptrHotel->celularResponsavel, ptrHotel->horarioCheckIn, ptrHotel->horarioCheckOut);
+            printf("\n Nome do Hotel: %s,\n Razão Social: %s,\n Inscrição Estadual: %s,\n CNPJ: %s,\n Endereço: %s,\n Número de Celular: %s,\n E-mail: %s,\n Nome do Responsável: %s,\n Número de Celular do Responsável: %s,\n Horário de Check-in: %s,\n Horário de Check-out: %s,\n Margem de lucro: %.2f;\n}\n",
+                   ptrHotel->nome, ptrHotel->razaoSocial, ptrHotel->inscricaoEstadual, ptrHotel->cnpj, ptrHotel->endereco, ptrHotel->celular, ptrHotel->eMail, ptrHotel->responsavel, ptrHotel->celularResponsavel, ptrHotel->horarioCheckIn, ptrHotel->horarioCheckOut, ptrHotel->margemLucro);
         }
         else if (status == 0)
         {

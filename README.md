@@ -30,8 +30,8 @@ codigo de acesso: E
 - [x] criar a funcao de login e relacionados a checagem do nivel de acesso permitido (luiz)
 
 ## implementacoes modulo de armazenamento
-- [ ] criar arquivo crud.mem onde estaram as funcao q armazenam os dados em memoria (para quando fechado o sistema os dados serem descartados)
-- [ ] criar logica de selecao para esse tipo de armazenamento tbm
+- [x] criar arquivo crud.mem onde estaram as funcao q armazenam os dados em memoria (para quando fechado o sistema os dados serem descartados)
+- [x] criar logica de selecao para esse tipo de armazenamento tbm
 
 ## implementacoes de cancelamento e reserva de acomodacoes
 
@@ -50,9 +50,10 @@ codigo de acesso: E
 - [x] criar logica e funcao de check-in
 - [x] criar logica e funcao de check-out
 - [ ] criar logica e funcao de saida de produtos
-    - [ ] criar uma logica  e funcao para questionar a forma de pagamento: a vista ou a prazo
-    - [ ] a vista: adicionar o valor da compra ao caixa e subtrair a quantidade de produtos do estoque
-    - [ ] a prazo: adicionar o valor da compra a conta do hospede, gerar uma nota para o cliente assinar e subtrair a quantidade de produtos do estoque
+    - [x] criar uma logica  e funcao para questionar a forma de pagamento: a vista ou a prazo
+    - [x] a vista: adicionar o valor da compra ao caixa e subtrair a quantidade de produtos do estoque
+    - [x] a prazo: adicionar o valor da compra a conta do hospede e subtrair a quantidade de produtos do estoque
+        - [ ] <span style="color:lime;">gerar uma nota para o cliente assinar</span>
 - [ ] criar logica e funcao de entrada de produtos
     - [ ] criar funcao responsavel por lancamento de notas fiscais de entrada 
     - [ ] funcao responsvel por atualizar o estoque e preco de venda do produto em questao
@@ -77,3 +78,5 @@ codigo de acesso: E
 revisar a logica de permissao de acesso
 
 sera necessario a criacao de um arquivo de caixa  ou config onde serao armazenados os dados sensiveis do hotel()
+
+criar logica para sombreamento de dados na adicao de reservas
