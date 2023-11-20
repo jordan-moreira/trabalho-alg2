@@ -241,6 +241,34 @@ void realizarCheckOut(char tipoArquivo)
     free(ptrReserva);
 }
 
+void gerarNota(int quantProduto,float subTotal,char* cliente,char* produto){
+ // Obter o tempo atual
+    time_t tempoAtual;
+    time(&tempoAtual);
+    struct tm *infoTempo = localtime(&tempoAtual);
+
+    printf("===========================================\n");
+    printf("             Nota de Venda\n");
+    printf("===========================================\n");
+    printf("Data e Hora:%02d/%02d/%04d %02d:%02d:%02d\n",
+           infoTempo->tm_mday, infoTempo->tm_mon + 1, infoTempo->tm_year + 1900,
+           infoTempo->tm_hour, infoTempo->tm_min, infoTempo->tm_sec);
+    printf("Cliente: %s\n\n", cliente);
+printf("-------------------------------------------\n");
+    printf("  Produto            Quantidade    Subtotal\n");
+    printf("-------------------------------------------\n");
+    
+        printf("  %-20s %-12d R$%-9.2f\n", produto, quantProduto,subTotal);
+    
+
+    printf("-------------------------------------------\n");
+    printf("  Total da Compra:                  R$%-9.2f\n\n",subTotal);
+
+    printf("-------------------------------------------\n");
+    printf("          Assinatura do Cliente\n");
+
+}
+
 void registrarVendaConsumivel(char tipoArquivo)
 {
 
@@ -347,7 +375,10 @@ void registrarVendaConsumivel(char tipoArquivo)
         ptrConsumivel->estoque -= quantidade;
 
         tipoArquivo == 'T' ? atualizarConsumivelTxt(codigoConsumivel, ptrConsumivel) : atualizarConsumivelBin(codigoConsumivel, ptrConsumivel);
+
+        gerarNota(quantidade,valorVenda,ptrReserva->hospede,ptrConsumivel->descricao);
         free(ptrConsumivel);
+        free(ptrReserva);
 
         status == 1 ? printf(ANSI_GREEN "Consumível adicionado com sucesso.\n" ANSI_RESET) : printf(ANSI_RED "Erro ao adicionar consumível.\n" ANSI_RESET);
     }
@@ -421,7 +452,7 @@ void registrarCompraConsumivel(char tipoArquivo)
         printf(ANSI_RED "Hotel não encontrado ou erro de leitura.\n" ANSI_RESET);
     }
 
-//atualizacao do estoque dos consumiveis
+    //atualizacao do estoque dos consumiveis
 
     arquivo = (tipoArquivo == 'T') ? fopen("arquivos/consumivel.txt", "r") : fopen("arquivos/consumivel.bin", "rb");
             if (arquivo == NULL)
@@ -435,7 +466,7 @@ void registrarCompraConsumivel(char tipoArquivo)
     {
 
     
-while (1)
+    while (1)
                 {
                     status = (tipoArquivo == 'T') ? lerConsumivelTxt(0, arquivo, ptrConsumivel) : lerConsumivelBin(0, arquivo, ptrConsumivel);
                     if (status == 1)
@@ -467,7 +498,7 @@ while (1)
         status == 1 ? printf(ANSI_GREEN "Registro de consumivel atualizado com sucesso" ANSI_RESET) : printf(ANSI_RED "Erro ao atualizar registro de consumível" ANSI_RESET);
         break;
                 }
-}
+        }
         free(ptrConsumivel);
 
 }

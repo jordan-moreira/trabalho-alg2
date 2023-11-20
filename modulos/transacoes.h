@@ -29,6 +29,8 @@ void realizarCheckIn(char tipoArquivo);
 
 void realizarCheckOut(char tipoArquivo);
 
+void gerarNota(int quantProduto,int subTotal,char* cliente,char* produto);
+
 void registrarVendaConsumivel(char tipoArquivo);
 
 NotaFiscalEntrada *coletarNotaFiscal();

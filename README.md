@@ -49,11 +49,11 @@ codigo de acesso: E
 
 - [x] criar logica e funcao de check-in
 - [x] criar logica e funcao de check-out
-- [ ] criar logica e funcao de saida de produtos
+- [x] criar logica e funcao de saida de produtos
     - [x] criar uma logica  e funcao para questionar a forma de pagamento: a vista ou a prazo
     - [x] a vista: adicionar o valor da compra ao caixa e subtrair a quantidade de produtos do estoque
     - [x] a prazo: adicionar o valor da compra a conta do hospede e subtrair a quantidade de produtos do estoque
-        - [ ] <span style="color:lime;">gerar uma nota para o cliente assinar</span>
+    - [x] gerar uma nota para o cliente assinar se a venda for a prazo
 - [ ] criar logica e funcao de entrada de produtos
     - [ ] criar funcao responsavel por lancamento de notas fiscais de entrada 
     - [x] funcao responsvel por atualizar o estoque e preco de venda do produto em questao
