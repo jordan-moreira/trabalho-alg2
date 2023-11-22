@@ -101,6 +101,24 @@ float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
     return valorDiaria;
 }
 
+void atualizarCaixa(float valorTransacao,char tipoTransacao){
+    FILE *arquivoLeitura=fopen("arquivos/caixa.txt","r"),
+    arquivoEscrita=fopen("arquivos/temp.txt","w");
+    float valorCaixa;
+    char linha=[100]
+while(!feof(arquivoLeitura)){
+    fgets(linha,sizeof(linha),arquivoLeitura);
+    if(fscanf(arquivoLeitura,"Caixa:%f",&valorCaixa)){
+        tipoTransacao="-"?valorCaixa-=valorTransacao:valorCaixa+=valorTransacao;
+        fprintf(arquivoEscrita,"Caixa:%f",valorCaixa);
+    }else(fscanf(arquivo,"%[^:]:%c %f;",&dataTransacao,&tipoMovimentacao,&valorMovimentacao)){
+        fprintf(arquivoEscrita,"%s:%c %f;",dataTransacao,tipoMovimentacao,valorMovimentacao);
+
+    }
+}
+
+}
+
 void realizarCheckIn(char tipoArquivo)
 {
 
