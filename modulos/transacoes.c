@@ -241,32 +241,40 @@ void realizarCheckOut(char tipoArquivo)
     free(ptrReserva);
 }
 
-void gerarNota(int quantProduto,float subTotal,char* cliente,char* produto){
- // Obter o tempo atual
+void gerarNota(int quantProduto, float subTotal, char *cliente, char *produto)
+{
+    // Obter o tempo atual
     time_t tempoAtual;
     time(&tempoAtual);
     struct tm *infoTempo = localtime(&tempoAtual);
+    FILE *arquivo = fopen("nota.txt", "w");
 
-    printf("===========================================\n");
-    printf("             Nota de Venda\n");
-    printf("===========================================\n");
-    printf("Data e Hora:%02d/%02d/%04d %02d:%02d:%02d\n",
-           infoTempo->tm_mday, infoTempo->tm_mon + 1, infoTempo->tm_year + 1900,
-           infoTempo->tm_hour, infoTempo->tm_min, infoTempo->tm_sec);
-    printf("Cliente: %s\n\n", cliente);
-printf("-------------------------------------------\n");
-    printf("  Produto            Quantidade    Subtotal\n");
-    printf("-------------------------------------------\n");
-    
-        printf("  %-20s %-12d R$%-9.2f\n", produto, quantProduto,subTotal);
-    
+    if (arquivo == NULL)
+    {
+        printf(ANSI_RED "Arquivo não pode ser aberto!\n" ANSI_RESET);
+        return;
+    }
 
-    printf("-------------------------------------------\n");
-    printf("  Total da Compra:                  R$%-9.2f\n\n",subTotal);
+    fprintf(arquivo, "===========================================\n");
+    fprintf(arquivo, "             Nota de Venda\n");
+    fprintf(arquivo, "===========================================\n");
+    fprintf(arquivo, "Data e Hora:%02d/%02d/%04d %02d:%02d:%02d\n",
+            infoTempo->tm_mday, infoTempo->tm_mon + 1, infoTempo->tm_year + 1900,
+            infoTempo->tm_hour, infoTempo->tm_min, infoTempo->tm_sec);
+    fprintf(arquivo, "Cliente: %s\n\n", cliente);
+    fprintf(arquivo, "-------------------------------------------\n");
+    fprintf(arquivo, "  Produto            Quantidade    Subtotal\n");
+    fprintf(arquivo, "-------------------------------------------\n");
 
-    printf("-------------------------------------------\n");
-    printf("          Assinatura do Cliente\n");
+    fprintf(arquivo, "  %-20s %-12d R$%-9.2f\n", produto, quantProduto, subTotal);
 
+    fprintf(arquivo, "-------------------------------------------\n");
+    fprintf(arquivo, "  Total da Compra:                  R$%-9.2f\n\n", subTotal);
+
+    fprintf(arquivo, "-------------------------------------------\n");
+    fprintf(arquivo, "          Assinatura do Cliente\n");
+
+    fclose(arquivo);
 }
 
 void registrarVendaConsumivel(char tipoArquivo)
@@ -376,7 +384,7 @@ void registrarVendaConsumivel(char tipoArquivo)
 
         tipoArquivo == 'T' ? atualizarConsumivelTxt(codigoConsumivel, ptrConsumivel) : atualizarConsumivelBin(codigoConsumivel, ptrConsumivel);
 
-        gerarNota(quantidade,valorVenda,ptrReserva->hospede,ptrConsumivel->descricao);
+        gerarNota(quantidade, valorVenda, ptrReserva->hospede, ptrConsumivel->descricao);
         free(ptrConsumivel);
         free(ptrReserva);
 
@@ -421,6 +429,21 @@ NotaFiscalEntrada *coletarNotaFiscal()
     return notaFiscal;
 }
 
+void registrarNota(NotaFiscalEntrada *nota)
+{
+    FILE *arquivo = fopen("arquivo/notasCompras.txt", "a");
+
+    fprintf(arquivo, "{\nfornecedor:%s;\ncnpj:%s\nfrete:%f\nimposto:%f\nProdutos:{\n", nota->fornecedor, nota->cnpj, nota->frete, nota->imposto);
+
+    for (int i = 0; i < nota->quantidadeProdutos; i++)
+    {
+        fprintf(arquivo, "%s:[preco custo:%f; quantidade:%d;]\n}\n", nota->produtos[i].descricao, nota->produtos[i].precoCusto, nota->produtos[i].quantidade);
+    }
+    fprintf(arquivo, "valor total:%f\n}\n\n", nota->total);
+
+    fclose(arquivo);
+}
+
 void registrarCompraConsumivel(char tipoArquivo)
 {
     NotaFiscalEntrada *notaFiscal = coletarNotaFiscal();
@@ -452,55 +475,58 @@ void registrarCompraConsumivel(char tipoArquivo)
         printf(ANSI_RED "Hotel não encontrado ou erro de leitura.\n" ANSI_RESET);
     }
 
-    //atualizacao do estoque dos consumiveis
+    // atualizacao do estoque dos consumiveis
 
     arquivo = (tipoArquivo == 'T') ? fopen("arquivos/consumivel.txt", "r") : fopen("arquivos/consumivel.bin", "rb");
-            if (arquivo == NULL)
+    if (arquivo == NULL)
+    {
+        printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+        return;
+    }
+
+    Consumivel *ptrConsumivel = malloc(sizeof(Consumivel));
+    for (int i = 0; i < notaFiscal->quantidadeProdutos; i++)
+    {
+
+        while (1)
+        {
+            status = (tipoArquivo == 'T') ? lerConsumivelTxt(0, arquivo, ptrConsumivel) : lerConsumivelBin(0, arquivo, ptrConsumivel);
+            if (status == 1)
             {
-                printf(ANSI_RED "Arquivo não existe ou não pode ser lido.\n" ANSI_RESET);
+                if (!strcmp(ptrConsumivel->descricao, notaFiscal->produtos[i].descricao))
+                {
+                    ptrConsumivel->estoque += notaFiscal->produtos[i].quantidade;
+                    ptrConsumivel->precoCusto = notaFiscal->produtos[i].precoCusto;
+                    ptrConsumivel->precoVenda = notaFiscal->produtos[i].precoCusto * margemLucro + ptrConsumivel->precoCusto + fretePorProduto + impostoPorProduto;
+                }
+                else
+                {
+
+                    continue;
+                }
+            }
+            else if (status == 0 && !feof(arquivo))
+            {
+
+                continue;
+            }
+            else
+            {
+                printf("Fim do arquivo alcançado.\n");
                 break;
             }
 
-            Consumivel *ptrConsumivel=malloc(sizeof(Consumivel));
-    for(int i=0;i<notaFiscal->quantidadeProdutos;i++)
-    {
+            int codigoConsumivel = ptrConsumivel->codigo;
 
-    
-    while (1)
-                {
-                    status = (tipoArquivo == 'T') ? lerConsumivelTxt(0, arquivo, ptrConsumivel) : lerConsumivelBin(0, arquivo, ptrConsumivel);
-                    if (status == 1)
-                    {
-                        if(!strcmp(ptrConsumivel->descricao,notaFiscal->produtos[i].descricao)){
-                            ptrConsumivel->estoque+=notaFiscal->produtos[i].quantidade;
-                            ptrConsumivel->precoCusto=notaFiscal->produtos[i].precoCusto;
-                            ptrConsumivel->precoVenda=notaFiscal->produtos[i].precoCusto*margemLucro+ptrConsumivel->precoCusto+fretePorProduto+impostoPorProduto;
-                        }else{
+            status = (tipoArquivo == 'T') ? atualizarConsumivelTxt(codigoConsumivel, ptrConsumivel) : atualizarConsumivelBin(codigoConsumivel, ptrConsumivel);
 
-                        continue;
-                        }
-                    }
-                    else if (status == 0 && !feof(arquivo))
-                    {
+            registrarNota(notaFiscal);
 
-                        continue;
-                    }
-                    else
-                    {
-                        printf("Fim do arquivo alcançado.\n");
-                        break;
-                    }
-
-    int codigoConsumivel = ptrConsumivel->codigo;
-       
-        status = (tipoArquivo == 'T') ? atualizarConsumivelTxt(codigoConsumivel, ptrConsumivel) : atualizarConsumivelBin(codigoConsumivel, ptrConsumivel);
-
-        status == 1 ? printf(ANSI_GREEN "Registro de consumivel atualizado com sucesso" ANSI_RESET) : printf(ANSI_RED "Erro ao atualizar registro de consumível" ANSI_RESET);
-        break;
-                }
+            status == 1 ? printf(ANSI_GREEN "Registro de consumivel atualizado com sucesso" ANSI_RESET) : printf(ANSI_RED "Erro ao atualizar registro de consumível" ANSI_RESET);
+            break;
         }
-        free(ptrConsumivel);
-
+    }
+    free(ptrConsumivel);
 }
 
 void gerirCaixa(char tipoArquivo)

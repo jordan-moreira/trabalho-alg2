@@ -16,7 +16,7 @@ typedef struct
         imposto,
         total;
     int quantidadeItens,
-    quantidadeProdutos;
+        quantidadeProdutos;
 
     Produto *produtos;
 } NotaFiscalEntrada;
@@ -29,7 +29,7 @@ void realizarCheckIn(char tipoArquivo);
 
 void realizarCheckOut(char tipoArquivo);
 
-void gerarNota(int quantProduto,int subTotal,char* cliente,char* produto);
+void gerarNota(int quantProduto, float subTotal, char *cliente, char *produto);
 
 void registrarVendaConsumivel(char tipoArquivo);
 

@@ -54,8 +54,8 @@ codigo de acesso: E
     - [x] a vista: adicionar o valor da compra ao caixa e subtrair a quantidade de produtos do estoque
     - [x] a prazo: adicionar o valor da compra a conta do hospede e subtrair a quantidade de produtos do estoque
     - [x] gerar uma nota para o cliente assinar se a venda for a prazo
-- [ ] criar logica e funcao de entrada de produtos
-    - [ ] criar funcao responsavel por lancamento de notas fiscais de entrada 
+- [x] criar logica e funcao de entrada de produtos
+    - [x] criar funcao responsavel por lancamento de notas fiscais de entrada 
     - [x] funcao responsvel por atualizar o estoque e preco de venda do produto em questao
         > checar calculo de preco venda no arquivo enunciado.pdf pagina 4
 - [ ] criar logica e funcao de gestao de caixa
