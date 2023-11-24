@@ -15,7 +15,8 @@ typedef struct
 typedef struct
 {
     char fornecedor[50],
-        cnpj[20];
+        cnpj[20],
+        situacao[10]; // pendente ou paga
     float frete,
         imposto,
         total;
@@ -50,6 +51,16 @@ void gerarNota(int quantProduto, float subTotal, int cliente, char *produto);
 void registrarVendaConsumivel(char tipoArquivo);
 
 NotaFiscalEntrada *coletarNotaFiscal();
+
+void lerDespesas(char *data);
+
+void atualizarDespesas(float valorTransacao, int parcelas, char *dataNota, int nParcela, char tipoTransacao);
+
+int coletarValorParcela(char *data, int parcela);
+
+void pagarContas();
+
+void gerirCompras(NotaFiscalEntrada *nota);
 
 void registrarCompraConsumivel(char tipoArquivo);
 

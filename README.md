@@ -66,10 +66,10 @@ codigo de acesso: E
 - [x] criar logica e funcao de contas a receber
     > responsavel por lancar no caixa o valor das contas a receber relativas a venda por cartao(credito/debito) no dia de seus vencimentos e indicar no extrato o valor recebido e a data 
 
-- [ ] funcao responsavel pelo pagamento de produtos se a vista debitar o valor do caixa e lancar no extrato se a prazo retirar o valor de entrada se houver e lancar o restante e parcelas no contas a pagar
-- [ ] criar logica e funcao de contas a pagar
-    - [ ] funcao de registro de notas pagas 
-    - [ ] funcao de debito de valor pago no caixa do hotel
+- [x] funcao responsavel pelo pagamento de produtos se a vista debitar o valor do caixa e lancar no extrato se a prazo retirar o valor de entrada se houver e lancar o restante de parcelas no contas a pagar
+- [x] criar logica e funcao de contas a pagar
+    - [x] funcao de registro de notas pagas 
+    - [x] funcao de debito de valor pago no caixa do hotel
 
 
 
