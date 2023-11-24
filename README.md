@@ -58,15 +58,15 @@ codigo de acesso: E
     - [x] criar funcao responsavel por lancamento de notas fiscais de entrada 
     - [x] funcao responsvel por atualizar o estoque e preco de venda do produto em questao
         > checar calculo de preco venda no arquivo enunciado.pdf pagina 4
-- [ ] criar logica e funcao de gestao de caixa
-    - [ ] criar uma logica para saber a forma de pagamento: dinheiro ou cartao(credito/debito)
-    - [ ] funcao para adicionar o valo da venda no caixa se a venda for em dinheiro
-    - [ ] funcao para adicionar ao contas a receber o valor da venda e o dia do vencimento do cartao para registrar quando o hotel ecebera o valor 
-    - [ ] criar logica e funcoes necessarias para consulta de lancamentos e retiradas feitas no caixa(como um extrato bancario)
-- [ ] criar logica e funcao de contas a receber
+- [x] criar logica e funcao de gestao de caixa
+    - [x] criar uma logica para saber a forma de pagamento: dinheiro ou cartao(credito/debito)
+    - [x] funcao para adicionar o valo da venda no caixa se a venda for em dinheiro
+    - [x] funcao para adicionar ao contas a receber o valor da venda e o dia do vencimento do cartao para registrar quando o hotel recebera o valor 
+    - [x] criar logica e funcoes necessarias para consulta de lancamentos e retiradas feitas no caixa(como um extrato bancario)
+- [x] criar logica e funcao de contas a receber
     > responsavel por lancar no caixa o valor das contas a receber relativas a venda por cartao(credito/debito) no dia de seus vencimentos e indicar no extrato o valor recebido e a data 
 
-    - [ ] funcao responsavel pelo pagamento de produtos se a vista debitar o valor do caixa e lancar no extrato se a prazo retirar o valor de entrada se houver e lancar o restante e parcelas no contas a pagar
+- [ ] funcao responsavel pelo pagamento de produtos se a vista debitar o valor do caixa e lancar no extrato se a prazo retirar o valor de entrada se houver e lancar o restante e parcelas no contas a pagar
 - [ ] criar logica e funcao de contas a pagar
     - [ ] funcao de registro de notas pagas 
     - [ ] funcao de debito de valor pago no caixa do hotel

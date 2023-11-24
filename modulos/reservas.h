@@ -7,8 +7,8 @@ void mostrarCorrespondentes(Acomodacao *dadosBusca, char tipoArquivo);
 
 void coletarDadosReserva(Reserva *ptrReserva);
 
-void gerenciarReserva(char tipoArquivo, char codigoPermissao, PtrMemoria *ptrMemoria);
+void gerenciarReserva(char tipoArquivo, char codigoPermissao);
 
-void checarDatasDisponiveis(int codigoAcomodacao, char tipoArquivo, Reserva *ptrReserva, int codigoReserva, PtrMemoria *ptrMemoria);
+void checarDatasDisponiveis(int codigoAcomodacao, char tipoArquivo, Reserva *ptrReserva, int codigoReserva);
 
 #endif

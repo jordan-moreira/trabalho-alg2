@@ -72,7 +72,7 @@ void mostrarCorrespondentes(Acomodacao *dadosBusca, char tipoArquivo)
 void coletarDadosReserva(Reserva *ptrReserva) // Funcao para retornar um ponteiro de memoria onde estao os dados.
 {
     printf("Digite o codigo da reserva: ");
-    scanf("%d%*c",&ptrReserva->codigo);
+    scanf("%d%*c", &ptrReserva->codigo);
 
     printf("Digite o codigo do hospede responsavel pela reserva: ");
     scanf("%d%*c", &ptrReserva->hospede);
@@ -121,7 +121,7 @@ void checarDatasDisponiveis(int codigoAcomodacao, char tipoArquivo, Reserva *ptr
         }
         else if (status == 0 && !feof(arquivo))
         {
-           
+
             continue;
         }
         else
@@ -146,7 +146,7 @@ void gerenciarReserva(char tipoArquivo, char codigoPermissao)
     case 1:
         Acomodacao *filtroReserva;
         int codigoAcomodacao;
-        
+
         printf("digite os dados de filtragem para buscar uma acomodacao:\n");
         filtroReserva = coletarDadosAcomodacao(tipoArquivo);
         mostrarCorrespondentes(filtroReserva, tipoArquivo);
@@ -165,7 +165,7 @@ void gerenciarReserva(char tipoArquivo, char codigoPermissao)
         checarDatasDisponiveis(codigoAcomodacao, tipoArquivo, ptrReserva, 0);
 
         coletarDadosReserva(ptrReserva);
-        
+
         arquivo = (tipoArquivo == 'T') ? fopen("arquivos/reserva.txt", "a") : fopen("arquivos/reserva.bin", "ab");
         if (arquivo == NULL)
         {
@@ -178,9 +178,8 @@ void gerenciarReserva(char tipoArquivo, char codigoPermissao)
 
         printf(ANSI_GREEN "Registrado com sucesso!\n" ANSI_RESET);
 
-        
         free(ptrReserva);
-        
+
         fclose(arquivo);
 
         break;

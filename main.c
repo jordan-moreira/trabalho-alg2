@@ -260,15 +260,15 @@ void menuTransacao(char tipoArquivo, char codigoPermissao)
             break;
 
         case 4:
-            gerirCaixa(tipoArquivo);
+            // gerirCaixa(tipoArquivo);
             break;
 
         case 5:
-            gerirContasReceber(tipoArquivo);
+            // gerirContasReceber(tipoArquivo);
             break;
 
         case 6:
-            gerirContasPagar(tipoArquivo);
+            // gerirContasPagar(tipoArquivo);
             break;
 
         case 7:
@@ -360,7 +360,7 @@ int main()
             }
             else
             {
-                gerenciarReserva(tipoArquivo, codigoPermissao, tipoArquivo == 'M' ? ptrMemoria : 0);
+                gerenciarReserva(tipoArquivo, codigoPermissao);
                 break;
             }
 

@@ -14,18 +14,46 @@
 #define ANSI_GREEN "\x1b[32m"
 #define ANSI_RED "\x1b[31m"
 
+int converterString(char *data, struct tm *tm_info)
+{
+    if (sscanf(data, "%d/%d/%d", &tm_info->tm_mday, &tm_info->tm_mon, &tm_info->tm_year) != 3)
+    {
+        // A análise falhou
+        return 0;
+    }
+
+    // Ajuste para o formato esperado (tm_mon é base 0, e tm_year é anos desde 1900)
+    tm_info->tm_mon -= 1;
+    tm_info->tm_year -= 1900;
+
+    return 1; // Análise bem-sucedida
+}
+
 int diferencaDatas(char data1[], char data2[])
 {
     struct tm tm1 = {0}, tm2 = {0};
     time_t time1, time2;
 
-    strptime(data1, "%d/%m/%Y", &tm1);
-    strptime(data2, "%d/%m/%Y", &tm2);
+    converterString(data1, &tm1);
+    converterString(data2, &tm2);
 
     time1 = mktime(&tm1);
     time2 = mktime(&tm2);
 
     return (int)difftime(time1, time2) / 86400; // se data1 for menor retorna um valor negativo se data2 for menor retorna um valor positivo
+}
+
+void coletarData(char dataString)
+{
+    // Obter o tempo atual
+    time_t tempoAtual;
+    struct tm *infoTempo;
+
+    time(&tempoAtual);
+    infoTempo = localtime(&tempoAtual);
+
+    // Formatar a data como string no formato desejado (por exemplo, "DD/MM/AAAA")
+    strftime(&dataString, 11, "%d/%m/%Y", infoTempo);
 }
 
 float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
@@ -64,7 +92,9 @@ float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
     }
     fclose(arquivo);
 
-    char categoria[50] = ptrAcomodacao->categoria;
+    char categoria;
+
+    strcpy(&categoria, ptrAcomodacao->categoria);
 
     arquivo = (tipoArquivo == 'T') ? fopen("arquivos/categorias.txt", "r") : fopen("arquivos/categorias.bin", "rb");
     if (arquivo == NULL)
@@ -77,7 +107,7 @@ float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
 
     while (1)
     {
-        status = (tipoArquivo == 'T') ? lerCategoriaTxt(categoria, arquivo, ptrCategoria) : lerCategoriaBin(categoria, arquivo, ptrCategoria);
+        status = (tipoArquivo == 'T') ? lerCategoriaTxt(&categoria, arquivo, ptrCategoria) : lerCategoriaBin(&categoria, arquivo, ptrCategoria);
 
         if (status == 1)
         {
@@ -101,22 +131,174 @@ float buscarValorDiaria(int codigoAcomodacao, char tipoArquivo)
     return valorDiaria;
 }
 
-void atualizarCaixa(float valorTransacao,char tipoTransacao){
-    FILE *arquivoLeitura=fopen("arquivos/caixa.txt","r"),
-    arquivoEscrita=fopen("arquivos/temp.txt","w");
-    float valorCaixa;
-    char linha=[100]
-while(!feof(arquivoLeitura)){
-    fgets(linha,sizeof(linha),arquivoLeitura);
-    if(fscanf(arquivoLeitura,"Caixa:%f",&valorCaixa)){
-        tipoTransacao="-"?valorCaixa-=valorTransacao:valorCaixa+=valorTransacao;
-        fprintf(arquivoEscrita,"Caixa:%f",valorCaixa);
-    }else(fscanf(arquivo,"%[^:]:%c %f;",&dataTransacao,&tipoMovimentacao,&valorMovimentacao)){
-        fprintf(arquivoEscrita,"%s:%c %f;",dataTransacao,tipoMovimentacao,valorMovimentacao);
+void lerRecebimentos()
+{
+    FILE *arquivo = fopen("arquivos/contasReceber.txt", "r");
+    if (arquivo == NULL)
+    {
+        printf("Erro ao abrir o arquivo");
+        return;
+    }
 
+    char linha[100];
+
+    while (!feof(arquivo))
+    {
+        fgets(linha, sizeof(linha), arquivo);
+        printf("%s", linha);
+    }
+    fclose(arquivo);
+}
+
+void atualizarRecebimentos(float valorTransacao, char *vencimento, char tipoTransacao)
+{
+    FILE *arquivoLeitura = fopen("arquivos/contasReceber.txt", "r"),
+         *arquivoEscrita = fopen("arquivos/temp.txt", "w");
+    float valorCaixa;
+    char dataTransacao[11];
+    float valorMovimentacao;
+    char dataAtual;
+    coletarData(dataAtual);
+    while (!feof(arquivoLeitura))
+    {
+        if (fscanf(arquivoLeitura, "Caixa:%f", &valorCaixa))
+        {
+            tipoTransacao == '+' ? (valorCaixa += valorTransacao) : (valorCaixa -= valorTransacao);
+            fprintf(arquivoEscrita, "Caixa:%f", valorCaixa);
+        }
+        else if (fscanf(arquivoLeitura, "%[^:]:%f;", &dataTransacao, &valorMovimentacao))
+        {
+            fprintf(arquivoEscrita, "%s:%f;", dataTransacao, valorMovimentacao);
+        }
+        else if (feof(arquivoLeitura) && tipoTransacao == '+')
+        {
+            fprintf(arquivoEscrita, "%s:%f;", dataAtual, valorTransacao);
+        }
+    }
+    fclose(arquivoLeitura);
+    fclose(arquivoEscrita);
+    remove("arquivos/contasReceber.txt");
+    rename("arquivos/temp.txt", "arquivos/contasReceber.txt");
+}
+
+void lerCaixa()
+{
+    FILE *arquivo = fopen("arquivos/caixa.txt", "r");
+    if (arquivo == NULL)
+    {
+        printf("Erro ao abrir o arquivo");
+        return;
+    }
+
+    char linha[100];
+
+    while (!feof(arquivo))
+    {
+        fgets(linha, sizeof(linha), arquivo);
+        printf("%s", linha);
+    }
+    fclose(arquivo);
+}
+
+void atualizarCaixa(float valorTransacao, char tipoTransacao)
+{
+    FILE *arquivoLeitura = fopen("arquivos/caixa.txt", "r"),
+         *arquivoEscrita = fopen("arquivos/temp.txt", "w");
+    float valorCaixa;
+    char dataTransacao[11], tipoMovimentacao;
+    float valorMovimentacao;
+    char dataAtual;
+    coletarData(dataAtual);
+    while (!feof(arquivoLeitura))
+    {
+        if (fscanf(arquivoLeitura, "Caixa:%f", &valorCaixa))
+        {
+            tipoTransacao == '-' ? (valorCaixa -= valorTransacao) : (valorCaixa += valorTransacao);
+            fprintf(arquivoEscrita, "Caixa:%f", valorCaixa);
+        }
+        else if (fscanf(arquivoLeitura, "%[^:]:%c %f;", &dataTransacao, &tipoMovimentacao, &valorMovimentacao))
+        {
+            fprintf(arquivoEscrita, "%s:%c %f;", dataTransacao, tipoMovimentacao, valorMovimentacao);
+        }
+        else if (feof(arquivoLeitura))
+        {
+            fprintf(arquivoEscrita, "%s:%c %f;", dataAtual, tipoTransacao, valorTransacao);
+        }
+    }
+    fclose(arquivoLeitura);
+    fclose(arquivoEscrita);
+    remove("arquivos/caixa.txt");
+    rename("arquivos/temp.txt", "arquivos/caixa.txt");
+}
+
+void gerirTransacoes(float valor, char tipoTransacao)
+{
+    if (tipoTransacao == '+')
+    {
+
+        int formaPagamento;
+
+        printf("Selecione a forma de pagamento:\n1- dinheiro\n2- cartao de debito\n3- cartao de credito\n");
+        scanf("%d%*c", &formaPagamento);
+
+        if (formaPagamento == 1 || formaPagamento == 2)
+        {
+
+            atualizarCaixa(valor, '+');
+        }
+        else if (formaPagamento == 3)
+        {
+
+            char vencimento[11];
+            printf("informe a data de vencimento do cartao(dd/mm/aaaa):");
+            scanf("%s%*c", &vencimento);
+            atualizarRecebimentos(valor, vencimento, '+');
+        }
+        else
+        {
+            printf("codigo invalido!!");
+        }
     }
 }
 
+void atualizarContas()
+{
+    FILE *arquivoLeituraReceber = fopen("arquivos/contasReceber", "r"),
+         *arquivoEscritaReceber = fopen("arquivos/tempReceber.txt", "w");
+
+    if (arquivoLeituraReceber == NULL || arquivoEscritaReceber == NULL)
+    {
+        printf("Erro ao abrir um dos arquivos");
+        return;
+    }
+
+    float valorMovimentacao,
+        valorSubtraido = 0;
+    char dataTransacao,
+        dataAtual;
+    coletarData(dataAtual);
+    while (!feof(arquivoLeituraReceber))
+    {
+        if (fscanf(arquivoLeituraReceber, "%[^:]:%f;", &dataTransacao, &valorMovimentacao))
+        {
+            if (!strcmp(&dataAtual, &dataTransacao))
+            {
+                atualizarCaixa(valorMovimentacao, '+');
+                valorSubtraido += valorMovimentacao;
+                continue;
+            }
+            else
+            {
+                fprintf(arquivoEscritaReceber, "%s:%f;", dataTransacao, valorMovimentacao);
+            }
+        }
+    }
+    fclose(arquivoEscritaReceber);
+    fclose(arquivoLeituraReceber);
+    remove("arquivos/contasReceber.txt");
+    rename("arquivos/tempReceber.txt", "arquivos/contasReceber.txt");
+
+    atualizarRecebimentos(valorSubtraido, 0, '-');
 }
 
 void realizarCheckIn(char tipoArquivo)
@@ -170,20 +352,28 @@ void realizarCheckIn(char tipoArquivo)
     char opcao;
     scanf("%c%*c", &opcao);
 
+    int diferenca = diferencaDatas(ptrReserva->dataInicial, ptrReserva->dataFinal);
+    float valorDiaria = buscarValorDiaria(codigoAcomodacao, tipoArquivo);
+    float valorTotal = diferenca * valorDiaria;
+
     if (opcao == 'S' || opcao == 's')
     {
-        int diferenca = diferencaDatas(ptrReserva->dataInicial, ptrReserva->dataFinal);
-        float valorDiaria = buscarValorDiaria(codigoAcomodacao, tipoArquivo);
 
         if (valorDiaria != -1)
         {
-            float valorTotal = diferenca * valorDiaria;
+
             printf("Valor total a ser pago: R$ %.2f\n", valorTotal);
+            gerirTransacoes(valorTotal, '+');
+            ptrReserva->valorTotal = 0;
         }
         else
         {
             printf(ANSI_RED "Erro ao calcular valor total.\n" ANSI_RESET);
         }
+    }
+    else if (opcao == 'N' || opcao == 'n')
+    {
+        ptrReserva->valorTotal = valorTotal;
     }
 
     free(ptrReserva);
@@ -236,30 +426,14 @@ void realizarCheckOut(char tipoArquivo)
     status = (tipoArquivo == 'T') ? atualizarReservaTxt(codigoReserva, ptrReserva) : atualizarReservaBin(codigoReserva, ptrReserva);
     status == 1 ? printf(ANSI_GREEN "Check-out realizado com sucesso.\n" ANSI_RESET) : printf(ANSI_RED "Erro ao realizar check-out.\n" ANSI_RESET);
 
-    printf("Deseja realizar o pagamento agora? (S/N): ");
-    char opcao;
-    scanf("%c%*c", &opcao);
+    printf("Valor total a ser pago: R$ %.2f\n", ptrReserva->valorTotal);
 
-    if (opcao == 'S' || opcao == 's')
-    {
-        int diferenca = diferencaDatas(ptrReserva->dataInicial, ptrReserva->dataFinal);
-        float valorDiaria = buscarValorDiaria(codigoAcomodacao, tipoArquivo);
-
-        if (valorDiaria != -1)
-        {
-            float valorTotal = diferenca * valorDiaria;
-            printf("Valor total a ser pago: R$ %.2f\n", valorTotal);
-        }
-        else
-        {
-            printf(ANSI_RED "Erro ao calcular valor total.\n" ANSI_RESET);
-        }
-    }
+    gerirTransacoes(ptrReserva->valorTotal, '+');
 
     free(ptrReserva);
 }
 
-void gerarNota(int quantProduto, float subTotal, char *cliente, char *produto)
+void gerarNota(int quantProduto, float subTotal, int cliente, char *produto)
 {
     // Obter o tempo atual
     time_t tempoAtual;
@@ -348,7 +522,9 @@ void registrarVendaConsumivel(char tipoArquivo)
 
     if (formaPagamento == 1)
     {
-        atualizarCaixa(valorVenda);
+
+        gerirTransacoes(valorVenda, '+');
+
         ptrConsumivel->estoque -= quantidade;
 
         tipoArquivo == 'T' ? atualizarConsumivelTxt(codigoConsumivel, ptrConsumivel) : atualizarConsumivelBin(codigoConsumivel, ptrConsumivel);
@@ -545,8 +721,4 @@ void registrarCompraConsumivel(char tipoArquivo)
         }
     }
     free(ptrConsumivel);
-}
-
-void gerirCaixa(char tipoArquivo)
-{
 }
